@@ -1,0 +1,95 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "linkedin-translator",
+  "main": "./workers/app.ts",
+  "compatibility_date": "2026-03-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "upload_source_maps": true,
+  "routes": [
+    {
+      "pattern": "linkedinspeaktranslator.top",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.linkedinspeaktranslator.top",
+      "custom_domain": true
+    }
+  ],
+  // 生产环境变量已全部迁移至 Cloudflare Dashboard 手动配置
+  // 本地开发使用.dev.vars 文件
+  // 注释 vars 配置以避免覆盖生产环境变量
+  /*
+  # 以下配置是从 wrangler.jsonc 复制的占位符配置（已注释，无效）
+# .dev.vars 使用 shell 格式（KEY="VALUE"），而非 JSON 格式
+# 生产环境变量请配置在 Cloudflare Dashboard
+#
+# "vars": {
+#   // Secrets: 使用 wrangler secret put 命令配置
+#   "SESSION_SECRET": "YOUR_SESSION_SECRET",
+#   
+    // Other Parameters
+#   "CDN_URL": "https://cdn.linkedinspeaktranslator.top",
+#   "DOMAIN": "https://linkedinspeaktranslator.top/",
+
+#   "GOOGLE_ANALYTICS_ID": "G-XXXXXXX",
+#   "GOOGLE_ADS_ID": "pub-xxxxxxxxxxxxxxxx",
+
+#   // Google OAuth
+#   "GOOGLE_CLIENT_ID": "YOUR_GOOGLE_CLIENT_ID",
+#   "GOOGLE_CLIENT_SECRET": "YOUR_GOOGLE_CLIENT_SECRET",
+
+#   // API Request Authorized
+#   "KIEAI_APIKEY": "YOUR_KIEAI_APIKEY",
+
+#   // Payment
+#   "CREEM_STORE_ID":"sto_xxxxxxxxxxxx",
+#   "CREEM_KEY": "creem_xxxxxxxxxx",
+#   "CREEM_TEST_KEY": "creem_test_xxxxxxxxxx",
+#   "CREEM_WEBHOOK_SECRET": "xxxxxxxxxxx",
+#   // Default Values
+#   "INITLIZE_CREDITS": 5,
+    "DATABASE_ID":"xxxxxx",
+    "LINKEDIN_TRANSLATOR_FREE_DAILY_LIMIT":"3",
+    "LINKEDIN_TRANSLATOR_TRIAL_DAILY_LIMIT":"5",
+    "LINKEDIN_TRANSLATOR_EXPIRED_DAILY_LIMIT":"3",
+    "BYPASS_BASE_AUTH_IN_DEV":"true",
+    "DATABASE_ID":"xxxxxx"
+# }
+  */
+  "observability": {
+    "enabled": true
+  },
+  /**
+   * Bindings
+   * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+   * databases, object storage, AI inference, real-time communication and more.
+   * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+   */
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "linkedintranslator", //根据项目更换
+      "database_id": "4e83da95-b2db-49e3-8017-6c9c284afa8e", //根据项目更换
+      "migrations_dir": "./app/.server/drizzle/migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "b1f0191d43c54508afc75897f86e95a6" //根据项目更换
+    }
+  ]
+//,
+//  "r2_buckets": [
+//    {
+//      "binding": "R2",
+//      "bucket_name": "" //根据项目更换
+//    }
+// ]
+}

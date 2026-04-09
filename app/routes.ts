@@ -1,0 +1,46 @@
+import { type RouteConfig, layout, prefix, index, route } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
+
+// 各功能模块路由
+const apiRoutes = await flatRoutes({ rootDirectory: "./routes/_api" });
+const webhooksRoutes = await flatRoutes({
+  rootDirectory: "./routes/_webhooks",
+});
+const callbackRoutes = await flatRoutes({
+  rootDirectory: "./routes/_callback",
+});
+const metaRoutes = await flatRoutes({ rootDirectory: "./routes/_meta" });
+const legalRoutes = await flatRoutes({ rootDirectory: "./routes/_legal" });
+
+export default [
+  // 首页 — 独立路由，不经过 BaseLayout
+  index("./routes/home.tsx"),
+  route("zh", "./routes/zh.tsx"),
+  route("tools", "./routes/content/tools.tsx"),
+  route("tools/:slug", "./routes/content/tools.$slug.tsx"),
+  route("templates", "./routes/content/templates.tsx"),
+  route("templates/:slug", "./routes/content/templates.$slug.tsx"),
+  route("blog", "./routes/content/blog.tsx"),
+  route("blog/:slug", "./routes/content/blog.$slug.tsx"),
+  route("zh/tools", "./routes/content/zh.tools.tsx"),
+  route("zh/tools/:slug", "./routes/content/zh.tools.$slug.tsx"),
+  route("zh/templates", "./routes/content/zh.templates.tsx"),
+  route("zh/templates/:slug", "./routes/content/zh.templates.$slug.tsx"),
+  route("zh/blog", "./routes/content/zh.blog.tsx"),
+  route("zh/blog/:slug", "./routes/content/zh.blog.$slug.tsx"),
+  // 其他需要 BaseLayout 的页面
+  ...prefix("base", [
+    layout("./routes/base/layout/index.tsx", [
+      index("./routes/base/index.tsx"),
+      route("profile", "./routes/base/profile.tsx"),
+      route("credits", "./routes/base/credits.tsx"),
+      route("orders", "./routes/base/orders.tsx"),
+      route("subscription", "./routes/base/subscription.tsx"),
+    ]),
+  ]),
+  ...prefix("api", apiRoutes),
+  ...prefix("webhooks", webhooksRoutes),
+  ...prefix("callback", callbackRoutes),
+  ...prefix("legal", legalRoutes),
+  ...metaRoutes,
+] satisfies RouteConfig;
