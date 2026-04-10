@@ -11,7 +11,7 @@ const defaultSitemaps: Sitemaps[] = [
   {
     path: "/",
     priority: "1.0",
-    lastmod: new Date("2026-03-24"),
+    lastmod: new Date("2026-04-09"),
   },
   {
     path: "/zh",

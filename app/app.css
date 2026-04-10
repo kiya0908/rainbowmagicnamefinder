@@ -5,8 +5,8 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Manrope", sans-serif;
 
-  --color-primary: #005a8c;
-  --color-primary-container: #0073b2;
+  --color-primary: #8b5cf6;
+  --color-primary-container: #7c3aed;
   --color-on-primary: #ffffff;
   
   --color-surface: #f7fafc;
@@ -21,7 +21,7 @@
   --color-outline-variant: rgba(192, 199, 209, 0.15);
   
   --color-secondary-container: #e0e2ec;
-  --color-secondary-fixed: #cee5ff;
+  --color-secondary-fixed: #ede9fe;
 
   --radius-default: 8px;
 }

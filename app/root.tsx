@@ -66,44 +66,44 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
 };
 
 export default function App({}: Route.ComponentProps) {
-  const setUser = useUser((state) => state.setUser);
-  const setCredits = useUser((state) => state.setCredits);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const bootstrapAuth = async () => {
-      try {
-        const res = await fetch("/api/auth", {
-          cache: "no-store",
-          credentials: "same-origin",
-          signal: controller.signal,
-        });
-        if (!res.ok) {
-          if (useUser.getState().user === void 0) setUser(null);
-          return;
-        }
-
-        const data = (await res.json()) as {
-          profile: UserInfo | null;
-          credits: number;
-        };
-
-        const currentUser = useUser.getState().user;
-        // Ignore stale unauth responses that raced with a successful sign-in.
-        if (!data.profile && currentUser) return;
-
-        setUser(data.profile);
-        setCredits(data.credits);
-      } catch {
-        if (controller.signal.aborted) return;
-        if (useUser.getState().user === void 0) setUser(null);
-      }
-    };
-
-    void bootstrapAuth();
-    return () => controller.abort();
-  }, [setCredits, setUser]);
+  // Phase 1 fairy-finder: temporarily disable auth bootstrap and keep root minimal.
+  // const setUser = useUser((state) => state.setUser);
+  // const setCredits = useUser((state) => state.setCredits);
+  //
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //
+  //   const bootstrapAuth = async () => {
+  //     try {
+  //       const res = await fetch("/api/auth", {
+  //         cache: "no-store",
+  //         credentials: "same-origin",
+  //         signal: controller.signal,
+  //       });
+  //       if (!res.ok) {
+  //         if (useUser.getState().user === void 0) setUser(null);
+  //         return;
+  //       }
+  //
+  //       const data = (await res.json()) as {
+  //         profile: UserInfo | null;
+  //         credits: number;
+  //       };
+  //
+  //       const currentUser = useUser.getState().user;
+  //       if (!data.profile && currentUser) return;
+  //
+  //       setUser(data.profile);
+  //       setCredits(data.credits);
+  //     } catch {
+  //       if (controller.signal.aborted) return;
+  //       if (useUser.getState().user === void 0) setUser(null);
+  //     }
+  //   };
+  //
+  //   void bootstrapAuth();
+  //   return () => controller.abort();
+  // }, [setCredits, setUser]);
 
   return <Outlet />;
 }
