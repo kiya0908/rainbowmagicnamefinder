@@ -5,7 +5,7 @@ import { shouldRequireBaseAuth } from "~/.server/libs/base-auth";
 import { listCreditRecordsByUser } from "~/.server/model/credit_record";
 import { getSessionHandler } from "~/.server/libs/session";
 import { getUserCredits } from "~/.server/services/credits";
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors } from "~/utils/meta";
 import {
   EmptyState,
   PageIntro,
@@ -29,17 +29,20 @@ const creditTypeBadgeClassMap: Record<Credit["trans_type"], string> = {
 };
 
 export const meta: Route.MetaFunction = ({ matches }) => {
-  const domain = matches[0]?.data?.DOMAIN ?? "https://linkedinspeaktranslator.top";
+  const title = "Credits | Rainbow Magic Fairy Name Finder Account";
+  const description =
+    "Check your Rainbow Magic Fairy Name Finder credit balance and credit record history.";
 
   return [
-    { title: "Credits | LinkedIn Translator Account" },
-    {
-      name: "description",
-      content:
-        "Check your LinkedIn Translator credit balance, top-up history, and remaining credit records.",
-    },
-    { name: "robots", content: "noindex, nofollow" },
-    createCanonical("/base/credits", domain),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/base/credits",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      robots: "noindex, nofollow",
+    }),
   ];
 };
 
@@ -80,8 +83,8 @@ export default function Credits({ loaderData }: Route.ComponentProps) {
     <div className="space-y-6">
       <PageIntro
         title="Credits"
-        description="Track available credits and every top-up record tied to your account."
-        action={{ label: "Buy credits", to: "/#pricing" }}
+        description="Track available credits and every credit record tied to your account."
+        action={{ label: "Back to Home", to: "/" }}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -144,8 +147,8 @@ export default function Credits({ loaderData }: Route.ComponentProps) {
           <div className="mt-4">
             <EmptyState
               title="No credit records yet"
-              description="When you receive starter credits or complete a purchase, the records will show up here."
-              action={{ label: "Go to pricing", to: "/#pricing" }}
+              description="When credits are granted or adjusted, the records will show up here."
+              action={{ label: "Back to Home", to: "/" }}
             />
           </div>
         )}

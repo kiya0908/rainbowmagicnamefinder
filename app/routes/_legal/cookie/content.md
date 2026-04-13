@@ -4,7 +4,7 @@ Last updated: March 23, 2026
 
 ## 1. Overview
 
-This Cookie Policy explains how **LinkedIn Translator** uses cookies and similar technologies.
+This Cookie Policy explains how **Rainbow Magic Fairy Name Finder** uses cookies and similar technologies.
 
 ## 2. What We Use Cookies For
 
@@ -18,7 +18,7 @@ You can manage or disable cookies through your browser settings. Disabling some 
 
 ## 4. Third-Party Cookies
 
-Some cookies may be set by service providers that support LinkedIn Translator operations, such as analytics, hosting, and security tools.
+Some cookies may be set by service providers that support Rainbow Magic Fairy Name Finder operations, such as analytics, hosting, and security tools.
 
 ## 5. Updates
 
@@ -26,4 +26,5 @@ We may update this Cookie Policy from time to time and will post the latest vers
 
 ## 6. Contact
 
-- **Email:** [support@linkedinspeaktranslator.top](mailto:support@linkedinspeaktranslator.top)
+- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
+

@@ -4,17 +4,28 @@ import { Legal } from "~/components/pages/legal";
 import { parseMarkdown } from "~/.server/libs/markdown";
 import content from "./content.md?raw";
 
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
+  const title = "Cookie Policy - Rainbow Magic Fairy Name Finder";
+  const description =
+    "Learn how Rainbow Magic Fairy Name Finder uses cookies and similar technologies, and how you can manage cookie preferences.";
+
   return [
-    { title: "Cookie Policy - LinkedIn Translator" },
-    {
-      name: "description",
-      content:
-        "Learn how LinkedIn Translator uses cookies and similar technologies, and how you can manage cookie preferences.",
-    },
-    createCanonical("/legal/cookie", matches[0].data.DOMAIN),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/legal/cookie",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      jsonLd: createWebPageJsonLd({
+        pathname: "/legal/cookie",
+        domain: matches[0]?.data?.DOMAIN,
+        title,
+        description,
+      }),
+    }),
   ];
 };
 

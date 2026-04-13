@@ -2,13 +2,17 @@ import { type RouteConfig, layout, prefix, index, route } from "@react-router/de
 import { flatRoutes } from "@react-router/fs-routes";
 
 // 各功能模块路由
-const apiRoutes = await flatRoutes({ rootDirectory: "./routes/_api" });
-const webhooksRoutes = await flatRoutes({
-  rootDirectory: "./routes/_webhooks",
-});
-const callbackRoutes = await flatRoutes({
-  rootDirectory: "./routes/_callback",
-});
+const apiRoutes: RouteConfig = [
+  route("auth", "./routes/_api/auth/route.ts"),
+  // Stage 3: keep isolated legacy files but stop mounting runtime entries:
+  // - ./routes/_api/credits/route.ts
+  // - ./routes/_api/logout/route.ts
+  // Stage 5: payment flow is intentionally disabled on this site:
+  // - ./routes/_api/create-order/route.ts
+  // Stage 6: linkedin translator APIs are physically removed:
+  // - ./routes/_api/translate.linkedin/route.ts
+  // - ./routes/_api/entitlement.linkedin/route.ts
+];
 const metaRoutes = await flatRoutes({ rootDirectory: "./routes/_meta" });
 const legalRoutes = await flatRoutes({ rootDirectory: "./routes/_legal" });
 
@@ -34,13 +38,15 @@ export default [
       index("./routes/base/index.tsx"),
       route("profile", "./routes/base/profile.tsx"),
       route("credits", "./routes/base/credits.tsx"),
-      route("orders", "./routes/base/orders.tsx"),
-      route("subscription", "./routes/base/subscription.tsx"),
+      // Stage 5: payment account pages are intentionally de-referenced:
+      // - ./routes/base/orders.tsx
+      // - ./routes/base/subscription.tsx
     ]),
   ]),
   ...prefix("api", apiRoutes),
-  ...prefix("webhooks", webhooksRoutes),
-  ...prefix("callback", callbackRoutes),
+  // Stage 5: payment callback/webhook routes are intentionally de-referenced:
+  // - ./routes/_callback/payment/route.tsx
+  // - ./routes/_webhooks/payment/route.ts
   ...prefix("legal", legalRoutes),
   ...metaRoutes,
 ] satisfies RouteConfig;

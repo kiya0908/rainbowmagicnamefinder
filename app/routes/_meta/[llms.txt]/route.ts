@@ -1,6 +1,7 @@
 import type { Route } from "./+types/route";
-import file from "./file.txt?raw";
+
 import { getSiteOrigin } from "~/config/site";
+import { buildLlmsText } from "~/features/meta/llms";
 
 export const loader = ({ context }: Route.LoaderArgs) => {
   const env =
@@ -10,10 +11,10 @@ export const loader = ({ context }: Route.LoaderArgs) => {
       : {});
   const domain = getSiteOrigin(env.DOMAIN);
 
-  return new Response(file.replace(/{DOMAIN}/g, domain), {
+  return new Response(buildLlmsText(domain), {
     status: 200,
     headers: {
-      "Content-Type": "text/plain",
+      "Content-Type": "text/plain; charset=utf-8",
     },
   });
 };

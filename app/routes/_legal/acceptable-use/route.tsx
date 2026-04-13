@@ -3,17 +3,28 @@ import type { Route } from "./+types/route";
 import { Legal } from "~/components/pages/legal";
 import { parseMarkdown } from "~/.server/libs/markdown";
 import content from "./content.md?raw";
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
+  const title = "Acceptable Use Policy - Rainbow Magic Fairy Name Finder";
+  const description =
+    "Read the Rainbow Magic Fairy Name Finder Acceptable Use Policy, including prohibited behavior, content standards, and enforcement rules.";
+
   return [
-    { title: "Acceptable Use Policy - LinkedIn Translator" },
-    {
-      name: "description",
-      content:
-        "Read the LinkedIn Translator Acceptable Use Policy, including prohibited behavior, content standards, and enforcement rules.",
-    },
-    createCanonical("/legal/acceptable-use", matches[0].data.DOMAIN),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/legal/acceptable-use",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      jsonLd: createWebPageJsonLd({
+        pathname: "/legal/acceptable-use",
+        domain: matches[0]?.data?.DOMAIN,
+        title,
+        description,
+      }),
+    }),
   ];
 };
 

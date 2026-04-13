@@ -2,7 +2,7 @@ import type { Route } from "./+types/profile";
 import { useOutletContext } from "react-router";
 import type { User } from "~/.server/libs/db";
 import { Image } from "~/components/common";
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors } from "~/utils/meta";
 import {
   PageIntro,
   StatTile,
@@ -10,17 +10,20 @@ import {
 } from "./components/workspace";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
-  const domain = matches[0]?.data?.DOMAIN ?? "https://linkedinspeaktranslator.top";
+  const title = "Profile | Rainbow Magic Fairy Name Finder Account";
+  const description =
+    "View your Rainbow Magic Fairy Name Finder Account profile details, sign-in identity, and member status.";
 
   return [
-    { title: "Profile | LinkedIn Translator Account" },
-    {
-      name: "description",
-      content:
-        "View your LinkedIn Translator account profile details, sign-in identity, and member status.",
-    },
-    { name: "robots", content: "noindex, nofollow" },
-    createCanonical("/base/profile", domain),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/base/profile",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      robots: "noindex, nofollow",
+    }),
   ];
 };
 
@@ -49,7 +52,7 @@ export default function Profile() {
         action={
           isGuestPreview
             ? { label: "Sign in to continue", to: "/?login=true" }
-            : { label: "Subscription status", to: "/base/subscription" }
+            : { label: "Credit history", to: "/base/credits" }
         }
       />
 

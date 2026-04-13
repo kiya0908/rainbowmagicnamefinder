@@ -4,17 +4,28 @@ import { Legal } from "~/components/pages/legal";
 import { parseMarkdown } from "~/.server/libs/markdown";
 import content from "./content.md?raw";
 
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
+  const title = "Refund Policy - Rainbow Magic Fairy Name Finder";
+  const description =
+    "Review the Rainbow Magic Fairy Name Finder Refund Policy, including eligibility criteria, request timelines, and refund processing details.";
+
   return [
-    { title: "Refund Policy - LinkedIn Translator" },
-    {
-      name: "description",
-      content:
-        "Review the LinkedIn Translator Refund Policy, including eligibility criteria, request timelines, and refund processing details.",
-    },
-    createCanonical("/legal/refund", matches[0].data.DOMAIN),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/legal/refund",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      jsonLd: createWebPageJsonLd({
+        pathname: "/legal/refund",
+        domain: matches[0]?.data?.DOMAIN,
+        title,
+        description,
+      }),
+    }),
   ];
 };
 

@@ -1,35 +1,38 @@
-///zh路由
 import type { Route } from "./+types/zh";
 
-import LinkedinTranslatorLandingPage from "~/features/linkedin-translator/landing-page";
-import { getLinkedinTranslatorRouteMeta } from "~/features/linkedin-translator/i18n";
-import { createCanonical } from "~/utils/meta";
-
-const createAlternate = (pathname: string, domain: string, hrefLang: string) => ({
-  tagName: "link" as const,
-  rel: "alternate",
-  hrefLang,
-  href: new URL(pathname, domain).toString(),
-});
+import FairyFinderLandingPage from "~/features/fairy-finder/landing-page";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
-  const domain = matches[0]?.data?.DOMAIN ?? "https://linkedinspeaktranslator.top";
-  const routeMeta = getLinkedinTranslatorRouteMeta("zh");
+  const title = "Rainbow Magic Fairy Name Finder - Chinese Entry";
+  const description =
+    "Chinese entry path for Rainbow Magic Fairy Name Finder. This route stays noindex for search engines, but keeps its own canonical URL on /zh.";
 
   return [
-    { title: routeMeta.title },
-    {
-      name: "description",
-      content: routeMeta.description,
-    },
-    createCanonical("/zh", domain),
-    createAlternate("/", domain, "en"),
-    createAlternate("/zh", domain, "zh"),
-    createAlternate("/", domain, "x-default"),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/zh",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      robots: "noindex,follow",
+      alternates: [
+        { pathname: "/", hrefLang: "en" },
+        { pathname: "/zh", hrefLang: "zh" },
+        { pathname: "/", hrefLang: "x-default" },
+      ],
+      jsonLd: createWebPageJsonLd({
+        pathname: "/zh",
+        domain: matches[0]?.data?.DOMAIN,
+        title,
+        description,
+        locale: "zh",
+      }),
+    }),
   ];
 };
 
 export default function ZhHomePage() {
-  return <LinkedinTranslatorLandingPage locale="zh" />;
+  return <FairyFinderLandingPage />;
 }
-

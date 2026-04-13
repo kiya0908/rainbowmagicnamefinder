@@ -1,4 +1,4 @@
-import type { Route } from "./+types/route";
+import type { ActionFunctionArgs } from "react-router";
 
 import {
   handleOrderComplete,
@@ -17,7 +17,7 @@ import type {
   Subscription,
 } from "~/.server/libs/creem/types";
 
-export const action = async ({ request }: Route.ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method.toLowerCase() !== "post") {
     return new Response("Fail Method", { status: 405 });
   }

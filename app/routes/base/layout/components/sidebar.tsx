@@ -4,8 +4,6 @@ export const Sidebar = () => {
   const links = [
     { label: "Profile", to: "/base/profile" },
     { label: "Credits & History", to: "/base/credits" },
-    { label: "Orders", to: "/base/orders" },
-    { label: "Subscription", to: "/base/subscription" },
   ];
 
   return (

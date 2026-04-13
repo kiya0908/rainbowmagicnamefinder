@@ -17,10 +17,9 @@
     "skipLibCheck": true
   },
   "include": [
-    "app/features/linkedin-translator/config.ts",
-    "app/features/linkedin-translator/access.ts",
-    "app/features/linkedin-translator/pricing.ts",
+    "app/.server/constants/product.ts",
     "app/.server/libs/base-auth.ts",
+    "app/.server/services/order-errors.ts",
     "tests/unit/**/*.ts"
   ]
 }

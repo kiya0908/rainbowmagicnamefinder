@@ -75,7 +75,7 @@ export function MarketingHeader({
   navLinks,
   signInLabel,
   creditsLabel,
-  logoLabel = "LinkedIn Translator",
+  logoLabel = "Rainbow Magic Fairy Name Finder",
   logoTo = "/",
   rightSlot,
 }: MarketingHeaderProps) {
@@ -87,7 +87,7 @@ export function MarketingHeader({
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link to={logoTo} className="flex items-center gap-2">
           <img
-            src="/assets/logo-64.png"
+            src="/assets/favicon-32x32.png"
             alt={logoAlt}
             width={32}
             height={32}

@@ -5,7 +5,7 @@ import type {
   ContentLocale,
 } from "./types";
 
-const CONTENT_ENTRY_INDEXING_ENABLED = true;
+const CONTENT_ENTRY_INDEXING_ENABLED = false;
 
 const CONTENT_COLLECTION_INDEX_POLICY: Record<
   ContentLocale,
@@ -21,8 +21,8 @@ const CONTENT_COLLECTION_INDEX_POLICY: Record<
       includeInSitemap: false,
     },
     blog: {
-      indexable: true,
-      includeInSitemap: true,
+      indexable: false,
+      includeInSitemap: false,
     },
   },
   zh: {

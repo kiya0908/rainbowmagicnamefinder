@@ -4,11 +4,11 @@ Last updated: March 23, 2026
 
 ## 1. Overview
 
-Thank you for using **LinkedIn Translator**. This policy explains when refunds may be considered for paid credits and other digital purchases on our Service.
+Thank you for using **Rainbow Magic Fairy Name Finder**. This policy explains when refunds may be considered for paid credits and other digital purchases on our Service.
 
 ## 2. General Rule
 
-LinkedIn Translator delivers digital services and credits instantly. Because value is provisioned immediately and compute resources are consumed at use time, completed purchases are generally non-refundable.
+Rainbow Magic Fairy Name Finder delivers digital services and credits instantly. Because value is provisioned immediately and compute resources are consumed at use time, completed purchases are generally non-refundable.
 
 ## 3. Possible Refund Cases
 
@@ -32,4 +32,5 @@ If approved, refunds are issued to the original payment method. Final settlement
 
 ## 6. Contact
 
-- **Email:** [support@linkedinspeaktranslator.top](mailto:support@linkedinspeaktranslator.top)
+- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
+

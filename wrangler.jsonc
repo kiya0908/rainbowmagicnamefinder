@@ -4,7 +4,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "linkedin-translator",
+  "name": "rainbow-magic-fairy-name-finder",
   "main": "./workers/app.ts",
   "compatibility_date": "2026-03-23",
   "compatibility_flags": [
@@ -13,11 +13,11 @@
   "upload_source_maps": true,
   "routes": [
     {
-      "pattern": "linkedinspeaktranslator.top",
+      "pattern": "rainbowmagicfairyname.online",
       "custom_domain": true
     },
     {
-      "pattern": "www.linkedinspeaktranslator.top",
+      "pattern": "www.rainbowmagicfairyname.online",
       "custom_domain": true
     }
   ],
@@ -34,8 +34,8 @@
 #   "SESSION_SECRET": "YOUR_SESSION_SECRET",
 #   
     // Other Parameters
-#   "CDN_URL": "https://cdn.linkedinspeaktranslator.top",
-#   "DOMAIN": "https://linkedinspeaktranslator.top/",
+#   "CDN_URL": "https://cdn.rainbowmagicfairyname.online",
+#   "DOMAIN": "https://rainbowmagicfairyname.online/",
 
 #   "GOOGLE_ANALYTICS_ID": "G-XXXXXXX",
 #   "GOOGLE_ADS_ID": "pub-xxxxxxxxxxxxxxxx",

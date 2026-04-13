@@ -1,5 +1,4 @@
-import type { Route } from "./+types/route";
-import { data, Link } from "react-router";
+import { data, Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
 import { CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 
 import { handleOrderComplete } from "~/.server/services/order";
@@ -19,7 +18,7 @@ type PaymentCallbackLoaderData =
       message: string;
     };
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const searchParams = new URL(request.url).searchParams;
   const paramsRecord: Record<string, string> = {};
   searchParams.forEach((value, key) => {
@@ -73,8 +72,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
 };
 
-export default function PaymentCallback({ loaderData }: Route.ComponentProps) {
-  const payload = loaderData as PaymentCallbackLoaderData;
+export default function PaymentCallback() {
+  const payload = useLoaderData<typeof loader>() as PaymentCallbackLoaderData;
   const success = payload.success;
   const credits = payload.success ? payload.credits : 0;
   const orderId = payload.success ? payload.orderId : null;

@@ -1,6 +1,6 @@
 # FAIRY_IDENTITY_FINDER_PHASE1_IMPLEMENTATION_LOG
 
-最后更新：2026-04-09（已更新至 Step 10）
+最后更新：2026-04-13（已更新至 Step 13）
 
 ## 0. 记录范围与证据来源
 - 回填范围：`FAIRY_IDENTITY_FINDER_PHASE1_EXECUTION_PLAN_V2.md` 的 Step 1 到 Step 7。
@@ -410,19 +410,21 @@ app/features/fairy-finder/
 3. 输出 `FairyData` 进入 `result` 状态
 4. `result` 传给 `ResultCard`、`ShareActions`
 
-### 2.4 Step 10 后实现状态
-- 已完成：Step 1 ~ Step 10
+### 2.4 Step 13 后实现状态
+- 已完成：Step 1 ~ Step 13
 - 首页已接入 Fairy 页面
 - 结果生成、分享、再生成闭环已打通
 - 主题色已切换到 Fairy 紫色系（全局变量生效）
 - 首页 SEO 元信息与关键词已更新，sitemap 首页 lastmod 已更新
+- `llms.txt` 与 `llms-full.txt` 路由已补齐，并已清理旧 LinkedIn translator 残留描述
 - Step 10 检查清单已完成代码级核对与构建验证
 - 旧模板路由和模块仍保留（按计划不删）
 - 阶段构建：`pnpm run build` 通过
+- 阶段类型检查：`pnpm run typecheck` 通过
 - 阶段单测：`pnpm run test:unit` 持续失败（旧测试链路问题）
 
 ### 2.5 未完成/后续工作
-- Phase 1 功能步骤已完成（Step 1 - Step 10）
+- Phase 1 功能步骤已完成（Step 1 - Step 13）
 - 后续可选工作：
   - 补充真实浏览器端回归（移动端/桌面端）以闭合“无控制台错误”实测证据
   - 修复旧 `linkedin-translator` 单测基线，恢复 `pnpm run test:unit` 作为稳定门禁
@@ -456,7 +458,9 @@ app/features/fairy-finder/
 ### 3.6 SEO/meta 设置
 - 首页 title/description/canonical/keywords 已改
 - sitemap 首页 `lastmod` 已更新（`2026-04-09`）
+- `llms.txt` / `llms-full.txt` 已接入，当前输出只描述 Fairy Finder 站点身份
 - `alternate /zh` 指向仍保留，但中文页内容为旧模板
+- 后续若继续调整站点对外定位文案，需要同步检查 `app/features/meta/llms.ts` 与 `app/routes/_meta/[robots.txt]/file.txt`
 
 ### 3.7 其他实际风险
 - `fairy-site-layout` 通过 CSS 隐藏登录按钮（结构变更时易失效）
@@ -496,7 +500,7 @@ app/features/fairy-finder/
 
 ---
 
-## 6. 增量记录（Step 11 - Step 12）
+## 6. 增量记录（Step 11 - Step 13）
 
 ### Step 11：匹配策略改为“仅精确命中”，并新增未命中结果卡
 - 1. Step number and step name
@@ -567,11 +571,101 @@ app/features/fairy-finder/
 - 10. Debugging notes
   - 若再次出现偏移，优先检查按钮上是否被外层样式覆盖 `line-height` 或 `display`
 
+### Step 13：补齐 llms 元数据文档，并清理旧模板残留描述
+- 1. Step number and step name
+  - Step 13：新增 `llms.txt` / `llms-full.txt` 路由，并移除输出中的旧 LinkedIn translator 描述
+- 2. Goal of the step
+  - 根据 `robots.txt` 中声明的两个地址补齐实际文档路由，让 AI 抓取器能读取站点说明；同时确保文档只反映当前 Fairy Finder 产品，不带旧模板内容。
+- 3. Files added
+  - `app/features/meta/llms.ts`
+  - `app/routes/_meta/[llms.txt]/route.ts`
+  - `app/routes/_meta/[llms-full.txt]/route.ts`
+- 4. Files modified
+  - `app/features/meta/llms.ts`
+- 5. Existing template files/components that were reused
+  - 复用 `app/routes/_meta/[robots.txt]/route.ts` 的域名解析方式
+  - 复用 `app/features/fairy-finder/i18n.ts` 中首页文案
+  - 复用 `app/features/fairy-finder/data/fairies.ts` 中 Fairy 数据统计与示例结果
+- 6. What was actually implemented
+  - 新增共享生成模块 `app/features/meta/llms.ts`，集中输出简版和完整版站点说明
+  - 新增 `/llms.txt` 路由，输出站点简介、核心匹配规则、公开页面入口和 LLM 使用注意事项
+  - 新增 `/llms-full.txt` 路由，输出更完整的首页结构、FAQ 摘要、匹配实现说明、示例结果和法律页摘要
+  - 首版 `llms-full.txt` 曾带出旧模板里的 LinkedIn translator 描述，随后已从生成逻辑中清理，当前输出只保留 Fairy Finder 相关内容
+  - 两个路由都使用运行时 `DOMAIN` 或请求来源域名生成绝对地址，与现有 `robots.txt` 占位替换逻辑保持一致
+- 7. Important logic decisions
+  - 不把仓库里仍然存在的旧 LinkedIn 模板内容写进 `llms.txt` / `llms-full.txt`，避免 AI 把站点主产品识别错
+  - `llms` 文档按“共享生成模块 + 两个纯文本路由”的方式组织，避免两份文档各自维护一套重复文案
+  - 只描述当前公开产品行为，不虚构未公开 API 或未上线能力
+- 8. Tradeoffs / shortcuts / known risks
+  - `llms` 文档当前是手写汇总，不是自动扫描全站；后续如果首页文案、公开页面或法律页发生变化，需要手动同步 `app/features/meta/llms.ts`
+  - 仓库内部仍保留旧模板代码与内容文件，虽然不再进入 `llms` 输出，但后续若有人修改生成逻辑，仍有把旧语义重新带回去的风险
+- 9. Areas affected
+  - routing：是（新增两个 `_meta` 文本路由）
+  - layout：否
+  - styling：否
+  - data flow：否
+  - sharing：否
+  - SEO：是（补齐 AI 抓取器可读的元数据文档）
+- 10. Debugging notes
+  - 若 `/llms.txt` 或 `/llms-full.txt` 返回 404，先检查 `app/routes/_meta/[llms.txt]/route.ts`、`app/routes/_meta/[llms-full.txt]/route.ts` 是否仍在 `_meta` 路由目录下
+  - 若输出里再次出现旧模板语义，先检查 `app/features/meta/llms.ts` 是否重新引入了旧内容枚举或旧产品描述
+  - 若域名替换异常，先检查运行时 `DOMAIN` 和请求来源域名拼接是否与 `robots.txt` 路由保持一致
+
 ## 7. 本轮验证结果
 - `pnpm run build`：通过（包含 client + SSR build）
+- `pnpm run typecheck`：通过（包含 `llms` 新路由与共享生成模块）
 - 说明：本轮改动未新增单测；仓库既有 `test:unit` 历史问题仍与本轮改动独立
 
 ## 8. 本轮行为变化摘要
 - 输入 `lily`：命中 `Lily the Rainforest Fairy`
 - 输入 `apple`：不再返回哈希分配 Fairy，改为显示未命中结果卡
 - 结果区按钮：`Share/Copy Link` 与 `Try Another Name` 中心线对齐
+- `/llms.txt`：可返回 Fairy Finder 简版站点说明，不再带旧模板产品描述
+- `/llms-full.txt`：可返回 Fairy Finder 扩展站点说明，已去除 LinkedIn translator 残留内容
+
+## 9. 增量记录（Step 14）
+
+### Step 14：首页三模块文案融合 + 关键词密度校准
+- 1. Step number and step name
+  - Step 14：合并并重写首页 `How It Works` / `What Is` / `FAQ` 三个模块内容，完成词数与关键词密度目标校准
+- 2. Goal of the step
+  - 把用户提供的三部分内容进行统一整合，提升首页正文体量到约 1000 词级别，并让关键词 `rainow magic fairy name` 与 `rainbow magici fairy name finder` 的综合密度稳定在 3.5% - 5%
+- 3. Files added
+  - 无
+- 4. Files modified
+  - `app/features/fairy-finder/i18n.ts`
+- 5. Existing template files/components that were reused
+  - 复用现有 `landing-page.tsx` 的三段渲染结构（`howItWorks` / `whatIs` / `faq`）
+  - 复用现有 FAQ 手风琴交互，不新增组件
+- 6. What was actually implemented
+  - 重写 `howItWorks.intro/spotlight/methods/profile/highlights`，把匹配逻辑说明与使用路径写清
+  - 重写 `whatIs.paragraphs/highlights`，合并百科属性、读者价值、社区价值等核心叙述
+  - 重写 `faq.items` 的问答内容，保留首页可读性同时覆盖关键搜索表达
+  - 进行一次超量后压缩：初稿词数偏高，二次收敛文本长度，保留关键词频次
+  - 最终校验数据：
+    - 总词数：`1141`
+    - `rainow magic fairy name`：`6` 次
+    - `rainbow magici fairy name finder`：`5` 次
+    - 综合关键词密度：`4.29%`
+  - 构建验证：`pnpm run build` 通过
+- 7. Important logic decisions
+  - 严格按用户给定关键词拼写（包含 `rainow` 与 `magici`）进行密度计算与植入
+  - 不改页面布局与交互，仅调整文案数据层（`i18n.ts`），降低改动面
+  - 采用“先扩充再压缩”的方式，在保证语义完整的前提下达成密度区间
+- 8. Tradeoffs / shortcuts / known risks
+  - 当前词数为 1141，属于“1000 左右”而非严格 1000 整数；若后续追求更接近 1000，需再做精简
+  - 关键词是按用户提供拼写执行，存在拼写异常但这是有意保持需求一致
+- 9. Areas affected
+  - routing：否
+  - layout：否
+  - styling：否
+  - data flow：否
+  - sharing：否
+  - SEO：是（首页正文规模与关键词覆盖显著变化）
+- 10. Debugging notes
+  - 若后续再次调整文案，建议继续用同一统计脚本复算总词数与关键词密度，避免人工估算偏差
+  - 若出现编译错误，优先检查 `i18n.ts` 文案对象结构是否与 `FairyFinderHomeCopy` 类型一致
+
+## 10. 本轮验证结果（Step 14）
+- `pnpm run build`：通过
+- 词数/密度校验：通过（`1141` 词，`4.29%`）

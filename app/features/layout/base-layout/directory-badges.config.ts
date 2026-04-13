@@ -68,9 +68,9 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
     badgeAlt: "Featured on Findly.tools",
     badgeWidth: 175,
     badgeHeight: 55,
-    active: true,
+    active: false,
     target: "_blank",
-    note: "Added from provided embed snippet.",
+    note: "Stage 1 cleanup: disable linkedin-translator referral badge.",
   },
     {
     id: "LaunchClash",

@@ -1,4 +1,4 @@
-import type { Route } from "./+types/route";
+import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
 
 import { getSessionHandler } from "~/.server/libs/session";
@@ -6,7 +6,7 @@ import { createOrder } from "~/.server/services/order";
 
 import { PRODUCTS_LIST, PRICING_LIST } from "~/.server/constants";
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const raw = (await request.json()) as { product_id?: string };
   const productId = raw.product_id;
   const successOrigin = new URL(request.url).origin;

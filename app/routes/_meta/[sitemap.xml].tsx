@@ -1,5 +1,6 @@
 import type { Route } from "./+types/[sitemap.xml]";
 
+import { getSiteOrigin, toSiteUrl } from "~/config/site";
 import { getContentSitemapEntries } from "~/features/content/registry";
 
 interface Sitemaps {
@@ -7,16 +8,12 @@ interface Sitemaps {
   priority: string;
   lastmod?: Date;
 }
+
 const defaultSitemaps: Sitemaps[] = [
   {
     path: "/",
     priority: "1.0",
-    lastmod: new Date("2026-04-09"),
-  },
-  {
-    path: "/zh",
-    priority: "0.9",
-    lastmod: new Date("2026-03-30"),
+    lastmod: new Date("2026-04-12"),
   },
   {
     path: "/legal/privacy",
@@ -35,8 +32,13 @@ const defaultSitemaps: Sitemaps[] = [
   },
 ];
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const url = new URL(request.url);
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const env =
+    context.cloudflare?.env ??
+    (typeof process !== "undefined"
+      ? (process.env as Record<string, string | undefined>)
+      : {});
+  const domain = getSiteOrigin(env.DOMAIN);
 
   const sitemapList: Array<{
     loc: string;
@@ -48,9 +50,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const seen = new Set<string>();
 
   sitemaps.forEach((site) => {
-    const location = new URL(site.path, url);
-
-    const loc = location.toString();
+    const loc = toSiteUrl(site.path, domain);
 
     if (seen.has(loc)) return;
     seen.add(loc);

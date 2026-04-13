@@ -4,11 +4,11 @@ Last updated: March 23, 2026
 
 ## 1. Scope
 
-This Acceptable Use Policy ("AUP") applies to all users of **LinkedIn Translator** and to all text submitted to or generated through our Service.
+This Acceptable Use Policy ("AUP") applies to all users of **Rainbow Magic Fairy Name Finder** and to all text submitted to or generated through our Service.
 
 ## 2. Prohibited Content and Behavior
 
-You may not use LinkedIn Translator to create, request, or distribute:
+You may not use Rainbow Magic Fairy Name Finder to create, request, or distribute:
 
 - Illegal, fraudulent, deceptive, or impersonating content
 - Harassment, hate speech, threats, or extremist content
@@ -19,7 +19,7 @@ You may not use LinkedIn Translator to create, request, or distribute:
 
 ## 3. User Responsibilities
 
-By using LinkedIn Translator, you agree to:
+By using Rainbow Magic Fairy Name Finder, you agree to:
 
 - Comply with applicable laws and regulations
 - Submit only content you are authorized to use and process
@@ -39,8 +39,9 @@ If we detect violations, we may take one or more actions:
 
 If you believe this policy is being violated, contact:
 
-- **Email:** [support@linkedinspeaktranslator.top](mailto:support@linkedinspeaktranslator.top)
+- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
 
 ## 6. Relationship to Other Policies
 
 This AUP supplements our [Terms of Use](/legal/terms), [Privacy Policy](/legal/privacy), and [Refund Policy](/legal/refund).
+

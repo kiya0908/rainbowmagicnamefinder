@@ -1,10 +1,15 @@
-import { redirect } from "react-router";
-import type { Route } from "./+types/subscription";
+import {
+  redirect,
+  useLoaderData,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "react-router";
 import type { Subscription } from "~/.server/libs/db";
 import { shouldRequireBaseAuth } from "~/.server/libs/base-auth";
 import { getSessionHandler } from "~/.server/libs/session";
 import { getSubscriptionsByUserId } from "~/.server/model/subscriptions";
-import { createCanonical } from "~/utils/meta";
+import { SITE_SUPPORT_MAILTO } from "~/config/site";
+import { createSeoDescriptors } from "~/utils/meta";
 import {
   EmptyState,
   PageIntro,
@@ -19,18 +24,22 @@ const subscriptionStatusClassMap: Record<Subscription["status"], string> = {
   expired: "badge-ghost",
 };
 
-export const meta: Route.MetaFunction = ({ matches }) => {
-  const domain = matches[0]?.data?.DOMAIN ?? "https://linkedinspeaktranslator.top";
+export const meta: MetaFunction = ({ matches }) => {
+  const rootData = matches[0]?.data as { DOMAIN?: string } | undefined;
+  const title = "Subscription | Rainbow Magic Fairy Name Finder Account";
+  const description =
+    "Manage your Rainbow Magic Fairy Name Finder plan details, renewal timeline, and subscription history.";
 
   return [
-    { title: "Subscription | LinkedIn Translator Account" },
-    {
-      name: "description",
-      content:
-        "Manage your LinkedIn Translator plan details, renewal timeline, and subscription history.",
-    },
-    { name: "robots", content: "noindex, nofollow" },
-    createCanonical("/base/subscription", domain),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/base/subscription",
+      domain: rootData?.DOMAIN,
+      title,
+      description,
+      robots: "noindex, nofollow",
+    }),
   ];
 };
 
@@ -48,7 +57,7 @@ const toIntervalLabel = (interval: Subscription["interval"], count: number | nul
   return safeCount === 1 ? `Every ${interval}` : `Every ${safeCount} ${interval}s`;
 };
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const [session] = await getSessionHandler(request);
   const user = session.get("user") ?? null;
   const requireAuth = shouldRequireBaseAuth(context);
@@ -78,8 +87,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   };
 };
 
-export default function SubscriptionPage({ loaderData }: Route.ComponentProps) {
-  const { current, history } = loaderData;
+export default function SubscriptionPage() {
+  const { current, history } = useLoaderData<typeof loader>();
 
   const isActive = current?.status === "active";
   const planLabel = toPlanLabel(current?.plan_type);
@@ -95,7 +104,7 @@ export default function SubscriptionPage({ loaderData }: Route.ComponentProps) {
           isActive
             ? {
                 label: "Billing support",
-                to: "mailto:support@linkedinspeaktranslator.top",
+                to: SITE_SUPPORT_MAILTO,
                 target: "_blank",
               }
             : { label: "Upgrade plan", to: "/#pricing" }

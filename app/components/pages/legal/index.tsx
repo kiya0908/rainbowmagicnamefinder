@@ -2,19 +2,20 @@ import type { RenderableTreeNodes } from "@markdoc/markdoc";
 
 import { Logo, Link } from "~/components/common";
 import { MarkdownArticle } from "~/components/markdown";
-import { type LinkedinTranslatorLocale } from "~/features/linkedin-translator/i18n";
 import { PublicSiteLayout } from "~/features/layout/base-layout/public-site-layout";
+
+type PublicSiteLocale = "en" | "zh";
 
 interface LegalProps {
   node: RenderableTreeNodes;
   withHomeChrome?: boolean;
-  locale?: LinkedinTranslatorLocale;
+  locale?: PublicSiteLocale;
 }
 
-const getHomePath = (locale: LinkedinTranslatorLocale) =>
+const getHomePath = (locale: PublicSiteLocale) =>
   locale === "zh" ? "/zh" : "/";
 
-const getLocaleSwitchPath = (locale: LinkedinTranslatorLocale) =>
+const getLocaleSwitchPath = (locale: PublicSiteLocale) =>
   getHomePath(locale === "en" ? "zh" : "en");
 
 export const Legal = ({
@@ -31,8 +32,8 @@ export const Legal = ({
               <Logo
                 className="mr-2"
                 size="lg"
-                label="LinkedIn Translator"
-                imageAlt="LinkedIn Translator logo"
+                label="Rainbow Magic Fairy Name Finder"
+                imageAlt="Rainbow Magic Fairy Name Finder logo"
               />
             </Link>
           </div>

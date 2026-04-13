@@ -1,4 +1,4 @@
-import type { Route } from "./+types/route";
+import type { LoaderFunctionArgs } from "react-router";
 import { data } from "react-router";
 
 import { getSessionHandler } from "~/.server/libs/session";
@@ -9,7 +9,7 @@ import { listCreditConsumptionsByUser } from "~/.server/model/credit_consumption
  * 独立积分查询 API
  * GET /api/credits — 返回当前用户的积分余额和最近消费记录
  */
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
     const [session] = await getSessionHandler(request);
     const user = session.get("user");
 

@@ -1,10 +1,9 @@
-import { redirect } from "react-router";
-import type { Route } from "./+types/orders";
+import { redirect, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from "react-router";
 import type { Order } from "~/.server/libs/db";
 import { shouldRequireBaseAuth } from "~/.server/libs/base-auth";
 import { getOrdersByUserId } from "~/.server/model/order";
 import { getSessionHandler } from "~/.server/libs/session";
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors } from "~/utils/meta";
 import {
   EmptyState,
   PageIntro,
@@ -26,22 +25,26 @@ const orderStatusClassMap: Record<Order["status"], string> = {
   expired: "badge-ghost",
 };
 
-export const meta: Route.MetaFunction = ({ matches }) => {
-  const domain = matches[0]?.data?.DOMAIN ?? "https://linkedinspeaktranslator.top";
+export const meta: MetaFunction = ({ matches }) => {
+  const rootData = matches[0]?.data as { DOMAIN?: string } | undefined;
+  const title = "Orders | Rainbow Magic Fairy Name Finder Account";
+  const description =
+    "Review your Rainbow Magic Fairy Name Finder purchase orders, payment status, and billing timestamps.";
 
   return [
-    { title: "Orders | LinkedIn Translator Account" },
-    {
-      name: "description",
-      content:
-        "Review your LinkedIn Translator purchase orders, payment status, and billing timestamps.",
-    },
-    { name: "robots", content: "noindex, nofollow" },
-    createCanonical("/base/orders", domain),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/base/orders",
+      domain: rootData?.DOMAIN,
+      title,
+      description,
+      robots: "noindex, nofollow",
+    }),
   ];
 };
 
-export const loader = async ({ request, context }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const [session] = await getSessionHandler(request);
   const user = session.get("user") ?? null;
   const requireAuth = shouldRequireBaseAuth(context);
@@ -53,8 +56,8 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   return { orders };
 };
 
-export default function Orders({ loaderData }: Route.ComponentProps) {
-  const { orders } = loaderData;
+export default function Orders() {
+  const { orders } = useLoaderData<typeof loader>();
 
   const paidOrders = orders.filter(
     (order) => order.status === "paid" || order.status === "completed"

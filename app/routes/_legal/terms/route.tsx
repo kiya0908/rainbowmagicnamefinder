@@ -4,17 +4,28 @@ import { Legal } from "~/components/pages/legal";
 import { parseMarkdown } from "~/.server/libs/markdown";
 import content from "./content.md?raw";
 
-import { createCanonical } from "~/utils/meta";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
+  const title = "Terms of Use - Rainbow Magic Fairy Name Finder";
+  const description =
+    "Review the Rainbow Magic Fairy Name Finder Terms of Use, including account rules, acceptable use requirements, and legal conditions of service.";
+
   return [
-    { title: "Terms of Use - LinkedIn Translator" },
-    {
-      name: "description",
-      content:
-        "Review the LinkedIn Translator Terms of Use, including account rules, acceptable use requirements, and legal conditions of service.",
-    },
-    createCanonical("/legal/terms", matches[0].data.DOMAIN),
+    { title },
+    { name: "description", content: description },
+    ...createSeoDescriptors({
+      pathname: "/legal/terms",
+      domain: matches[0]?.data?.DOMAIN,
+      title,
+      description,
+      jsonLd: createWebPageJsonLd({
+        pathname: "/legal/terms",
+        domain: matches[0]?.data?.DOMAIN,
+        title,
+        description,
+      }),
+    }),
   ];
 };
 

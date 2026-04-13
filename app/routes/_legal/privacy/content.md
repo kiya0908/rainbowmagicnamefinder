@@ -4,9 +4,9 @@ Last updated: March 23, 2026
 
 ## 1. Overview
 
-This Privacy Policy explains how **LinkedIn Translator** collects, uses, and protects your information.
+This Privacy Policy explains how **Rainbow Magic Fairy Name Finder** collects, uses, and protects your information.
 
-LinkedIn Translator is an independent product and is not affiliated with or endorsed by LinkedIn Corporation.
+Rainbow Magic Fairy Name Finder is an independent product and is not affiliated with or endorsed by any third-party social platform.
 
 ## 2. Information We Collect
 
@@ -41,7 +41,7 @@ Depending on your location, you may have rights to access, correct, delete, or e
 
 To submit a request, contact:
 
-- **support@linkedinspeaktranslator.top**
+- **support@rainbowmagicfairyname.online**
 
 ## 8. Policy Updates
 
@@ -49,4 +49,5 @@ We may update this Privacy Policy and will publish the latest version on this pa
 
 ## 9. Contact
 
-- **Email:** [support@linkedinspeaktranslator.top](mailto:support@linkedinspeaktranslator.top)
+- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
+

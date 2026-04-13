@@ -1,6 +1,7 @@
 //base路由 用户面板socials组件
 import clsx from "clsx";
 import { Link } from "react-router";
+import { SITE_SUPPORT_MAILTO } from "~/config/site";
 
 import {
   UserDetail,
@@ -21,7 +22,7 @@ export const Socials = ({
       className={clsx("flex items-center justify-center gap-3 mb-4", className)}
       {...props}
     >
-      <Link to="mailto:support@linkedinspeaktranslator.top" title="Support Email">
+      <Link to={SITE_SUPPORT_MAILTO} title="Support Email">
         <UserDetail
           strokeWidth={strokeWidth}
           width={iconSize}

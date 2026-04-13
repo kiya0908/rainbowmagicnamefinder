@@ -35,7 +35,10 @@ export const Header = ({ navLinks }: HeaderProps) => {
       >
         <div className="container flex h-full items-center">
           <Link to="/">
-            <Logo label="LinkedIn Translator" imageAlt="LinkedIn Translator logo" />
+            <Logo
+              label="Rainbow Magic Fairy Name Finder"
+              imageAlt="Rainbow Magic Fairy Name Finder logo"
+            />
           </Link>
           <nav className="mx-8 [&>a]:hover:underline flex items-center gap-6 whitespace-nowrap max-md:hidden">
             {navLinks.map((link, i) => (

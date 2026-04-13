@@ -13,8 +13,8 @@ interface LogoProps extends React.ComponentProps<"div"> {
 export const Logo = ({
   size = "base",
   iconSize,
-  label = "LinkedIn Translator",
-  imageAlt = "LinkedIn Translator",
+  label = "Rainbow Magic Fairy Name Finder",
+  imageAlt = "Rainbow Magic Fairy Name Finder",
   className,
   ...rest
 }: LogoProps) => {
@@ -38,7 +38,7 @@ export const Logo = ({
       <div className={clsx("rounded-box", sizeStyles[iconSize ?? size].box)}>
         <Image
           className="w-full h-full object-cover"
-          src="/assets/logo-64.png"
+          src="/assets/favicon-32x32.png"
           alt={imageAlt}
           width={64}
           height={64}

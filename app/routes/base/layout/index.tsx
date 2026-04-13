@@ -4,6 +4,7 @@ import type { Route } from "./+types/index";
 import { BaseLayout, type BaseLayoutProps } from "~/features/layout";
 import { shouldRequireBaseAuth } from "~/.server/libs/base-auth";
 import { getSessionHandler } from "~/.server/libs/session";
+import { SITE_SUPPORT_EMAIL, SITE_SUPPORT_MAILTO } from "~/config/site";
 import { Sidebar } from "./components/sidebar";
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
@@ -18,11 +19,10 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const header: BaseLayoutProps["header"] = {
     navLinks: [
       { label: "Dashboard", to: "/base/profile" },
-      { label: "Pricing", to: "/#pricing" },
       { label: "FAQs", to: "/#faq" },
       {
         label: "Support",
-        to: "mailto:support@linkedinspeaktranslator.top",
+        to: SITE_SUPPORT_MAILTO,
         target: "_blank",
       },
     ],
@@ -32,14 +32,14 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
     navLinks: [
       {
         label: "Tools",
-        list: [{ to: "/", label: "LinkedIn Translator" }],
+        list: [{ to: "/", label: "Rainbow Magic Fairy Name Finder" }],
       },
       {
         label: "Support",
         list: [
           {
-            to: "mailto:support@linkedinspeaktranslator.top",
-            label: "support@linkedinspeaktranslator.top",
+            to: SITE_SUPPORT_MAILTO,
+            label: SITE_SUPPORT_EMAIL,
             target: "_blank",
           },
         ],

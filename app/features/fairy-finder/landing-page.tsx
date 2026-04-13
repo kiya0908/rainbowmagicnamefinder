@@ -1,6 +1,7 @@
-import { AnimatePresence, motion } from "motion/react";
+﻿import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
+import { CoverMarquee } from "./components/cover-marquee";
 import { GenerateAgainButton } from "./components/generate-again-button";
 import { InputSection } from "./components/input-section";
 import { ResultCard } from "./components/result-card";
@@ -16,7 +17,7 @@ export default function FairyFinderLandingPage() {
   const [submittedName, setSubmittedName] = useState<string | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [inputRenderKey, setInputRenderKey] = useState(0);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const inputZoneRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -114,6 +115,15 @@ export default function FairyFinderLandingPage() {
               onSubmit={handleSubmit}
             />
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.2 }}
+            className="mx-auto mt-10 max-w-5xl"
+          >
+            <CoverMarquee />
+          </motion.div>
         </div>
       </section>
 
@@ -193,87 +203,201 @@ export default function FairyFinderLandingPage() {
       </AnimatePresence>
 
       <section id="how-it-works" className="bg-surface px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-3xl font-bold text-on-surface md:text-4xl">
-            {copy.howItWorks.title}
-          </h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {copy.howItWorks.steps.map((step, index) => (
-              <div
-                key={step}
-                className="rounded-2xl border border-outline-variant bg-white p-6 text-left shadow-sm"
-              >
-                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
-                  Step {index + 1}
-                </p>
-                <p className="text-base font-semibold text-on-surface">{step}</p>
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+              {copy.howItWorks.eyebrow}
+            </p>
+            <h2 className="mt-4 text-3xl font-bold text-on-surface md:text-4xl">
+              {copy.howItWorks.title}
+            </h2>
+          </div>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="rounded-3xl border border-outline-variant bg-white p-7 shadow-sm md:p-8">
+              <div className="space-y-5 text-base leading-8 text-on-surface-variant">
+                {copy.howItWorks.intro.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </div>
-            ))}
+            </div>
+
+            <div className="rounded-3xl border border-primary/15 bg-gradient-to-br from-secondary-fixed/60 via-white to-primary/5 p-7 shadow-sm md:p-8">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                {copy.howItWorks.spotlight.label}
+              </p>
+              <h3 className="mt-3 text-2xl font-bold text-on-surface">
+                {copy.howItWorks.spotlight.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-on-surface-variant md:text-base">
+                {copy.howItWorks.spotlight.description}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {copy.howItWorks.spotlight.examples.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-primary/15 bg-white/80 px-3 py-1.5 text-xs font-semibold text-primary"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-3xl border border-outline-variant bg-surface-container-low/60 p-6 md:p-8">
+            <h3 className="text-2xl font-bold text-on-surface">
+              {copy.howItWorks.methodsTitle}
+            </h3>
+
+            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+              {copy.howItWorks.methods.map((method) => (
+                <article
+                  key={method.title}
+                  className="rounded-2xl border border-outline-variant bg-white p-6 shadow-sm"
+                >
+                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                    {method.label}
+                  </p>
+                  <h4 className="mt-3 text-lg font-bold text-on-surface">
+                    {method.title}
+                  </h4>
+                  <p className="mt-3 text-sm leading-7 text-on-surface-variant">
+                    {method.description}
+                  </p>
+                  <p className="mt-4 rounded-2xl bg-secondary-fixed/55 px-4 py-3 text-sm leading-6 text-on-surface">
+                    {method.example}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_0.88fr]">
+            <div className="rounded-3xl border border-outline-variant bg-white p-7 shadow-sm md:p-8">
+              <h3 className="text-2xl font-bold text-on-surface">
+                {copy.howItWorks.profile.title}
+              </h3>
+              <div className="mt-5 space-y-4 text-base leading-8 text-on-surface-variant">
+                {copy.howItWorks.profile.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-outline-variant bg-white p-7 shadow-sm md:p-8">
+              <h3 className="text-2xl font-bold text-on-surface">
+                {copy.howItWorks.highlightsTitle}
+              </h3>
+              <ul className="mt-5 space-y-4">
+                {copy.howItWorks.highlights.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 rounded-2xl bg-surface-container-low px-4 py-4"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-primary"
+                    />
+                    <span className="text-sm leading-7 text-on-surface-variant">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="what-is" className="bg-surface-container-low px-6 py-20">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-3xl font-bold text-on-surface md:text-4xl">
-            {copy.whatIs.title}
-          </h2>
-
-          <div className="mx-auto mt-8 max-w-3xl space-y-4 text-base leading-relaxed text-on-surface-variant">
-            {copy.whatIs.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+              {copy.whatIs.eyebrow}
+            </p>
+            <h2 className="mt-4 text-3xl font-bold text-on-surface md:text-4xl">
+              {copy.whatIs.title}
+            </h2>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-outline-variant bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-on-surface">300+ Unique Fairies</h3>
-              <p className="mt-2 text-sm text-on-surface-variant">
-                A broad fairy list gives each match a different flavor and identity.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-outline-variant bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-on-surface">Instant Match</h3>
-              <p className="mt-2 text-sm text-on-surface-variant">
-                Enter your name and get the result immediately with deterministic logic.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-outline-variant bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-on-surface">Share & Compare</h3>
-              <p className="mt-2 text-sm text-on-surface-variant">
-                Share your fairy identity and compare your result with friends.
-              </p>
-            </div>
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
+            <article className="rounded-3xl border border-outline-variant bg-white p-7 shadow-sm md:p-8">
+              <div className="space-y-6">
+                {copy.whatIs.paragraphs.map((paragraph, index) => (
+                  <p
+                    key={paragraph}
+                    className={
+                      index === 0
+                        ? "text-base leading-8 text-on-surface md:text-lg"
+                        : "text-base leading-8 text-on-surface-variant"
+                    }
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </article>
+
+            <aside className="space-y-4">
+              {copy.whatIs.highlights.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-3xl border border-primary/15 bg-gradient-to-br from-secondary-fixed/60 via-white to-primary/5 p-6 shadow-sm"
+                >
+                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                    {item.label}
+                  </p>
+                  <h3 className="mt-3 text-xl font-bold text-on-surface">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-on-surface-variant">
+                    {item.description}
+                  </p>
+                </article>
+              ))}
+            </aside>
           </div>
         </div>
       </section>
 
       <section id="faq" className="bg-surface px-6 py-20">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-bold text-on-surface md:text-4xl">
-            {copy.faq.title}
-          </h2>
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-3xl font-bold text-on-surface md:text-4xl">
+              {copy.faq.title}
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-on-surface-variant md:text-base">
+              Short answers to the questions users ask most often.
+            </p>
+          </div>
 
-          <div className="mt-8 space-y-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-2">
             {copy.faq.items.map((item, index) => {
               const isOpen = openFaqIndex === index;
               return (
                 <div
                   key={item.question}
-                  className="rounded-2xl border border-outline-variant bg-white"
+                  className="overflow-hidden rounded-2xl border border-outline-variant bg-white shadow-sm"
                 >
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                    className="flex w-full items-start justify-between gap-4 bg-gradient-to-r from-white to-secondary-fixed/20 px-5 py-4 text-left"
                     onClick={() =>
                       setOpenFaqIndex((previous) =>
                         previous === index ? null : index
                       )
                     }
                   >
-                    <span className="font-semibold text-on-surface">{item.question}</span>
+                    <div className="flex items-start gap-3">
+                      <span className="mt-0.5 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-primary/10 px-1 text-xs font-bold text-primary">
+                        {index + 1}
+                      </span>
+                      <span className="font-semibold leading-6 text-on-surface">
+                        {item.question}
+                      </span>
+                    </div>
                     <span className="text-xl leading-none text-primary">
-                      {isOpen ? "−" : "+"}
+                      {isOpen ? "-" : "+"}
                     </span>
                   </button>
 
@@ -287,7 +411,7 @@ export default function FairyFinderLandingPage() {
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden"
                       >
-                        <p className="px-5 pb-5 text-sm text-on-surface-variant">
+                        <p className="px-5 pb-5 text-sm leading-7 text-on-surface-variant md:text-base">
                           {item.answer}
                         </p>
                       </motion.div>
@@ -299,7 +423,6 @@ export default function FairyFinderLandingPage() {
           </div>
         </div>
       </section>
-
       <section className="bg-surface-container-low px-6 py-20">
         <div className="mx-auto max-w-4xl rounded-3xl border border-outline-variant bg-white p-8 text-center shadow-sm md:p-12">
           <h2 className="text-2xl font-bold text-on-surface md:text-3xl">

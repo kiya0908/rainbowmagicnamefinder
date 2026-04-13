@@ -1,6 +1,11 @@
 //公共布局 footer组件
-import { Languages } from "lucide-react";
-import { Link } from "~/components/common";
+import { Image, Link } from "~/components/common";
+import {
+  SITE_HOSTNAME,
+  SITE_ORIGIN,
+  SITE_SUPPORT_EMAIL,
+  SITE_SUPPORT_MAILTO,
+} from "~/config/site";
 
 import { DirectoryBadges, type DirectoryBadgeItem } from "./directory-badges";
 import { DIRECTORY_BADGE_ITEMS } from "./directory-badges.config";
@@ -47,13 +52,13 @@ const DEFAULT_FOOTER_LINKS: FooterNavLink[] = [
     label: "Support",
     list: [
       {
-        to: "mailto:support@linkedinspeaktranslator.top",
-        label: "support@linkedinspeaktranslator.top",
+        to: SITE_SUPPORT_MAILTO,
+        label: SITE_SUPPORT_EMAIL,
         target: "_blank",
       },
       {
-        to: "https://linkedinspeaktranslator.top",
-        label: "linkedinspeaktranslator.top",
+        to: SITE_ORIGIN,
+        label: SITE_HOSTNAME,
         target: "_blank",
       },
     ],
@@ -62,9 +67,9 @@ const DEFAULT_FOOTER_LINKS: FooterNavLink[] = [
 
 export const Footer = ({
   navLinks,
-  brandName = "LinkedIn Translator",
+  brandName = "Rainbow Magic Fairy Name Finder",
   brandTo = "/",
-  description = "AI translation for modern LinkedIn publishing.Not affiliated with LinkedIn. We just help you navigate the language.",
+  description = "Find your Rainbow Magic fairy identity in seconds and share it with friends.",
   directoryBadges,
   directoryBadgeTitle,
 }: FooterProps) => {
@@ -76,9 +81,14 @@ export const Footer = ({
       <div className="max-w-7xl mx-auto flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
         <div className="lg:max-w-md">
           <Link to={brandTo} className="inline-flex items-center gap-2 mb-6">
-            <span className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-              <Languages className="text-white w-4 h-4" />
-            </span>
+            <Image
+              className="w-6 h-6 rounded object-contain"
+              src="/assets/favicon-16x16.png"
+              alt=""
+              width={16}
+              height={16}
+              aria-hidden="true"
+            />
             <span className="font-display font-bold text-lg text-primary">
               {brandName}
             </span>

@@ -11,6 +11,7 @@ import {
 import { useEffect } from "react";
 import { useUser } from "~/store";
 
+import { getSiteOrigin } from "~/config/site";
 import { Document } from "~/features/document";
 
 import "@fontsource/libre-baskerville/400.css";
@@ -30,17 +31,15 @@ export const links: Route.LinksFunction = () => [
 
 export const loader = async ({
   context,
-  request,
 }: Route.LoaderArgs): Promise<RootLoaderData> => {
   const env =
     context.cloudflare?.env ??
     (typeof process !== "undefined"
       ? (process.env as Record<string, string | undefined>)
       : {});
-  const domainFallback = new URL(request.url).origin;
 
   return {
-    DOMAIN: env.DOMAIN ?? domainFallback,
+    DOMAIN: getSiteOrigin(env.DOMAIN),
     CDN_URL: env.CDN_URL ?? "",
     GOOGLE_ANALYTICS_ID: env.GOOGLE_ANALYTICS_ID ?? "",
     GOOGLE_ADS_ID: env.GOOGLE_ADS_ID ?? "",

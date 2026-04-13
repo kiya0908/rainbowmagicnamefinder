@@ -11,7 +11,7 @@ import {
 import { ContentDetailPage } from "~/features/content/detail-page";
 import { parseMarkdown } from "~/features/content/markdown";
 import { getContentPath, inferContentContext } from "~/features/content/utils";
-import { createAlternate, createCanonical } from "~/utils/meta";
+import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const pathname = new URL(request.url).pathname;
@@ -52,22 +52,39 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
   }
 
   const rootData = matches[0]?.data as { DOMAIN?: string } | undefined;
-  const domain = rootData?.DOMAIN ?? "https://linkedinspeaktranslator.top";
   const englishPath = getContentPath("en", data.collection, data.entry.slug);
   const alternateLang = data.locale === "en" ? "zh" : "en";
+  const ogType = data.collection === "blog" ? "article" : "website";
+  const jsonLdType = data.collection === "blog" ? "Article" : "WebPage";
 
   return [
     { title: `${data.entry.title}` },
     { name: "description", content: data.entry.description },
-    ...(!data.indexable
-      ? [{ name: "robots", content: "noindex,follow" as const }]
-      : []),
-    createCanonical(data.path, domain),
-    createAlternate(data.path, domain, data.locale),
-    ...(data.alternatePath
-      ? [createAlternate(data.alternatePath, domain, alternateLang)]
-      : []),
-    createAlternate(englishPath, domain, "x-default"),
+    ...createSeoDescriptors({
+      pathname: data.path,
+      domain: rootData?.DOMAIN,
+      title: data.entry.title,
+      description: data.entry.description,
+      robots: data.indexable ? undefined : "noindex,follow",
+      ogType,
+      alternates: [
+        { pathname: data.path, hrefLang: data.locale },
+        ...(data.alternatePath
+          ? [{ pathname: data.alternatePath, hrefLang: alternateLang }]
+          : []),
+        { pathname: englishPath, hrefLang: "x-default" },
+      ],
+      jsonLd: createWebPageJsonLd({
+        pathname: data.path,
+        domain: rootData?.DOMAIN,
+        title: data.entry.title,
+        description: data.entry.description,
+        locale: data.locale,
+        type: jsonLdType,
+        publishedAt: data.entry.publishedAt,
+        updatedAt: data.entry.updatedAt,
+      }),
+    }),
   ];
 };
 
@@ -85,4 +102,3 @@ export default function ContentDetailRoute() {
     />
   );
 }
-

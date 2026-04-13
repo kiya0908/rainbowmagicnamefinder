@@ -1,7 +1,4 @@
-import {
-  LINKEDIN_TRANSLATOR_PRO_PACK,
-  LINKEDIN_TRANSLATOR_TEAM_PLAN,
-} from "~/features/linkedin-translator/pricing";
+import { CREEM_ACTIVE_PRODUCT_IDS } from "../../constants/pricing.js";
 
 export interface PRODUCT {
   price: number;
@@ -12,28 +9,41 @@ export interface PRODUCT {
   type: "once" | "monthly" | "yearly";
 }
 
+const LEGACY_CREDIT_PACK = {
+  productId: CREEM_ACTIVE_PRODUCT_IDS.linkedinCredit200,
+  name: "Legacy Credit Pack",
+  price: 4.9,
+  credits: 200,
+} as const;
+
+const LEGACY_TEAM_PACK = {
+  productId: CREEM_ACTIVE_PRODUCT_IDS.linkedinCredit500,
+  name: "Legacy Team Credit Pack",
+  price: 9.9,
+  credits: 500,
+} as const;
+
 export const CREDITS_PRODUCT: PRODUCT = {
-  price: LINKEDIN_TRANSLATOR_PRO_PACK.price,
-  credits: LINKEDIN_TRANSLATOR_PRO_PACK.credits,
-  product_id: LINKEDIN_TRANSLATOR_PRO_PACK.productId,
-  product_name: LINKEDIN_TRANSLATOR_PRO_PACK.name,
+  price: LEGACY_CREDIT_PACK.price,
+  credits: LEGACY_CREDIT_PACK.credits,
+  product_id: LEGACY_CREDIT_PACK.productId,
+  product_name: LEGACY_CREDIT_PACK.name,
   product_description:
-    "One-time LinkedIn Translator credit pack for usage-based rewriting. Unlocks Extreme intensity and deducts 1 credit per successful translation.",
+    "Legacy one-time credit pack kept only for backward compatibility.",
   type: "once",
 };
 
-export const TEAM_CREDITS_PRODUCT: PRODUCT | null =
-  LINKEDIN_TRANSLATOR_TEAM_PLAN.productId
-    ? {
-        price: LINKEDIN_TRANSLATOR_TEAM_PLAN.price,
-        credits: LINKEDIN_TRANSLATOR_TEAM_PLAN.credits,
-        product_id: LINKEDIN_TRANSLATOR_TEAM_PLAN.productId,
-        product_name: LINKEDIN_TRANSLATOR_TEAM_PLAN.name,
-        product_description:
-          "Larger LinkedIn Translator credit pack for heavier usage. Unlocks Extreme intensity and deducts 1 credit per successful translation.",
-        type: "once",
-      }
-    : null;
+export const TEAM_CREDITS_PRODUCT: PRODUCT | null = LEGACY_TEAM_PACK.productId
+  ? {
+      price: LEGACY_TEAM_PACK.price,
+      credits: LEGACY_TEAM_PACK.credits,
+      product_id: LEGACY_TEAM_PACK.productId,
+      product_name: LEGACY_TEAM_PACK.name,
+      product_description:
+        "Legacy larger one-time credit pack kept only for backward compatibility.",
+      type: "once",
+    }
+  : null;
 
 export const PRODUCTS_LIST = [CREDITS_PRODUCT, TEAM_CREDITS_PRODUCT].filter(
   (item): item is PRODUCT => Boolean(item)
