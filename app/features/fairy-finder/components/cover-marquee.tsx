@@ -1,4 +1,5 @@
 import { FAIRY_LIST } from "../data/fairies";
+import { getFairyImageSrc } from "../utils/image";
 
 const COVER_ITEMS = FAIRY_LIST.slice(0, 14);
 const LOOPED_COVERS = [...COVER_ITEMS, ...COVER_ITEMS];
@@ -24,7 +25,7 @@ export const CoverMarquee = () => {
             >
               <div className="aspect-[3/4] overflow-hidden rounded-xl bg-surface-container-low">
                 <img
-                  src={fairy.imageUrl}
+                  src={getFairyImageSrc(fairy.imageUrl)}
                   alt={fairy.fullTitle}
                   loading="lazy"
                   decoding="async"
@@ -41,4 +42,3 @@ export const CoverMarquee = () => {
     </div>
   );
 };
-

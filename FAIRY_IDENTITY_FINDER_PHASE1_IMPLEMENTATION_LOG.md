@@ -1,6 +1,6 @@
 # FAIRY_IDENTITY_FINDER_PHASE1_IMPLEMENTATION_LOG
 
-最后更新：2026-04-13（已更新至 Step 13）
+最后更新：2026-04-14（已更新至 Step 16）
 
 ## 0. 记录范围与证据来源
 - 回填范围：`FAIRY_IDENTITY_FINDER_PHASE1_EXECUTION_PLAN_V2.md` 的 Step 1 到 Step 7。
@@ -8,9 +8,9 @@
   - 执行计划文档
   - 当前代码实现（`app/features/fairy-finder/**`、`app/routes/home.tsx`、`app/root.tsx`）
   - 当前工作区 `git status` / `git diff --name-status`
-  - 阶段验证命令输出（`pnpm run test:unit`、`pnpm run build`）
+  - 阶段验证命令输出（`npm run test:unit`、`npm run typecheck`、`npm run build`）
 - 当前单测基线说明：
-  - `pnpm run test:unit` 在每一步都失败，失败点为旧 `linkedin-translator` 测试链路（非本次 fairy-finder 新增代码直接引起）。
+  - 截至 Step 16，`npm run test:unit` 已恢复通过，并已纳入 Fairy 图片代理回归用例。
 
 ---
 
@@ -384,7 +384,8 @@ app/features/fairy-finder/
 │  ├─ types.ts
 │  └─ fairies.ts
 ├─ utils/
-│  └─ match.ts
+│  ├─ match.ts
+│  └─ image.ts
 ├─ components/
 │  ├─ input-section.tsx
 │  ├─ fairy-image.tsx
@@ -396,11 +397,17 @@ app/features/fairy-finder/
 └─ landing-page.tsx
 ```
 
+```text
+app/routes/_api/
+└─ fairy-image/
+   └─ route.ts
+```
+
 ### 2.2 当前已实现用户流程
 1. 用户访问 `/`，进入 `FairyFinderLandingPage`
 2. 输入名字并提交
 3. 前端执行 `matchFairy(name)` 得到固定 Fairy
-4. 展示结果卡片（图、名称、情绪文案）
+4. 结果卡与首页封面图统一走站内 `/api/fairy-image` 代理后再显示
 5. 用户可分享（Web Share 或 Copy Link）
 6. 点击 `Try Another Name` 清空并回到输入区继续生成
 
@@ -408,26 +415,30 @@ app/features/fairy-finder/
 1. `doc/books_data.json` ->（离线转换）-> `data/fairies.ts`
 2. `landing-page.tsx` 接收输入 -> `utils/match.ts` 计算
 3. 输出 `FairyData` 进入 `result` 状态
-4. `result` 传给 `ResultCard`、`ShareActions`
+4. 图片 URL 先经 `utils/image.ts` 改写为 `/api/fairy-image?src=...`
+5. Worker 路由拉取白名单封面源并回传给前端
+6. `result` 传给 `ResultCard`、`ShareActions`
 
-### 2.4 Step 13 后实现状态
-- 已完成：Step 1 ~ Step 13
+### 2.4 Step 16 后实现状态
+- 已完成：Step 1 ~ Step 16
 - 首页已接入 Fairy 页面
 - 结果生成、分享、再生成闭环已打通
 - 主题色已切换到 Fairy 紫色系（全局变量生效）
 - 首页 SEO 元信息与关键词已更新，sitemap 首页 lastmod 已更新
 - `llms.txt` 与 `llms-full.txt` 路由已补齐，并已清理旧 LinkedIn translator 残留描述
+- 首页封面轮转带与结果卡图片已改为站内图片代理，不再由浏览器直接请求第三方封面 URL
 - Step 10 检查清单已完成代码级核对与构建验证
 - 旧模板路由和模块仍保留（按计划不删）
-- 阶段构建：`pnpm run build` 通过
-- 阶段类型检查：`pnpm run typecheck` 通过
-- 阶段单测：`pnpm run test:unit` 持续失败（旧测试链路问题）
+- 阶段构建：`npm run build` 通过
+- 阶段类型检查：`npm run typecheck` 通过
+- 阶段单测：`npm run test:unit` 通过（含图片代理新增回归用例）
 
 ### 2.5 未完成/后续工作
-- Phase 1 功能步骤已完成（Step 1 - Step 13）
+- Phase 1 功能步骤已完成（Step 1 - Step 16）
 - 后续可选工作：
   - 补充真实浏览器端回归（移动端/桌面端）以闭合“无控制台错误”实测证据
-  - 修复旧 `linkedin-translator` 单测基线，恢复 `pnpm run test:unit` 作为稳定门禁
+  - 重新部署到生产环境并做一次线上回归，确认封面轮转带与查询结果图片都恢复
+  - 评估是否继续把常用封面同步到自有存储，减少对源站可用性的长期依赖
 
 ---
 
@@ -442,8 +453,9 @@ app/features/fairy-finder/
 - `fairy-site-layout` 依赖旧 Header/Footer 的 props 与 DOM 结构
 
 ### 3.3 外部 Fairy 图片 URL
-- 图片完全依赖 `orchardseriesbooks.co.uk` 外链可用性
-- 虽有 `onError` fallback，但视觉质量受外部服务波动影响
+- 浏览器侧已不再直接请求 `orchardseriesbooks.co.uk`，改为走站内 `/api/fairy-image`
+- 但图片内容仍依赖上游封面源可用性，若源站异常，当前会返回 `502` 并走前端 fallback
+- 白名单目前只放行 `orchardseriesbooks.co.uk` 的 `/wp-content/uploads/` 路径，后续若换源需要同步改代理校验
 
 ### 3.4 分享流程边界（share flow edge cases）
 - Web Share 在桌面/非支持浏览器不可用，依赖 copy 降级
@@ -465,7 +477,7 @@ app/features/fairy-finder/
 ### 3.7 其他实际风险
 - `fairy-site-layout` 通过 CSS 隐藏登录按钮（结构变更时易失效）
 - `landing-page` 再生成流程使用重挂载 + 定时 focus，存在时序敏感性
-- 单测基线长期失败，会掩盖后续真实回归风险
+- 图片代理路由当前只做最小透传，未加重试、超时兜底图或自有缓存持久化
 
 ### 3.8 主题色全局影响
 - `app/app.css` 为全局主题入口，主色切换会影响 Fairy 页面与旧模板页面
@@ -669,3 +681,126 @@ app/features/fairy-finder/
 ## 10. 本轮验证结果（Step 14）
 - `pnpm run build`：通过
 - 词数/密度校验：通过（`1141` 词，`4.29%`）
+
+## 11. 增量记录（Step 15）
+
+### Step 15：Cloudflare 绑定盘点 + 上线最小收口方案确认
+- 1. Step number and step name
+  - Step 15：盘点当前项目绑定的 D1 / KV / R2 与运行时环境变量，并确定上线阶段暂不拆绑定、只做最小收口
+- 2. Goal of the step
+  - 判断当前项目连接的 Cloudflare 资源是否仍为旧模板资源，确认这些绑定是否会阻塞 Fairy Finder 首页上线，并确定后续执行方向
+- 3. Files added
+  - 无
+- 4. Files modified
+  - `FAIRY_IDENTITY_FINDER_PHASE1_IMPLEMENTATION_LOG.md`
+- 5. Existing template files/components that were reused
+  - 复用现有部署配置与类型来源：
+    - `wrangler.jsonc`
+    - `worker-configuration.d.ts`
+    - `app/.server/libs/session.ts`
+    - `app/.server/libs/db.ts`
+    - `app/.server/services/r2-bucket.ts`
+    - `app/routes/_meta/[sitemap.xml].tsx`
+- 6. What was actually implemented
+  - 完成一轮只读盘点，确认 `wrangler.jsonc` 当前仍绑定旧模板资源：
+    - D1 绑定 `DB`，`database_name` 为 `linkedintranslator`
+    - KV 绑定 `KV`，对应 namespace 仍为旧模板资源
+    - R2 当前没有真实绑定，`r2_buckets` 整段仍处于注释状态
+  - 通过 Cloudflare API 按 `wrangler.jsonc` 中的资源 ID 反查，确认：
+    - D1 数据库真实名称为 `linkedintranslator`
+    - KV namespace 标题也为 `linkedintranslator`
+  - 核对代码中的真实依赖关系，确认：
+    - `KV` 仍被 session 存储直接使用
+    - `D1` 仍被用户、积分、订单、支付等旧模板链路使用
+    - `R2` 虽有服务代码，但当前路由没有实际接入
+  - 核对当前 Fairy Finder 主流程，确认：
+    - 首页名字匹配流程不依赖登录、支付、订单、积分
+    - `root.tsx` 中自动鉴权 bootstrap 已注释，首页不会首屏打 `/api/auth`
+  - 补查 SEO 路由，确认当前 `sitemap.xml` 不只索引首页，还包含法律页与 content registry 中可索引内容页
+  - 在不改业务代码的前提下完成判断：
+    - 当前阶段先保留 D1 / KV 绑定，不影响 Fairy Finder 首页上线
+    - 后续执行方向改为“先上线，后清理”，优先做旧入口和旧路由的最小收口，而不是立刻拆基础设施绑定
+  - 执行验证：
+    - `pnpm run build`：通过
+    - `pnpm run typecheck`：通过
+- 7. Important logic decisions
+  - 把“首页能上线”与“旧模板基础设施是否彻底清理”拆开处理；当前优先级放在前者
+  - 暂不删除 `wrangler.jsonc` 中的 D1 / KV 绑定，避免在首页上线前引入不必要的配置和类型联动风险
+  - 后续改动策略确定为：
+    - 保留 Fairy Finder 首页、内容页、法律页、SEO 路由
+    - 不启用旧登录、账户、积分、支付模块
+    - 先收口旧路由与旧入口，再考虑第二阶段彻底拆除 D1 / KV
+- 8. Tradeoffs / shortcuts / known risks
+  - 旧模板绑定仍保留，意味着 Cloudflare 侧资源耦合暂未解除
+  - 旧账户 / 支付相关路由虽然不在首页入口中，但在完成“最小收口”前仍可被直接访问
+  - `worker-configuration.d.ts` 仍会保留旧模板环境变量字段，当前阶段不做同步清理
+  - 当前判断基于“上线 Fairy Finder 首页”这个范围；如果后续恢复登录或支付能力，D1 / KV 仍然是刚性依赖
+- 9. Areas affected
+  - routing：否（本步只做盘点与决策，未改代码）
+  - layout：否
+  - styling：否
+  - data flow：否
+  - sharing：否
+  - SEO：是（补充确认 `sitemap.xml` 实际覆盖范围不止首页）
+- 10. Debugging notes
+  - 若后续准备拆 D1 / KV，必须先全量搜索并移除 `getSessionHandler()`、`env.KV`、`env.DB` 的调用点，再改 `wrangler.jsonc`
+  - 若后续仅做上线最小收口，优先处理 `/base/*`、`/api/auth`、`/api/logout`、`/api/credits`、`/api/create-order`、支付 callback / webhook 的直达访问
+  - 若再次核对 sitemap 覆盖范围，先看 `app/routes/_meta/[sitemap.xml].tsx` 中 `defaultSitemaps` 与 `getContentSitemapEntries()` 的合并逻辑
+
+## 12. 本轮验证结果（Step 15）
+- `pnpm run build`：通过
+- `pnpm run typecheck`：通过
+- Cloudflare 资源盘点：通过 API 反查确认 D1 / KV 仍为 `linkedintranslator` 旧模板资源，R2 当前未绑定
+
+## 13. 增量记录（Step 16）
+### Step 16：封面图与结果图改为站内代理，修复线上图片不显示
+- 1. Step number and step name
+  - Step 16：封面图与结果图改为站内图片代理，修复线上图片不显示
+- 2. Goal of the step
+  - 修复生产环境首页封面轮转带和名字查询结果卡图片不显示的问题，让浏览器不再直接请求第三方封面直链
+- 3. Files added
+  - `app/features/fairy-finder/utils/image.ts`
+  - `app/routes/_api/fairy-image/route.ts`
+  - `tests/unit/fairy-image.test.ts`
+- 4. Files modified
+  - `app/features/fairy-finder/components/cover-marquee.tsx`
+  - `app/features/fairy-finder/components/fairy-image.tsx`
+  - `tests/unit/index.test.ts`
+- 5. Existing template files/components that were reused
+  - 复用现有 React Router / Worker 路由结构新增 `_api` 路由
+  - 复用现有 `cover-marquee` 与 `fairy-image` 组件，只替换图片来源，不改卡片布局
+  - 复用现有单测入口 `tests/unit/index.test.ts`
+- 6. What was actually implemented
+  - 新增 `getFairyImageSrc(imageUrl)`，把 Fairy 封面地址统一改写成 `/api/fairy-image?src=...`
+  - 新增 `parseFairyImageSource(imageUrl)`，只允许 `orchardseriesbooks.co.uk` 和 `www.orchardseriesbooks.co.uk` 的 `https` 图片地址，且路径必须在 `/wp-content/uploads/` 下
+  - 新增 `/api/fairy-image` loader，服务端抓取白名单封面图并透传 `Content-Type`、`Content-Length`、`ETag`、`Last-Modified`
+  - 给代理响应补上 `Cache-Control` 与 `X-Robots-Tag: noindex`
+  - 首页封面轮转带和结果卡图片统一改为走站内代理
+  - 新增 4 条图片代理回归用例，并接入现有单测入口
+- 7. Important logic decisions
+  - 不继续让浏览器直接请求第三方封面图，改为统一经过自己域名，减少线上环境差异和第三方直链不稳定带来的影响
+  - 代理层采用白名单校验，不开放任意远程 URL，避免把该接口变成通用 SSRF 入口
+  - 这次只做最小修复，不在前端增加第二套复杂兜底逻辑，先保证图片主链路稳定
+- 8. Tradeoffs / shortcuts / known risks
+  - 当前仍然依赖 Orchard 源站的图片内容可访问，只是把不稳定点从浏览器侧收拢到了服务端代理层
+  - 代理层当前没有自有持久化缓存，若上游长期失效，仍会显示前端 fallback
+  - 目前只验证了代码、单测、类型检查和构建，修复真正生效仍需重新部署
+- 9. Areas affected
+  - routing：是（新增 `/api/fairy-image`）
+  - layout：否
+  - styling：否
+  - data flow：是（封面 URL 先改写，再由 API 代理回传）
+  - sharing：否
+  - SEO：部分（代理路由加了 `noindex`，避免图片接口被索引）
+- 10. Debugging notes
+  - 若线上仍不出图，先直接访问 `/api/fairy-image?src=<编码后的原图地址>`，看返回是否为 `200` 或 `502`
+  - 若返回 `400`，优先检查图片源 host 或 pathname 是否超出白名单
+  - 若返回 `502`，说明上游源站不可用或 Worker 侧抓取失败，应先看代理路由日志
+  - 若首页轮转带恢复、结果卡不恢复，优先检查 `fairy-image.tsx` 的 `onError` 是否被提前触发
+
+## 14. 本轮验证结果（Step 16）
+- `npm run test:unit`：通过（12/12，含图片代理新增回归用例）
+- `npm run typecheck`：通过
+- `npm run build`：通过
+- 外部样本封面地址探测：`200 OK`
+- 生产站点响应头检查：未见阻断图片的 CSP

@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { getFairyImageSrc } from "../utils/image";
+
 interface FairyImageProps {
   imageUrl: string;
   fairyName: string;
@@ -22,7 +24,7 @@ export const FairyImage = ({ imageUrl, fairyName }: FairyImageProps) => {
         </div>
       ) : (
         <img
-          src={imageUrl}
+          src={getFairyImageSrc(imageUrl)}
           alt={fairyName}
           loading="lazy"
           decoding="async"
