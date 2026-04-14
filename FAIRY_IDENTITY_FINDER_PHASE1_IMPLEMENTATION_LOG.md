@@ -1,6 +1,6 @@
 # FAIRY_IDENTITY_FINDER_PHASE1_IMPLEMENTATION_LOG
 
-最后更新：2026-04-14（已更新至 Step 16）
+最后更新：2026-04-14（已更新至 Step 17）
 
 ## 0. 记录范围与证据来源
 - 回填范围：`FAIRY_IDENTITY_FINDER_PHASE1_EXECUTION_PLAN_V2.md` 的 Step 1 到 Step 7。
@@ -419,14 +419,15 @@ app/routes/_api/
 5. Worker 路由拉取白名单封面源并回传给前端
 6. `result` 传给 `ResultCard`、`ShareActions`
 
-### 2.4 Step 16 后实现状态
-- 已完成：Step 1 ~ Step 16
+### 2.4 Step 17 后实现状态
+- 已完成：Step 1 ~ Step 17
 - 首页已接入 Fairy 页面
 - 结果生成、分享、再生成闭环已打通
 - 主题色已切换到 Fairy 紫色系（全局变量生效）
 - 首页 SEO 元信息与关键词已更新，sitemap 首页 lastmod 已更新
 - `llms.txt` 与 `llms-full.txt` 路由已补齐，并已清理旧 LinkedIn translator 残留描述
 - 首页封面轮转带与结果卡图片已改为站内图片代理，不再由浏览器直接请求第三方封面 URL
+- 图片代理路由已在 `app/routes.ts` 的手写 `apiRoutes` 中正式注册，构建产物已包含 `/api/fairy-image`
 - Step 10 检查清单已完成代码级核对与构建验证
 - 旧模板路由和模块仍保留（按计划不删）
 - 阶段构建：`npm run build` 通过
@@ -434,7 +435,7 @@ app/routes/_api/
 - 阶段单测：`npm run test:unit` 通过（含图片代理新增回归用例）
 
 ### 2.5 未完成/后续工作
-- Phase 1 功能步骤已完成（Step 1 - Step 16）
+- Phase 1 功能步骤已完成（Step 1 - Step 17）
 - 后续可选工作：
   - 补充真实浏览器端回归（移动端/桌面端）以闭合“无控制台错误”实测证据
   - 重新部署到生产环境并做一次线上回归，确认封面轮转带与查询结果图片都恢复
@@ -804,3 +805,44 @@ app/routes/_api/
 - `npm run build`：通过
 - 外部样本封面地址探测：`200 OK`
 - 生产站点响应头检查：未见阻断图片的 CSP
+
+## 15. 增量记录（Step 17）
+### Step 17：补注册手写 API 路由，修复 `/api/fairy-image` 实际未生效
+- 1. Step number and step name
+  - Step 17：补注册手写 API 路由，修复 `/api/fairy-image` 实际未生效
+- 2. Goal of the step
+  - 让 `app/routes/_api/fairy-image/route.ts` 真正进入项目的运行时路由清单，解决浏览器请求 `/api/fairy-image` 时拿不到图片响应的问题
+- 3. Files added
+  - 无
+- 4. Files modified
+  - `app/routes.ts`
+  - `FAIRY_IDENTITY_FINDER_PHASE1_IMPLEMENTATION_LOG.md`
+- 5. Existing template files/components that were reused
+  - 复用现有手写路由配置文件 `app/routes.ts`
+  - 复用现有 `apiRoutes` + `prefix("api", apiRoutes)` 组织方式
+- 6. What was actually implemented
+  - 在 `apiRoutes` 中新增 `route("fairy-image", "./routes/_api/fairy-image/route.ts")`
+  - 重新执行类型生成和构建，确认生成后的路由清单已包含 `/api/fairy-image`
+  - 重新执行单测，确认补路由注册没有影响现有逻辑
+- 7. Important logic decisions
+  - 根因不是图片代理实现本身，而是项目采用手写路由注册，新增文件不会自动上线
+  - 这次只补最小必要改动，不重写路由体系，也不改现有图片代理协议
+- 8. Tradeoffs / shortcuts / known risks
+  - 当前修复仍需重新部署到线上后才会真正生效
+  - 以后新增 API 路由时，仍然必须同时更新 `app/routes.ts`，否则会再次出现“文件存在但路由未挂载”的问题
+- 9. Areas affected
+  - routing：是（补齐 `/api/fairy-image` 注册）
+  - layout：否
+  - styling：否
+  - data flow：部分（图片代理链路终于可达）
+  - sharing：否
+  - SEO：否
+- 10. Debugging notes
+  - 若新增路由后线上无效，先不要只看文件是否存在，要先检查 `.react-router/types/+routes.ts` 或构建产物中是否已经出现该路径
+  - 这个项目的 `_meta` 使用 `flatRoutes`，但 `_api` 不是自动发现，而是手写维护
+
+## 16. 本轮验证结果（Step 17）
+- `npm run typecheck`：通过
+- `npm run build`：通过
+- `npm run test:unit`：通过
+- `.react-router/types/+routes.ts`：已包含 `/api/fairy-image`

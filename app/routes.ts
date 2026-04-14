@@ -4,6 +4,7 @@ import { flatRoutes } from "@react-router/fs-routes";
 // 各功能模块路由
 const apiRoutes: RouteConfig = [
   route("auth", "./routes/_api/auth/route.ts"),
+  route("fairy-image", "./routes/_api/fairy-image/route.ts"),
   // Stage 3: keep isolated legacy files but stop mounting runtime entries:
   // - ./routes/_api/credits/route.ts
   // - ./routes/_api/logout/route.ts
