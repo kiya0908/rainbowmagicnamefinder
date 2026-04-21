@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import "./fairy-image.test.js";
+import "./google-analytics.test.js";
 import { SITE_ORIGIN, getSiteOrigin, toSiteUrl } from "../../app/config/site.js";
 import { CREDITS_PRODUCT } from "../../app/.server/constants/product.js";
 import { shouldRequireBaseAuthFromEnv } from "../../app/.server/libs/base-auth.js";

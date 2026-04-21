@@ -25,6 +25,9 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "GOOGLE_ANALYTICS_ID": "G-WXB3YC322J"
+  },
   "d1_databases": [
     {
       "binding": "DB",

@@ -3,10 +3,14 @@ import {
   Meta,
   Scripts,
   ScrollRestoration,
-  useLocation,
   useRouteError,
 } from "react-router";
 import { useEffect, useRef } from "react";
+
+import {
+  GoogleAnalytics,
+  RouteAnalytics,
+} from "~/components/analytics";
 
 interface DocumentProps {
   DOMAIN?: string;
@@ -24,8 +28,6 @@ export function Document({
   GOOGLE_ANALYTICS_ID,
 }: React.PropsWithChildren<DocumentProps>) {
   const rootRef = useRef<HTMLHtmlElement>(null);
-  const hasTrackedNavigationRef = useRef(false);
-  const { pathname, search } = useLocation();
   const error = useRouteError();
 
   useEffect(() => {
@@ -82,65 +84,6 @@ export function Document({
     };
   }, [GOOGLE_ADS_ID, DOMAIN, error]);
 
-  useEffect(() => {
-    if (!import.meta.env.PROD) return;
-    if (!GOOGLE_ANALYTICS_ID) return;
-
-    let gaScript: HTMLScriptElement | undefined;
-    let timeoutId: number | undefined;
-    let cancelled = false;
-
-    const loadGA = () => {
-      if (cancelled || window.gtag) return;
-
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = (...args: unknown[]) => {
-        window.dataLayer?.push(args);
-      };
-
-      window.gtag("js", new Date());
-      window.gtag("config", GOOGLE_ANALYTICS_ID);
-
-      gaScript = document.createElement("script");
-      gaScript.async = true;
-      gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`;
-      document.head.appendChild(gaScript);
-    };
-
-    const scheduleLoad = () => {
-      timeoutId = window.setTimeout(loadGA, 2500);
-    };
-
-    if (document.readyState === "complete") {
-      scheduleLoad();
-    } else {
-      window.addEventListener("load", scheduleLoad, { once: true });
-    }
-
-    return () => {
-      cancelled = true;
-      if (timeoutId !== undefined) {
-        window.clearTimeout(timeoutId);
-      }
-      window.removeEventListener("load", scheduleLoad);
-      if (gaScript) gaScript.remove();
-    };
-  }, [GOOGLE_ANALYTICS_ID]);
-
-  useEffect(() => {
-    if (!GOOGLE_ANALYTICS_ID) return;
-    if (!window.gtag) return;
-
-    if (!hasTrackedNavigationRef.current) {
-      hasTrackedNavigationRef.current = true;
-      return;
-    }
-
-    window.gtag("config", GOOGLE_ANALYTICS_ID, {
-      page_path: `${pathname}${search}`,
-    });
-  }, [GOOGLE_ANALYTICS_ID, pathname, search]);
-
   return (
     <html ref={rootRef} lang={lang} data-theme={theme}>
       <head>
@@ -151,9 +94,11 @@ export function Document({
         )}
         <Meta />
         <Links />
+        <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
       </head>
       <body>
         {children}
+        <RouteAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
         <ScrollRestoration />
         <Scripts />
       </body>
