@@ -25,15 +25,6 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
     note: "Use the badge image provided by each directory.",
   },
   {
-    id: "Z-Image",
-    name: "Z-Image",
-    href: "https://z-image.net",
-    mode: "link",
-    linkLabel: "Z-Image",
-    active: true,
-    note: "Replace with your actual listing URL and set active to true.",
-  },
-  {
     id: "wired-business",
     name: "Wired Business",
     href: "https://wired.business",
@@ -62,7 +53,7 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
     {
     id: "findly.tools",
     name: "findly.tools",
-    href: "https://findly.tools/linkedin-translator?utm_source=linkedin-translator",
+    href: "https://findly.tools/rainbow-magic-fairy-name-finder?utm_source=rainbow-magic-fairy-name-finder",
     mode: "badge",
     badgeSrc: "https://findly.tools/badges/findly-tools-badge-light.svg",
     badgeAlt: "Featured on Findly.tools",
@@ -75,10 +66,10 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
     {
     id: "LaunchClash",
     name: "LaunchClash",
-    href: "https://launchclash.com",
+    href: "https://launchclash.com/product/rainbow-magic-fairy-name-finder",
     mode: "badge",
     badgeSrc: "https://launchclash.com/static/images/badge.png",
-    badgeAlt: "LaunchClash",
+    badgeAlt: "Featured on Submit Your Product - LaunchClash",
     badgeHeight: 54,
     active: true,
     target: "_blank",
