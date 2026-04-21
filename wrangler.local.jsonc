@@ -1,27 +1,11 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rainbow-magic-fairy-name-finder",
   "main": "./workers/app.ts",
-  "compatibility_date": "2026-04-14",
+  "compatibility_date": "2025-05-25",
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "upload_source_maps": true,
-  "routes": [
-    {
-      "pattern": "rainbowmagicfairyname.online",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.rainbowmagicfairyname.online",
-      "custom_domain": true
-    }
-  ],
-  // Configure runtime secrets in Cloudflare Dashboard or local .dev.vars.
   "observability": {
     "enabled": true
   },
@@ -40,5 +24,4 @@
       "preview_id": "a67abfaf04814233a0c60e7d317a414f"
     }
   ]
-  // Add an R2 binding here if this project starts using R2 in production.
 }

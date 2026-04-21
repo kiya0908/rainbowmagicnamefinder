@@ -1,3 +1,4 @@
+//图片url地址
 import type { FairyData } from "./types";
 
 export const FAIRY_LIST: FairyData[] = [

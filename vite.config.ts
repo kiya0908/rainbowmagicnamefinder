@@ -38,11 +38,19 @@ export default defineConfig(({ command }) => {
 
   const useCloudflareRuntime =
     command === "build" || process.env.CLOUDFLARE_DEV === "1";
+  const useLocalCloudflareConfig = process.env.CLOUDFLARE_DEV === "1";
 
   return {
     plugins: [
       ...(useCloudflareRuntime
-        ? [cloudflare({ viteEnvironment: { name: "ssr" } })]
+        ? [
+            cloudflare({
+              viteEnvironment: { name: "ssr" },
+              ...(useLocalCloudflareConfig
+                ? { configPath: "./wrangler.local.jsonc" }
+                : {}),
+            }),
+          ]
         : []),
       tailwindcss(),
       reactRouter(),
