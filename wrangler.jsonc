@@ -4,7 +4,7 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "rainbow-magic-fairy-name-finder",
+  "name": "rainbow-magic-name-finder",
   "main": "./workers/app.ts",
   "compatibility_date": "2026-04-14",
   "compatibility_flags": [
