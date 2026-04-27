@@ -29,6 +29,11 @@ export function Document({
 }: React.PropsWithChildren<DocumentProps>) {
   const rootRef = useRef<HTMLHtmlElement>(null);
   const error = useRouteError();
+  const googleAdsClientId = GOOGLE_ADS_ID
+    ? GOOGLE_ADS_ID.startsWith("ca-")
+      ? GOOGLE_ADS_ID
+      : `ca-${GOOGLE_ADS_ID}`
+    : "";
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -44,9 +49,9 @@ export function Document({
 
     const injectScripts = () => {
       // Adsense
-      if (GOOGLE_ADS_ID && !error) {
+      if (googleAdsClientId && !error) {
         adsScript = document.createElement("script");
-        adsScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${GOOGLE_ADS_ID}`;
+        adsScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsClientId}`;
         adsScript.async = true;
         adsScript.crossOrigin = "anonymous";
 
@@ -82,15 +87,15 @@ export function Document({
       if (adsScript) adsScript.remove();
       if (pScript) pScript.remove();
     };
-  }, [GOOGLE_ADS_ID, DOMAIN, error]);
+  }, [googleAdsClientId, DOMAIN, error]);
 
   return (
     <html ref={rootRef} lang={lang} data-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {GOOGLE_ADS_ID && (
-          <meta name="google-adsense-account" content={`ca-${GOOGLE_ADS_ID}`} />
+        {googleAdsClientId && (
+          <meta name="google-adsense-account" content={googleAdsClientId} />
         )}
         <Meta />
         <Links />

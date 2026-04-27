@@ -57,6 +57,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
       lang={lang}
       theme="cupcake"
       DOMAIN={rootData?.DOMAIN}
+      GOOGLE_ADS_ID={rootData?.GOOGLE_ADS_ID}
       GOOGLE_ANALYTICS_ID={rootData?.GOOGLE_ANALYTICS_ID}
     >
       {children}

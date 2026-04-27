@@ -10,7 +10,8 @@
     "enabled": true
   },
   "vars": {
-    "GOOGLE_ANALYTICS_ID": "G-WXB3YC322J"
+    "GOOGLE_ANALYTICS_ID": "G-WXB3YC322J",
+    "GOOGLE_ADS_ID": "ca-pub-7718142048250196"
   },
   "d1_databases": [
     {

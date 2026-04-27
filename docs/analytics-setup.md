@@ -109,6 +109,19 @@ Cloudflare 配置入口。
 6. 在新项目的根文档壳里继续组合这两个组件
 7. 如果 root loader 字段名有变化，同步调整传参即可
 
+最小操作步骤：
+
+1. 在 GA4 后台创建数据流
+2. 复制 measurement ID，格式通常是 `G-XXXXXXXXXX`
+3. 在 `wrangler.jsonc` 的 `vars` 中添加或替换：
+
+```jsonc
+"GOOGLE_ANALYTICS_ID": "G-XXXXXXXXXX"
+```
+
+4. 如果需要本地 Cloudflare 预览也启用统计，同步修改 `wrangler.local.jsonc`
+5. 部署后按下方验证步骤检查 `gtag/js` 和 `collect` 请求
+
 如果你以后还想接别的埋点平台，建议沿用相同模式：
 
 - 工具层放 `app/lib/analytics/*`
@@ -132,6 +145,9 @@ Cloudflare 配置入口。
 
 - GA measurement ID 是公开标识，不是 secret
 - 真正的关键是保证 Worker runtime 能拿到它
+- `GOOGLE_ANALYTICS_ID` 是可选配置
+- 没有配置 `GOOGLE_ANALYTICS_ID` 时，网站可以正常上线，只是不启用 GA4 统计
+- 没有配置 `GOOGLE_ANALYTICS_ID` 时，`GoogleAnalytics` 会返回 `null`，`RouteAnalytics` 也不会发送页面访问事件
 
 ## How To Verify
 
