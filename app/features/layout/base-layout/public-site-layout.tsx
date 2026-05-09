@@ -6,6 +6,7 @@ import {
   SITE_SUPPORT_MAILTO,
 } from "~/config/site";
 
+import { AdsterraNativeAd } from "./adsterra-native-ad";
 import { Footer, type FooterNavLink } from "./footer";
 import {
   MarketingHeader,
@@ -200,6 +201,8 @@ export const PublicSiteLayout = ({
       />
 
       <main className={clsx("flex-1", mainClassName)}>{children}</main>
+
+      <AdsterraNativeAd />
 
       <Footer
         brandTo={homePath}

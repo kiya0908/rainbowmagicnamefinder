@@ -1,5 +1,6 @@
 import clsx from "clsx";
 
+import { AdsterraNativeAd } from "~/features/layout/base-layout/adsterra-native-ad";
 import { Footer, type FooterNavLink } from "~/features/layout/base-layout/footer";
 import {
   MarketingHeader,
@@ -62,6 +63,8 @@ export const FairySiteLayout = ({
       </div>
 
       <main className={clsx("flex-1", mainClassName)}>{children}</main>
+
+      <AdsterraNativeAd />
 
       <Footer
         brandName={FAIRY_FINDER_PRODUCT_NAME}
