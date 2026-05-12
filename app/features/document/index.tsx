@@ -9,8 +9,10 @@ import { useEffect, useRef } from "react";
 
 import {
   GoogleAnalytics,
+  MicrosoftClarity,
   RouteAnalytics,
 } from "~/components/analytics";
+import { MICROSOFT_CLARITY_PROJECT_ID } from "~/lib/analytics/clarity";
 
 interface DocumentProps {
   DOMAIN?: string;
@@ -99,6 +101,7 @@ export function Document({
         )}
         <Meta />
         <Links />
+        <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
         <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
       </head>
       <body>
