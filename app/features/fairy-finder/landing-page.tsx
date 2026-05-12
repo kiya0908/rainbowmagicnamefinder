@@ -166,14 +166,14 @@ export default function FairyFinderLandingPage() {
                     className="pointer-events-none absolute -top-16 right-0 h-44 w-44 rounded-full bg-primary/15 blur-2xl"
                   />
                   <div className="relative space-y-4">
-                    <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                      No exact fairy match found
-                    </p>
                     <h3 className="text-2xl font-extrabold text-on-surface md:text-3xl">
-                      {submittedName ? `No match for "${submittedName}"` : "No match found"}
+                      Oops! It looks like there isn't an official Rainbow Magic
+                      fairy named {submittedName ?? "that name"} yet. But don't
+                      worry, the fairy world is always growing!
                     </h3>
                     <p className="text-sm text-on-surface-variant md:text-base">
-                      Try entering an exact fairy first name from the Rainbow Magic list.
+                      Try this instead: Search for your middle name, your
+                      nickname, or check if your best friend has a fairy!
                     </p>
                     <div className="pt-2">
                       <GenerateAgainButton

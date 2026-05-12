@@ -237,6 +237,11 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
           "The catalog includes hundreds of entries across early and newer releases. This gives users both famous names and less common characters while keeping routine quality checks manageable.",
       },
       {
+        question: "Is there a Rainbow Magic fairy with my name?",
+        answer:
+          "You can find out right here! Just type your real name into our search box above. We will instantly check the official Rainbow Magic fairy list to see if a fairy shares your exact name. Give it a try!",
+      },
+      {
         question: "Why do I get a no-match result after entering a name?",
         answer:
           "Matching is exact-first-name only. If input does not match a known record, the page returns no-match by design. The old random fallback was removed because strict matching is easier to trust and test.",
