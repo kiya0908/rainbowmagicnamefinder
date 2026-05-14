@@ -1,3 +1,5 @@
+import { Link } from "~/components/common";
+
 import { FAIRY_LIST } from "../data/fairies";
 import { getFairyImageSrc } from "../utils/image";
 
@@ -11,9 +13,12 @@ export const CoverMarquee = () => {
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
           Official Cover Preview
         </p>
-        <span className="rounded-full bg-secondary-fixed px-3 py-1 text-xs font-semibold text-on-surface-variant">
-          {COVER_ITEMS.length}+ titles
-        </span>
+        <Link
+          to="/fairy-names"
+          className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-sm transition hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
+        >
+          View all {FAIRY_LIST.length} titles
+        </Link>
       </div>
 
       <div className="fairy-cover-marquee mt-4">

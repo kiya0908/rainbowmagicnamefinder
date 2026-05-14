@@ -16,12 +16,13 @@ export default function FairyFinderLandingPage() {
   const [result, setResult] = useState<FairyData | null>(null);
   const [submittedName, setSubmittedName] = useState<string | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [lookupSequence, setLookupSequence] = useState(0);
   const [inputRenderKey, setInputRenderKey] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const inputZoneRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const resultSectionRef = useRef<HTMLElement | null>(null);
+  const resultPanelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     inputRef.current =
@@ -33,15 +34,35 @@ export default function FairyFinderLandingPage() {
     setSubmittedName(name);
     setHasSubmitted(true);
     setResult(matchFairy(name));
+    setLookupSequence((previous) => previous + 1);
   };
 
   useEffect(() => {
     if (!hasSubmitted) return;
-    resultSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [hasSubmitted, result]);
+
+    const scrollTimer = window.setTimeout(() => {
+      const resultPanel = resultPanelRef.current;
+      if (!resultPanel) return;
+
+      const rect = resultPanel.getBoundingClientRect();
+      const viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      const preferredTop = Math.min(120, Math.max(72, viewportHeight * 0.14));
+      const isTooLow = rect.top > viewportHeight * 0.55;
+      const isTooHigh = rect.top < 16;
+
+      if (!isTooLow && !isTooHigh) return;
+
+      window.scrollBy({
+        top: rect.top - preferredTop,
+        behavior: "smooth",
+      });
+    }, 80);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+    };
+  }, [hasSubmitted, lookupSequence]);
 
   const handleGenerateAgain = () => {
     setResult(null);
@@ -114,6 +135,83 @@ export default function FairyFinderLandingPage() {
               submitLabel={copy.hero.submitLabel}
               onSubmit={handleSubmit}
             />
+
+            <AnimatePresence initial={false} mode="popLayout">
+              {hasSubmitted ? (
+                <motion.div
+                  key={`lookup-${lookupSequence}`}
+                  ref={resultPanelRef}
+                  id="result"
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  role="region"
+                  aria-live="polite"
+                  aria-label="Fairy lookup result"
+                  className="mx-auto mt-6 w-full max-w-4xl scroll-mt-6"
+                >
+                  {result ? (
+                    <ResultCard
+                      fairy={result}
+                      actions={
+                        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                          <ShareActions
+                            title={`${result.fullTitle} | ${copy.hero.title}`}
+                            text={`I got ${result.fullTitle}. What is your fairy name?`}
+                          />
+                          <GenerateAgainButton
+                            onGenerateAgain={handleGenerateAgain}
+                            focusTargetRef={inputZoneRef}
+                          />
+                        </div>
+                      }
+                    />
+                  ) : (
+                    <motion.section
+                      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      className="relative mx-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/85 via-secondary-fixed/40 to-white/70 p-6 text-center shadow-[0_30px_80px_rgba(92,57,173,0.25)] backdrop-blur-xl md:p-8"
+                    >
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute -top-16 right-0 h-44 w-44 rounded-full bg-primary/15 blur-2xl"
+                      />
+                      <div className="relative space-y-4">
+                        <h3 className="text-2xl font-extrabold text-on-surface md:text-3xl">
+                          We couldn't find an official Rainbow Magic fairy named{" "}
+                          {submittedName ?? "that name"} yet.
+                        </h3>
+                        <p className="text-sm text-on-surface-variant md:text-base">
+                          Try a different spelling, a nickname, or another first
+                          name from the Rainbow Magic list.
+                        </p>
+                        <div className="pt-2">
+                          <GenerateAgainButton
+                            onGenerateAgain={handleGenerateAgain}
+                            focusTargetRef={inputZoneRef}
+                          />
+                        </div>
+                      </div>
+                    </motion.section>
+                  )}
+
+                  <p className="mt-6 text-center text-sm text-on-surface-variant/80">
+                    Want to create your own fairy? Coming soon!
+                  </p>
+                  {submittedName && result ? (
+                    <p className="mt-2 text-center text-xs text-on-surface-variant/70">
+                      Matched from name: {submittedName}
+                    </p>
+                  ) : submittedName ? (
+                    <p className="mt-2 text-center text-xs text-on-surface-variant/70">
+                      Searched name: {submittedName}
+                    </p>
+                  ) : null}
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </motion.div>
 
           <motion.div
@@ -126,81 +224,6 @@ export default function FairyFinderLandingPage() {
           </motion.div>
         </div>
       </section>
-
-      <AnimatePresence>
-        {hasSubmitted ? (
-          <motion.section
-            ref={resultSectionRef}
-            id="result"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="bg-surface-container-low px-6 pb-20"
-          >
-            <div className="mx-auto max-w-4xl">
-              {result ? (
-                <ResultCard
-                  fairy={result}
-                  actions={
-                    <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-                      <ShareActions
-                        title={`${result.fullTitle} | ${copy.hero.title}`}
-                        text={`I got ${result.fullTitle}. What is your fairy name?`}
-                      />
-                      <GenerateAgainButton
-                        onGenerateAgain={handleGenerateAgain}
-                        focusTargetRef={inputZoneRef}
-                      />
-                    </div>
-                  }
-                />
-              ) : (
-                <motion.section
-                  initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="relative mx-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/85 via-secondary-fixed/40 to-white/70 p-6 text-center shadow-[0_30px_80px_rgba(92,57,173,0.25)] backdrop-blur-xl md:p-8"
-                >
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute -top-16 right-0 h-44 w-44 rounded-full bg-primary/15 blur-2xl"
-                  />
-                  <div className="relative space-y-4">
-                    <h3 className="text-2xl font-extrabold text-on-surface md:text-3xl">
-                      Oops! It looks like there isn't an official Rainbow Magic
-                      fairy named {submittedName ?? "that name"} yet. But don't
-                      worry, the fairy world is always growing!
-                    </h3>
-                    <p className="text-sm text-on-surface-variant md:text-base">
-                      Try this instead: Search for your middle name, your
-                      nickname, or check if your best friend has a fairy!
-                    </p>
-                    <div className="pt-2">
-                      <GenerateAgainButton
-                        onGenerateAgain={handleGenerateAgain}
-                        focusTargetRef={inputZoneRef}
-                      />
-                    </div>
-                  </div>
-                </motion.section>
-              )}
-
-              <p className="mt-6 text-center text-sm text-on-surface-variant/80">
-                Want to create your own fairy? Coming soon!
-              </p>
-              {submittedName && result ? (
-                <p className="mt-2 text-center text-xs text-on-surface-variant/70">
-                  Matched from name: {submittedName}
-                </p>
-              ) : submittedName ? (
-                <p className="mt-2 text-center text-xs text-on-surface-variant/70">
-                  Searched name: {submittedName}
-                </p>
-              ) : null}
-            </div>
-          </motion.section>
-        ) : null}
-      </AnimatePresence>
 
       <section id="how-it-works" className="bg-surface px-6 py-20">
         <div className="mx-auto max-w-6xl">

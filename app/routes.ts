@@ -20,6 +20,7 @@ const legalRoutes = await flatRoutes({ rootDirectory: "./routes/_legal" });
 export default [
   // 首页 — 独立路由，不经过 BaseLayout
   index("./routes/home.tsx"),
+  route("fairy-names", "./routes/fairy-names.tsx"),
   route("zh", "./routes/zh.tsx"),
   route("tools", "./routes/content/tools.tsx"),
   route("tools/:slug", "./routes/content/tools.$slug.tsx"),

@@ -97,6 +97,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
     signIn: "Sign in",
     credits: "Credits",
     navLinks: [
+      { label: "Fairy Names", href: "/fairy-names" },
       { label: "How It Works", href: "#how-it-works" },
       { label: "What Is", href: "#what-is" },
       { label: "FAQ", href: "#faq" },
@@ -110,6 +111,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         label: "Explore",
         list: [
+          { to: "/fairy-names", label: "Fairy Names" },
           { to: "#how-it-works", label: "How It Works" },
           { to: "#what-is", label: "What Is" },
           { to: "#faq", label: "FAQ" },
