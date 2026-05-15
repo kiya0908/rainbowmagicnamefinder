@@ -16,6 +16,11 @@ const defaultSitemaps: Sitemaps[] = [
     lastmod: new Date("2026-04-12"),
   },
   {
+    path: "/fairy-names",
+    priority: "0.8",
+    lastmod: new Date("2026-05-14"),
+  },
+  {
     path: "/legal/privacy",
     priority: "0.6",
     lastmod: new Date("2026-03-24"),
