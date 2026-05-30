@@ -28,7 +28,6 @@ export const meta: Route.MetaFunction = ({ matches }) => {
       description,
       alternates: [
         { pathname: "/", hrefLang: "en" },
-        { pathname: "/zh", hrefLang: "zh" },
         { pathname: "/", hrefLang: "x-default" },
       ],
       jsonLd: createJsonLdGraph(

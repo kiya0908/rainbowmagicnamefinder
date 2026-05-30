@@ -20,7 +20,7 @@ export const FairyImage = ({
   return (
     <button
       type="button"
-      className="group relative mx-auto aspect-[3/4] w-full max-w-[280px] overflow-hidden rounded-2xl border border-white/40 bg-surface-container-low text-left shadow-[0_20px_50px_rgba(80,50,140,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_58px_rgba(80,50,140,0.3)] focus:outline-none focus:ring-4 focus:ring-primary/25"
+      className="group relative mx-auto aspect-[3/4] w-full max-w-[220px] overflow-hidden rounded-2xl border border-white/40 bg-surface-container-low text-left shadow-[0_20px_50px_rgba(80,50,140,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_58px_rgba(80,50,140,0.3)] focus:outline-none focus:ring-4 focus:ring-primary/25 md:max-w-[280px]"
       onClick={onOpenPreview}
       aria-label={`Open larger cover preview for ${fairyName}`}
     >

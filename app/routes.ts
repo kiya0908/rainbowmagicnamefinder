@@ -1,7 +1,12 @@
-import { type RouteConfig, layout, prefix, index, route } from "@react-router/dev/routes";
+import {
+  type RouteConfig,
+  index,
+  layout,
+  prefix,
+  route,
+} from "@react-router/dev/routes";
 import { flatRoutes } from "@react-router/fs-routes";
 
-// 各功能模块路由
 const apiRoutes: RouteConfig = [
   route("auth", "./routes/_api/auth/route.ts"),
   route("fairy-image", "./routes/_api/fairy-image/route.ts"),
@@ -10,31 +15,22 @@ const apiRoutes: RouteConfig = [
   // - ./routes/_api/logout/route.ts
   // Stage 5: payment flow is intentionally disabled on this site:
   // - ./routes/_api/create-order/route.ts
-  // Stage 6: linkedin translator APIs are physically removed:
-  // - ./routes/_api/translate.linkedin/route.ts
-  // - ./routes/_api/entitlement.linkedin/route.ts
+  // Stage 6: old translator APIs are physically removed.
 ];
+
 const metaRoutes = await flatRoutes({ rootDirectory: "./routes/_meta" });
 const legalRoutes = await flatRoutes({ rootDirectory: "./routes/_legal" });
 
 export default [
-  // 首页 — 独立路由，不经过 BaseLayout
   index("./routes/home.tsx"),
   route("fairy-names", "./routes/fairy-names.tsx"),
   route("zh", "./routes/zh.tsx"),
-  route("tools", "./routes/content/tools.tsx"),
-  route("tools/:slug", "./routes/content/tools.$slug.tsx"),
-  route("templates", "./routes/content/templates.tsx"),
-  route("templates/:slug", "./routes/content/templates.$slug.tsx"),
-  route("blog", "./routes/content/blog.tsx"),
-  route("blog/:slug", "./routes/content/blog.$slug.tsx"),
-  route("zh/tools", "./routes/content/zh.tools.tsx"),
-  route("zh/tools/:slug", "./routes/content/zh.tools.$slug.tsx"),
-  route("zh/templates", "./routes/content/zh.templates.tsx"),
-  route("zh/templates/:slug", "./routes/content/zh.templates.$slug.tsx"),
-  route("zh/blog", "./routes/content/zh.blog.tsx"),
-  route("zh/blog/:slug", "./routes/content/zh.blog.$slug.tsx"),
-  // 其他需要 BaseLayout 的页面
+  route("tools/*", "./routes/legacy-tools-redirect.tsx"),
+  route("templates/*", "./routes/legacy-templates-redirect.tsx"),
+  route("blog/*", "./routes/legacy-blog-redirect.tsx"),
+  route("zh/tools/*", "./routes/legacy-zh-tools-redirect.tsx"),
+  route("zh/templates/*", "./routes/legacy-zh-templates-redirect.tsx"),
+  route("zh/blog/*", "./routes/legacy-zh-blog-redirect.tsx"),
   ...prefix("base", [
     layout("./routes/base/layout/index.tsx", [
       index("./routes/base/index.tsx"),

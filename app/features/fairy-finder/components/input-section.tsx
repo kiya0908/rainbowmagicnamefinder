@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 interface InputSectionProps {
   label: string;
@@ -7,15 +7,22 @@ interface InputSectionProps {
   onSubmit: (name: string) => void;
 }
 
-export const InputSection = ({
+export interface InputSectionHandle {
+  focus: () => void;
+  setName: (name: string) => void;
+  submitName: (name: string) => void;
+}
+
+export const InputSection = forwardRef<InputSectionHandle, InputSectionProps>(({
   label,
   placeholder,
   submitLabel,
   onSubmit,
-}: InputSectionProps) => {
+}, ref) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const submittingTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -26,12 +33,10 @@ export const InputSection = ({
     };
   }, []);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const value = name.trim();
+  const submitValue = (rawValue: string) => {
+    const value = rawValue.trim();
     if (!value) {
-      setError("Please enter your name first.");
+      setError("Enter a first name to find your Rainbow Magic fairy.");
       return;
     }
 
@@ -49,6 +54,23 @@ export const InputSection = ({
     }, 360);
   };
 
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+    setName: (nextName: string) => {
+      setName(nextName);
+      setError("");
+    },
+    submitName: (nextName: string) => {
+      setName(nextName);
+      submitValue(nextName);
+    },
+  }));
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    submitValue(name);
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -59,6 +81,7 @@ export const InputSection = ({
       </label>
       <div className="flex flex-col gap-3 md:flex-row">
         <input
+          ref={inputRef}
           type="text"
           value={name}
           onChange={(event) => {
@@ -67,7 +90,9 @@ export const InputSection = ({
           }}
           placeholder={placeholder}
           className="h-12 flex-1 rounded-xl border border-outline-variant bg-white px-4 text-base text-on-surface outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
-          autoComplete="off"
+          autoComplete="given-name"
+          autoCapitalize="words"
+          inputMode="text"
         />
         <button
           type="submit"
@@ -83,4 +108,6 @@ export const InputSection = ({
       </p>
     </form>
   );
-};
+});
+
+InputSection.displayName = "InputSection";

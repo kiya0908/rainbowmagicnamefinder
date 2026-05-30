@@ -31,7 +31,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const footer: BaseLayoutProps["footer"] = {
     navLinks: [
       {
-        label: "Tools",
+        label: "Explore",
         list: [{ to: "/", label: "Rainbow Magic Fairy Name Finder" }],
       },
       {
@@ -49,6 +49,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
         list: [
           { to: "/legal/terms", label: "Terms of Use", target: "_blank" },
           { to: "/legal/privacy", label: "Privacy Policy", target: "_blank" },
+          { to: "/legal/cookies", label: "Cookie Policy", target: "_blank" },
           {
             to: "/legal/acceptable-use",
             label: "Acceptable Use Policy",

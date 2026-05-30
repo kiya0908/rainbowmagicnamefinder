@@ -30,8 +30,6 @@ export interface PLAN {
 // Creem test product IDs.
 export const CREEM_TEST_PRODUCT_IDS = {
   credits: "prod_3CJ451WCJzi8jjfvKu4vKy",
-  linkedinCredit200: "prod_3CJ451WCJzi8jjfvKu4vKy",
-  linkedinCredit500: "prod_4YSZQ9HNenZIzUUK9RDXQd",
   basicMonthly: "prod_7YjALT2jGck6urOhF5c9eY",
   proMonthly: "prod_7fd4FH33suoTnUkg9uN0xt",
   proYearly: "prod_6Fb51lq3LL7rRFtUuyuxar",
@@ -40,8 +38,6 @@ export const CREEM_TEST_PRODUCT_IDS = {
 // Creem live product IDs.
 export const CREEM_LIVE_PRODUCT_IDS = {
   credits: "prod_4n1E0Ar5DuQzWVMZmqWW8q",
-  linkedinCredit200: "prod_4n1E0Ar5DuQzWVMZmqWW8q",
-  linkedinCredit500: "prod_xblzifWFyHWCvOaGlvek8",
   basicMonthly: "prod_68vCzqxlaaGpHVRUwaC1Ke",
   proMonthly: "prod_2n5YxziKFezbUrhzX6dKxn",
   proYearly: "prod_3LgwlSFZqQeZiKM3DaMlZ6",

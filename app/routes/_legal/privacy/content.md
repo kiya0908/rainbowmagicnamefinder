@@ -6,19 +6,19 @@ Last updated: March 23, 2026
 
 This Privacy Policy explains how **Rainbow Magic Fairy Name Finder** collects, uses, and protects your information.
 
-Rainbow Magic Fairy Name Finder is an independent product and is not affiliated with or endorsed by any third-party social platform.
+Rainbow Magic Fairy Name Finder is an independent fan discovery tool and is not affiliated with or endorsed by the Rainbow Magic publishers, authors, illustrators, or any third-party rights holder.
 
 ## 2. Information We Collect
 
-- Account data: email and profile details used for login, account management, and support
-- User content: text inputs you submit and generated outputs returned by the Service
+- Account data: email and profile details used for optional login, account management, and support
+- User content: first-name lookup inputs and catalog interactions you submit to the Service
 - Usage data: device, browser, IP, logs, and analytics events
-- Billing data: payment processing is handled by Creem; we do not store full card details
+- Billing data: if optional paid features are introduced, payment processing may be handled by a payment provider; we do not store full card details
 
 ## 3. How We Use Information
 
 - Provide, maintain, and improve the Service
-- Operate billing, credits, and account features
+- Operate optional account features and any future billing or credit features
 - Detect abuse, fraud, and policy violations
 - Respond to support and legal requests
 - Comply with legal obligations

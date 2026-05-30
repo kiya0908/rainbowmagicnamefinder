@@ -2,26 +2,16 @@ import type { RenderableTreeNodes } from "@markdoc/markdoc";
 
 import { Logo, Link } from "~/components/common";
 import { MarkdownArticle } from "~/components/markdown";
-import { PublicSiteLayout } from "~/features/layout/base-layout/public-site-layout";
-
-type PublicSiteLocale = "en" | "zh";
+import { FairySiteLayout } from "~/features/fairy-finder/fairy-site-layout";
 
 interface LegalProps {
   node: RenderableTreeNodes;
   withHomeChrome?: boolean;
-  locale?: PublicSiteLocale;
 }
-
-const getHomePath = (locale: PublicSiteLocale) =>
-  locale === "zh" ? "/zh" : "/";
-
-const getLocaleSwitchPath = (locale: PublicSiteLocale) =>
-  getHomePath(locale === "en" ? "zh" : "en");
 
 export const Legal = ({
   node,
   withHomeChrome = false,
-  locale = "en",
 }: LegalProps) => {
   if (!withHomeChrome) {
     return (
@@ -44,11 +34,7 @@ export const Legal = ({
   }
 
   return (
-    <PublicSiteLayout
-      locale={locale}
-      localeSwitchTo={getLocaleSwitchPath(locale)}
-      mainClassName="bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.12),transparent_56%)] px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20"
-    >
+    <FairySiteLayout mainClassName="bg-surface-container-low px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
       <section className="mx-auto w-full max-w-6xl">
         <div className="overflow-hidden rounded-[2rem] border border-outline-variant bg-white/95 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.55)]">
           <div className="h-1.5 w-full bg-gradient-to-r from-primary/70 via-primary/30 to-transparent" />
@@ -61,6 +47,6 @@ export const Legal = ({
           </div>
         </div>
       </section>
-    </PublicSiteLayout>
+    </FairySiteLayout>
   );
 };

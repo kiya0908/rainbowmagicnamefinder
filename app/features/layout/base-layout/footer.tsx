@@ -35,9 +35,10 @@ const DEFAULT_FOOTER_LINKS: FooterNavLink[] = [
   {
     label: "Explore",
     list: [
-      { to: "/tools", label: "Tools" },
-      { to: "/templates", label: "Templates" },
-      { to: "/blog", label: "Blog" },
+      { to: "/fairy-names", label: "Fairy Names" },
+      { to: "/#how-it-works", label: "How It Works" },
+      { to: "/#what-is", label: "What Is" },
+      { to: "/#faq", label: "FAQ" },
     ],
   },
   {
@@ -45,7 +46,7 @@ const DEFAULT_FOOTER_LINKS: FooterNavLink[] = [
     list: [
       { to: "/legal/privacy", label: "Privacy Policy" },
       { to: "/legal/terms", label: "Terms of Service" },
-      { to: "/legal/cookie", label: "Cookie Policy" },
+      { to: "/legal/cookies", label: "Cookie Policy" },
     ],
   },
   {

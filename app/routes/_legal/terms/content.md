@@ -4,9 +4,9 @@ Last updated: March 23, 2026
 
 ## 1. Introduction
 
-Welcome to **Rainbow Magic Fairy Name Finder**. These Terms of Use ("Terms") govern your access to and use of our AI-powered text rewriting and tone-conversion services (the "Service").
+Welcome to **Rainbow Magic Fairy Name Finder**. These Terms of Use ("Terms") govern your access to and use of our name-based fairy identity lookup, catalog browsing, and related fan discovery experiences (the "Service").
 
-Rainbow Magic Fairy Name Finder is an independent product and is not affiliated with or endorsed by any third-party social platform.
+Rainbow Magic Fairy Name Finder is an independent fan discovery tool and is not affiliated with or endorsed by the Rainbow Magic publishers, authors, illustrators, or any third-party rights holder.
 
 By using the Service, you agree to these Terms.
 
@@ -16,11 +16,11 @@ You must be at least 18 years old, or the legal age of majority in your jurisdic
 
 ## 3. Service Description
 
-Rainbow Magic Fairy Name Finder provides name-based fairy identity matching and related interactive content experiences.
+Rainbow Magic Fairy Name Finder provides name-based fairy identity lookup, catalog browsing, and related fan discovery experiences.
 
 ## 4. Accounts and Billing
 
-Some features require login, paid credits, or other paid access. Prices and product details are shown on the website and may change over time.
+The core fairy name lookup and catalog browsing experience is currently provided as a lightweight public tool. If optional account or paid features are introduced later, prices and product details will be shown on the website and may change over time.
 
 ## 5. Acceptable Use
 
@@ -28,7 +28,7 @@ You may not use the Service for illegal, abusive, deceptive, infringing, or harm
 
 ## 6. User Content and Output
 
-You retain rights to the content you submit. You grant us a limited license to process your input and generate output solely to operate and improve the Service. You are responsible for reviewing outputs before publishing or relying on them.
+You retain rights to the names or text you submit. You grant us a limited license to process your input solely to operate, secure, and improve the Service. You are responsible for checking any catalog result before relying on it for a reading list, classroom activity, or purchase decision.
 
 ## 7. Intellectual Property
 

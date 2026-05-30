@@ -18,6 +18,9 @@ interface FairySiteLayoutProps {
   children: React.ReactNode;
 }
 
+const normalizeFairySitePath = (path: string) =>
+  path.startsWith("#") ? `/${path}` : path;
+
 export const FairySiteLayout = ({
   className,
   mainClassName,
@@ -27,7 +30,7 @@ export const FairySiteLayout = ({
 
   const headerNavLinks: MarketingHeaderNavLink[] = copy.navbar.navLinks.map(
     (item) => ({
-      to: item.href,
+      to: normalizeFairySitePath(item.href),
       label: item.label,
     })
   );
@@ -35,7 +38,7 @@ export const FairySiteLayout = ({
   const footerNavLinks: FooterNavLink[] = copy.footer.navLinks.map((group) => ({
     label: group.label,
     list: group.list.map((item) => ({
-      to: item.to,
+      to: normalizeFairySitePath(item.to),
       label: item.label,
       target: item.target as React.HTMLAttributeAnchorTarget | undefined,
     })),
@@ -51,7 +54,7 @@ export const FairySiteLayout = ({
         `}
       </style>
 
-      <div className="fairy-header-no-auth">
+      <div className="fairy-header-no-auth sticky top-0 z-50">
         <MarketingHeader
           logoAlt={copy.navbar.logoAlt}
           logoLabel={FAIRY_FINDER_PRODUCT_NAME}

@@ -60,22 +60,22 @@ export const ResultCard = ({ fairy, actions }: ResultCardProps) => {
         />
 
         <div className="relative space-y-6 text-center">
-          <FairyImage
-            imageUrl={fairy.imageUrl}
-            fairyName={fairy.fullTitle}
-            onOpenPreview={() => setIsPreviewOpen(true)}
-          />
-
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            {emotionalLine}
+            Your Fairy Match
           </p>
 
           <h3 className="text-2xl font-extrabold text-on-surface md:text-3xl">
             {fairy.fullTitle}
           </h3>
 
+          <FairyImage
+            imageUrl={fairy.imageUrl}
+            fairyName={fairy.fullTitle}
+            onOpenPreview={() => setIsPreviewOpen(true)}
+          />
+
           <p className="text-sm text-on-surface-variant md:text-base">
-            Does she look like you?
+            {emotionalLine}
           </p>
 
           <div className="pt-2">

@@ -1,4 +1,5 @@
 import clsx from "clsx";
+
 import {
   SITE_HOSTNAME,
   SITE_ORIGIN,
@@ -15,7 +16,7 @@ import {
 } from "./marketing-header";
 
 type PublicSiteLocale = "en" | "zh";
-type PublicSitePrimaryNav = "blog";
+type PublicSitePrimaryNav = "fairy-names";
 
 interface PublicSiteLayoutProps {
   locale: PublicSiteLocale;
@@ -43,6 +44,19 @@ interface PublicSiteCopy {
 const PROJECT_FOOTER_DESCRIPTION =
   "Find your Rainbow Magic fairy identity in seconds and share it with friends.";
 
+const EXPLORE_LINKS = [
+  { to: "/fairy-names", label: "Fairy Names" },
+  { to: "/#how-it-works", label: "How It Works" },
+  { to: "/#what-is", label: "What Is" },
+  { to: "/#faq", label: "FAQ" },
+];
+
+const LEGAL_LINKS = [
+  { to: "/legal/privacy", label: "Privacy Policy" },
+  { to: "/legal/terms", label: "Terms of Service" },
+  { to: "/legal/cookies", label: "Cookie Policy" },
+];
+
 const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
   en: {
     navbar: {
@@ -50,32 +64,17 @@ const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
       signIn: "Sign in with Google",
       credits: "Credits",
       navLinks: [
-        { href: "/tools", label: "Tools" },
-        { href: "/templates", label: "Templates" },
-        { href: "/blog", label: "Blog" },
+        { href: "/fairy-names", label: "Fairy Names" },
+        { href: "/#how-it-works", label: "How It Works" },
+        { href: "/#what-is", label: "What Is" },
+        { href: "/#faq", label: "FAQ" },
       ],
     },
     footer: {
       directoryBadgeTitle: "Featured in",
       navLinks: [
-        {
-          label: "Explore",
-          list: [
-            { to: "/tools", label: "Tools" },
-            { to: "/templates", label: "Templates" },
-            { to: "/blog", label: "Blog" },
-          ],
-        },
-        {
-          label: "Legal",
-          list: [
-            { to: "/legal/privacy", label: "Privacy Policy" },
-            { to: "/legal/terms", label: "Terms of Use" },
-            { to: "/legal/cookie", label: "Cookie Policy" },
-            { to: "/legal/acceptable-use", label: "Acceptable Use Policy" },
-            { to: "/legal/refund", label: "Refund Policy" },
-          ],
-        },
+        { label: "Explore", list: EXPLORE_LINKS },
+        { label: "Legal", list: LEGAL_LINKS },
         {
           label: "Support",
           list: [
@@ -97,50 +96,20 @@ const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
   zh: {
     navbar: {
       logoAlt: "Rainbow Magic Fairy Name Finder logo",
-      signIn: "Google 登录",
-      credits: "积分",
+      signIn: "Sign in with Google",
+      credits: "Credits",
       navLinks: [
-        { href: "/zh/tools", label: "工具" },
-        { href: "/zh/templates", label: "模板" },
-        { href: "/zh/blog", label: "博客" },
+        { href: "/fairy-names", label: "Fairy Names" },
+        { href: "/#how-it-works", label: "How It Works" },
+        { href: "/#what-is", label: "What Is" },
+        { href: "/#faq", label: "FAQ" },
       ],
     },
     footer: {
-      directoryBadgeTitle: "收录平台",
+      directoryBadgeTitle: "Featured in",
       navLinks: [
-        {
-          label: "导航",
-          list: [
-            { to: "/zh/tools", label: "工具" },
-            { to: "/zh/templates", label: "模板" },
-            { to: "/zh/blog", label: "博客" },
-          ],
-        },
-        {
-          label: "法务",
-          list: [
-            { to: "/legal/privacy", label: "隐私政策" },
-            { to: "/legal/terms", label: "使用条款" },
-            { to: "/legal/cookie", label: "Cookie 政策" },
-            { to: "/legal/acceptable-use", label: "可接受使用政策" },
-            { to: "/legal/refund", label: "退款政策" },
-          ],
-        },
-        {
-          label: "支持",
-          list: [
-            {
-              to: SITE_SUPPORT_MAILTO,
-              label: SITE_SUPPORT_EMAIL,
-              target: "_blank",
-            },
-            {
-              to: SITE_ORIGIN,
-              label: SITE_HOSTNAME,
-              target: "_blank",
-            },
-          ],
-        },
+        { label: "Explore", list: EXPLORE_LINKS },
+        { label: "Legal", list: LEGAL_LINKS },
       ],
     },
   },
@@ -149,11 +118,8 @@ const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
 const getPublicSiteHomePath = (locale: PublicSiteLocale) =>
   locale === "zh" ? "/zh" : "/";
 
-const getPublicSiteBlogPath = (locale: PublicSiteLocale) =>
-  locale === "zh" ? "/zh/blog" : "/blog";
-
 const getPublicSiteLocaleSwitchLabel = (locale: PublicSiteLocale) =>
-  locale === "en" ? "中文" : "English";
+  locale === "en" ? "Home" : "Home";
 
 const normalizePrimaryNavHref = (href: string, locale: PublicSiteLocale) =>
   href.startsWith("#") ? `${getPublicSiteHomePath(locale)}${href}` : href;
@@ -173,13 +139,14 @@ export const PublicSiteLayout = ({
   const primaryNavLinks: MarketingHeaderNavLink[] = copy.navbar.navLinks.map(
     (item) => {
       const to = normalizePrimaryNavHref(item.href, locale);
-      const isActive =
-        activePrimaryNav === "blog" && to === getPublicSiteBlogPath(locale);
 
       return {
         to,
         label: item.label,
-        className: isActive ? "text-primary font-semibold" : undefined,
+        className:
+          activePrimaryNav === "fairy-names" && to === "/fairy-names"
+            ? "text-primary font-semibold"
+            : undefined,
       };
     }
   );

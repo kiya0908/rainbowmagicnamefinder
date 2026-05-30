@@ -36,9 +36,9 @@ test("Google Analytics: pageview emits a page_view event with explicit SPA metad
     (...args: unknown[]) => calls.push(args),
     {
       measurementId: MEASUREMENT_ID,
-      pageLocation: "https://rainbowmagicfairyname.online/blog?ref=test",
-      pagePath: "/blog?ref=test",
-      pageTitle: "Fairy Blog",
+      pageLocation: "https://rainbowmagicfairyname.online/fairy-names?ref=test",
+      pagePath: "/fairy-names?ref=test",
+      pageTitle: "Fairy Names",
     }
   );
 
@@ -49,9 +49,9 @@ test("Google Analytics: pageview emits a page_view event with explicit SPA metad
       "page_view",
       {
         send_to: MEASUREMENT_ID,
-        page_location: "https://rainbowmagicfairyname.online/blog?ref=test",
-        page_path: "/blog?ref=test",
-        page_title: "Fairy Blog",
+        page_location: "https://rainbowmagicfairyname.online/fairy-names?ref=test",
+        page_path: "/fairy-names?ref=test",
+        page_title: "Fairy Names",
       },
     ],
   ]);

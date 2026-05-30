@@ -3,13 +3,17 @@ import { useEffect, useRef, useState } from "react";
 
 import { CoverMarquee } from "./components/cover-marquee";
 import { GenerateAgainButton } from "./components/generate-again-button";
-import { InputSection } from "./components/input-section";
+import { InputSection, type InputSectionHandle } from "./components/input-section";
 import { ResultCard } from "./components/result-card";
+import { FAIRY_LIST } from "./data/fairies";
 import { ShareActions } from "./components/share-actions";
 import type { FairyData } from "./data/types";
 import { FairySiteLayout } from "./fairy-site-layout";
 import { getFairyFinderHomeCopy } from "./i18n";
 import { matchFairy } from "./utils/match";
+import { Link } from "~/components/common";
+
+const SUGGESTED_NAMES = ["Lily", "Ruby", "Amber", "Saffron"] as const;
 
 export default function FairyFinderLandingPage() {
   const copy = getFairyFinderHomeCopy("en");
@@ -21,20 +25,24 @@ export default function FairyFinderLandingPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const inputZoneRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<InputSectionHandle | null>(null);
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    inputRef.current =
-      inputZoneRef.current?.querySelector<HTMLInputElement>("input[type='text']") ??
-      null;
-  }, [inputRenderKey]);
 
   const handleSubmit = (name: string) => {
     setSubmittedName(name);
     setHasSubmitted(true);
     setResult(matchFairy(name));
     setLookupSequence((previous) => previous + 1);
+  };
+
+  const trySuggestedName = (name: string, shouldSubmit = true) => {
+    if (shouldSubmit) {
+      inputRef.current?.submitName(name);
+      return;
+    }
+
+    inputRef.current?.setName(name);
+    inputRef.current?.focus();
   };
 
   useEffect(() => {
@@ -92,13 +100,13 @@ export default function FairyFinderLandingPage() {
 
   return (
     <FairySiteLayout>
-      <section className="bg-surface px-6 pb-24 pt-20 md:pb-28 md:pt-24">
+      <section className="bg-surface px-5 pb-20 pt-10 md:px-6 md:pb-28 md:pt-24">
         <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mb-6 inline-flex rounded-full bg-secondary-fixed px-4 py-1.5 text-xs font-bold tracking-widest text-primary"
+            className="mb-4 hidden rounded-full bg-secondary-fixed px-4 py-1.5 text-xs font-bold tracking-widest text-primary md:inline-flex"
           >
             {copy.hero.eyebrow}
           </motion.div>
@@ -107,7 +115,7 @@ export default function FairyFinderLandingPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.05 }}
-            className="mb-6 text-4xl font-extrabold leading-tight text-on-surface md:text-6xl"
+            className="mb-4 text-3xl font-extrabold leading-tight text-on-surface md:mb-6 md:text-6xl"
           >
             {copy.hero.title}
           </motion.h1>
@@ -116,7 +124,7 @@ export default function FairyFinderLandingPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1 }}
-            className="mx-auto mb-10 max-w-2xl text-lg text-on-surface-variant"
+            className="mx-auto mb-8 hidden max-w-2xl text-lg text-on-surface-variant md:block"
           >
             {copy.hero.subtitle}
           </motion.p>
@@ -130,11 +138,43 @@ export default function FairyFinderLandingPage() {
           >
             <InputSection
               key={inputRenderKey}
+              ref={inputRef}
               label={copy.hero.inputLabel}
               placeholder={copy.hero.inputPlaceholder}
               submitLabel={copy.hero.submitLabel}
               onSubmit={handleSubmit}
             />
+
+            {!hasSubmitted ? (
+              <p className="mx-auto mt-3 max-w-xl text-left text-sm text-on-surface-variant">
+                Enter a first name to find your Rainbow Magic fairy.
+              </p>
+            ) : null}
+
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-on-surface-variant">
+              <span>Try:</span>
+              {SUGGESTED_NAMES.map((name, index) => (
+                <span key={name} className="inline-flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="font-bold text-primary underline-offset-4 hover:underline focus:outline-none focus:ring-4 focus:ring-primary/15"
+                    onClick={() => trySuggestedName(name)}
+                  >
+                    {name}
+                  </button>
+                  {index < SUGGESTED_NAMES.length - 1 ? (
+                    <span aria-hidden="true">·</span>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+
+            <Link
+              to="/fairy-names"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl border border-primary/20 bg-white px-5 text-sm font-extrabold text-primary shadow-sm transition hover:border-primary/40 hover:bg-secondary-fixed/30 focus:outline-none focus:ring-4 focus:ring-primary/15"
+            >
+              Browse All {FAIRY_LIST.length} Fairy Names
+            </Link>
 
             <AnimatePresence initial={false} mode="popLayout">
               {hasSubmitted ? (
@@ -156,13 +196,19 @@ export default function FairyFinderLandingPage() {
                       fairy={result}
                       actions={
                         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-                          <ShareActions
-                            title={`${result.fullTitle} | ${copy.hero.title}`}
-                            text={`I got ${result.fullTitle}. What is your fairy name?`}
-                          />
                           <GenerateAgainButton
                             onGenerateAgain={handleGenerateAgain}
                             focusTargetRef={inputZoneRef}
+                          />
+                          <Link
+                            to="/fairy-names"
+                            className="inline-flex h-11 min-w-40 items-center justify-center rounded-xl bg-primary px-5 text-sm font-extrabold text-on-primary shadow-[0_14px_30px_rgba(139,92,246,0.28)] transition hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
+                          >
+                            Browse All Fairy Names
+                          </Link>
+                          <ShareActions
+                            title={`${result.fullTitle} | ${copy.hero.title}`}
+                            text={`I got ${result.fullTitle}. What is your fairy name?`}
                           />
                         </div>
                       }
@@ -180,18 +226,30 @@ export default function FairyFinderLandingPage() {
                       />
                       <div className="relative space-y-4">
                         <h3 className="text-2xl font-extrabold text-on-surface md:text-3xl">
-                          We couldn't find an official Rainbow Magic fairy named{" "}
-                          {submittedName ?? "that name"} yet.
+                          No exact match found.
                         </h3>
                         <p className="text-sm text-on-surface-variant md:text-base">
-                          Try a different spelling, a nickname, or another first
-                          name from the Rainbow Magic list.
+                          Try another spelling, or test one of these:
                         </p>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          {SUGGESTED_NAMES.map((name) => (
+                            <button
+                              key={name}
+                              type="button"
+                              className="rounded-full border border-primary/15 bg-white px-3 py-1.5 text-sm font-bold text-primary transition hover:border-primary/35 hover:bg-secondary-fixed/30 focus:outline-none focus:ring-4 focus:ring-primary/15"
+                              onClick={() => trySuggestedName(name)}
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
                         <div className="pt-2">
-                          <GenerateAgainButton
-                            onGenerateAgain={handleGenerateAgain}
-                            focusTargetRef={inputZoneRef}
-                          />
+                          <Link
+                            to="/fairy-names"
+                            className="inline-flex h-11 items-center justify-center rounded-xl bg-primary px-5 text-sm font-extrabold text-on-primary shadow-[0_14px_30px_rgba(139,92,246,0.28)] transition hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
+                          >
+                            Browse All Fairy Names
+                          </Link>
                         </div>
                       </div>
                     </motion.section>
@@ -218,7 +276,7 @@ export default function FairyFinderLandingPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.2 }}
-            className="mx-auto mt-10 max-w-5xl"
+            className="mx-auto mt-12 max-w-5xl md:mt-10"
           >
             <CoverMarquee />
           </motion.div>
@@ -424,22 +482,16 @@ export default function FairyFinderLandingPage() {
                     </span>
                   </button>
 
-                  <AnimatePresence initial={false}>
-                    {isOpen ? (
-                      <motion.div
-                        key={`faq-${index}`}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <p className="px-5 pb-5 text-sm leading-7 text-on-surface-variant md:text-base">
-                          {item.answer}
-                        </p>
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
+                  <div
+                    className={`overflow-hidden transition-all duration-200 ${
+                      isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                    aria-hidden={!isOpen}
+                  >
+                    <p className="px-5 pb-5 text-sm leading-7 text-on-surface-variant md:text-base">
+                      {item.answer}
+                    </p>
+                  </div>
                 </div>
               );
             })}

@@ -12,7 +12,7 @@ import {
   isIgnorableWebhookPaymentError,
 } from "../../app/.server/services/order-errors.js";
 
-test("Stage 6: legacy credit product constant remains available", () => {
+test("Credit product constant remains available", () => {
   assert.ok(CREDITS_PRODUCT.product_id);
   assert.equal(CREDITS_PRODUCT.type, "once");
   assert.ok(CREDITS_PRODUCT.credits > 0);
@@ -74,7 +74,10 @@ test("SEO site origin: localhost-like domains always fall back to the production
 });
 
 test("SEO site url: absolute URLs always use the production origin", () => {
-  assert.equal(toSiteUrl("/blog", "http://localhost:5173"), `${SITE_ORIGIN}/blog`);
+  assert.equal(
+    toSiteUrl("/fairy-names", "http://localhost:5173"),
+    `${SITE_ORIGIN}/fairy-names`
+  );
   assert.equal(
     toSiteUrl("/legal/privacy", "https://preview.rainbowmagicfairyname.online"),
     `${SITE_ORIGIN}/legal/privacy`

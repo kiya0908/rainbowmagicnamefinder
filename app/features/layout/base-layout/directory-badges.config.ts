@@ -61,7 +61,7 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
     badgeHeight: 55,
     active: false,
     target: "_blank",
-    note: "Stage 1 cleanup: disable linkedin-translator referral badge.",
+    note: "Disabled until the Fairy listing is verified.",
   },
     {
     id: "LaunchClash",

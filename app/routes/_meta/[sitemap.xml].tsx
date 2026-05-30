@@ -1,7 +1,6 @@
 import type { Route } from "./+types/[sitemap.xml]";
 
 import { getSiteOrigin, toSiteUrl } from "~/config/site";
-import { getContentSitemapEntries } from "~/features/content/registry";
 
 interface Sitemaps {
   path: string;
@@ -31,7 +30,7 @@ const defaultSitemaps: Sitemaps[] = [
     lastmod: new Date("2026-03-24"),
   },
   {
-    path: "/legal/cookie",
+    path: "/legal/cookies",
     priority: "0.6",
     lastmod: new Date("2026-03-24"),
   },
@@ -51,7 +50,7 @@ export const loader = async ({ context }: Route.LoaderArgs) => {
     priority: string;
   }> = [];
 
-  const sitemaps = [...defaultSitemaps, ...getContentSitemapEntries()];
+  const sitemaps = defaultSitemaps;
   const seen = new Set<string>();
 
   sitemaps.forEach((site) => {

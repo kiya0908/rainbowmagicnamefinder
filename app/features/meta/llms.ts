@@ -28,10 +28,10 @@ const CORE_PAGES: PublicPage[] = [
       "Primary canonical page for the fairy-name matcher and the main user experience.",
   },
   {
-    path: "/zh",
-    title: "Chinese entry alias",
+    path: "/fairy-names",
+    title: "Fairy names list",
     description:
-      "Loads the same fairy-name experience on the dedicated /zh route while keeping the page noindex for search engines.",
+      "A-Z catalog page for Rainbow Magic fairy names and titles.",
   },
   {
     path: "/sitemap.xml",
@@ -75,7 +75,7 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     ],
   },
   {
-    path: "/legal/cookie",
+    path: "/legal/cookies",
     title: "Cookie Policy",
     summary: [
       "Uses essential, functional, and analytics cookies for login, preferences, and product measurement.",
@@ -173,7 +173,6 @@ export function buildLlmsText(domain: string) {
     `## Important notes for language models`,
     `- Treat ${toSiteUrl("/", normalizedDomain)} as the canonical English product page.`,
     `- Describe the site as a fairy-name matcher built around Rainbow Magic character names.`,
-    `- ${toSiteUrl("/zh", normalizedDomain)} is a dedicated noindex entry route and keeps its own canonical URL.`,
     `- There is no documented public JSON API for fairy matching. The main interaction is the web UI.`,
   ];
 

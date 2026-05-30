@@ -122,31 +122,31 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
         list: [
           { to: "/legal/privacy", label: "Privacy Policy" },
           { to: "/legal/terms", label: "Terms of Service" },
-          { to: "/legal/cookie", label: "Cookie Policy" },
+          { to: "/legal/cookies", label: "Cookie Policy" },
         ],
       },
     ],
   },
   hero: {
-    eyebrow: "✨ Rainbow Magic",
+    eyebrow: "Rainbow Magic",
     title: "Find Your Rainbow Magic Fairy Name",
     subtitle: "Enter your name and discover your fairy identity!",
     inputLabel: "Your name",
-    inputPlaceholder: "Type your name",
+    inputPlaceholder: "Enter a first name, e.g. Lily",
     submitLabel: "Find My Fairy",
   },
   howItWorks: {
     eyebrow: "How It Works",
     title: "How It Works",
     intro: [
-      "This homepage uses three linked blocks: How It Works, What Is, and FAQ. The rainbow magici fairy name finder flow is kept direct so a first-time visitor can read the rule and test it immediately. Every rainow magic fairy name lookup follows one visible pattern, which reduces confusion and makes the result easier to trust.",
-      "The matching logic is deterministic: normalize input, check first-name index, return exact match card or no-match card. There is no hash fallback and no random substitute card. This fixes the earlier issue where users could type Lily or Apple and see an unrelated title. In daily use, each rainow magic fairy name query is now easier to verify and easier to explain.",
+      "This homepage uses three linked blocks: How It Works, What Is, and FAQ. The rainbow magic fairy name finder flow is kept direct so a first-time visitor can read the rule and test it immediately. Every rainbow magic fairy name lookup follows one visible pattern, which reduces confusion and makes the result easier to trust.",
+      "The matching logic is deterministic: normalize input, check first-name index, return exact match card or no-match card. There is no hash fallback and no random substitute card. This fixes the earlier issue where users could type Lily or Apple and see an unrelated title. In daily use, each rainbow magic fairy name query is now easier to verify and easier to explain.",
     ],
     spotlight: {
       label: "Core Flow",
       title: "Type -> Match -> Share",
       description:
-        "The engine is intentionally narrow: normalize input, check name index, render one stable card state. This keeps the rainbow magici fairy name finder predictable for readers and maintainers. If the input is a valid rainow magic fairy name, the result card shows the exact fairy title and cover image taken from the curated list.",
+        "The engine is intentionally narrow: normalize input, check name index, render one stable card state. This keeps the rainbow magic fairy name finder predictable for readers and maintainers. If the input is a valid rainbow magic fairy name, the result card shows the exact fairy title and cover image taken from the curated list.",
       examples: [
         "Enter a first name",
         "Get exact match",
@@ -161,7 +161,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
         description:
           "Start with the exact first name printed in official lists. One correct entry gives you a clean baseline before trying variants, nicknames, or uncertain spellings.",
         example:
-          "Try Lily, Ruby, Sky, Saffron, or Amber and compare how each rainow magic fairy name maps to a specific card title.",
+          "Try Lily, Ruby, Sky, Saffron, or Amber and compare how each rainbow magic fairy name maps to a specific card title.",
       },
       {
         label: "Tip 2",
@@ -169,7 +169,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
         description:
           "When no result appears, treat it as a data-check step. Remove extra spaces, punctuation, and short nicknames, then submit again with the canonical first name.",
         example:
-          "For demos or classroom use, keep a short verified list beside the input so users can test the rainbow magici fairy name finder without ambiguity.",
+          "For demos or classroom use, keep a short verified list beside the input so users can test the rainbow magic fairy name finder without ambiguity.",
       },
       {
         label: "Tip 3",
@@ -184,14 +184,14 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       title: "What appears in each result",
       paragraphs: [
         "Each successful match card includes a concrete fairy title and a book cover image. That pairing matters because many users remember names but not exact titles, and others remember titles but not character spelling.",
-        "If there is no hit, the interface states that directly and offers Try Another Name. In practice, this keeps repeated rainow magic fairy name checks fast for fans, teachers, and collectors who are validating long lists.",
+        "If there is no hit, the interface states that directly and offers Try Another Name. In practice, this keeps repeated rainbow magic fairy name checks fast for fans, teachers, and collectors who are validating long lists.",
       ],
     },
     highlightsTitle: "Why this format works",
     highlights: [
       "Clear state model: match or no-match, with no hidden random fallback.",
       "High scan speed: concise text blocks, predictable actions, and low reading overhead.",
-      "Reusable for QA when validating rainbow magici fairy name finder copy updates.",
+      "Reusable for QA when validating rainbow magic fairy name finder copy updates.",
       "Compatible with mobile and desktop name lookup behavior.",
       "Aligned with the new no-fallback matching rule.",
     ],
@@ -200,7 +200,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
     eyebrow: "Section 2",
     title: "What Is the Rainbow Magic Fairy Name Finder?",
     paragraphs: [
-      "The rainbow magic fairy name finder is a focused platform for the Rainbow Magic universe. It works as both identity generator and compact encyclopedia for readers who want fast, accurate discovery. Input a first name and get an exact card if the name exists. That makes each rainow magic fairy name search a reliable lookup, not a random suggestion.",
+      "The rainbow magic fairy name finder is a focused platform for the Rainbow Magic universe. It works as both identity generator and compact encyclopedia for readers who want fast, accurate discovery. Input a first name and get an exact card if the name exists. That makes each rainbow magic fairy name search a reliable lookup, not a random suggestion.",
       "The project is also a tribute to Fairyland, where fairies protect magic from Jack Frost and his goblins. Because the Orchard Series includes many books, readers often lose track of who belongs to which line. This page gives repeatable title-level identity. It includes classic names like Ruby the Red Fairy and Saffron the Yellow Fairy, and newer groups like Nur the Vlogger Fairy and Zelda the Gamer Fairy.",
       "Every fairy name is tied to a talent, element, or role, so the database can work as a reading guide. New readers can start with Amber the Orange Fairy or Fern the Green Fairy. Collectors can use the same page as a checklist across categories. It also keeps the community tone: friendship, kindness, and imagination, reflected by names like Florence the Friendship Fairy and Esther the Kindness Fairy.",
     ],
@@ -231,7 +231,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         question: "Where does the rainbow magic fairy name finder get its data?",
         answer:
-          "The dataset is curated from official Rainbow Magic / Orchard Series references and verified A-Z style listings. The rainbow magici fairy name finder maps first names to full titles and cover records, so each card points to a real series character.",
+          "The dataset is curated from official Rainbow Magic / Orchard Series references and verified A-Z style listings. The rainbow magic fairy name finder maps first names to full titles and cover records, so each card points to a real series character.",
       },
       {
         question: "How many characters are in the rainbow magic fairy name finder?",

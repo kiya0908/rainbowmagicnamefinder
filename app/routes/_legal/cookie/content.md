@@ -8,7 +8,7 @@ This Cookie Policy explains how **Rainbow Magic Fairy Name Finder** uses cookies
 
 ## 2. What We Use Cookies For
 
-- Essential cookies for login state, session security, and core functionality
+- Essential cookies for optional login state, session security, and core functionality
 - Functional cookies for language and interface preferences
 - Analytics cookies for aggregate traffic and product performance insights
 
