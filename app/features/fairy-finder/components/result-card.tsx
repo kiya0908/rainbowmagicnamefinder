@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
@@ -48,10 +47,7 @@ export const ResultCard = ({ fairy, actions }: ResultCardProps) => {
 
   return (
     <>
-      <motion.section
-        initial={{ opacity: 0, scale: 0.96, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
+      <section
         className="relative mx-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/85 via-secondary-fixed/40 to-white/70 p-6 shadow-[0_30px_80px_rgba(92,57,173,0.25)] backdrop-blur-xl md:p-8"
       >
         <div
@@ -99,7 +95,7 @@ export const ResultCard = ({ fairy, actions }: ResultCardProps) => {
             )}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {isPreviewOpen ? (
         <div
@@ -109,10 +105,7 @@ export const ResultCard = ({ fairy, actions }: ResultCardProps) => {
           aria-labelledby="fairy-preview-title"
           onClick={() => setIsPreviewOpen(false)}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+          <div
             className="relative max-h-full w-full max-w-4xl overflow-auto rounded-3xl bg-white p-4 shadow-[0_30px_90px_rgba(0,0,0,0.35)] md:p-6"
             onClick={(event) => event.stopPropagation()}
           >
@@ -153,7 +146,7 @@ export const ResultCard = ({ fairy, actions }: ResultCardProps) => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       ) : null}
     </>

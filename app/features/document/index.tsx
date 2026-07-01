@@ -13,6 +13,10 @@ import {
   RouteAnalytics,
 } from "~/components/analytics";
 import { MICROSOFT_CLARITY_PROJECT_ID } from "~/lib/analytics/clarity";
+import { scheduleNonCriticalTask } from "~/lib/performance/schedule-non-critical-task";
+
+const GOOGLE_ADSENSE_SCRIPT_ID = "google-adsense-script";
+const PAGEVIEW_SCRIPT_ID = "pageview-analytics-script";
 
 interface DocumentProps {
   DOMAIN?: string;
@@ -45,14 +49,17 @@ export function Document({
   useEffect(() => {
     if (!import.meta.env.PROD) return;
 
-    let adsScript: HTMLScriptElement;
-    let pScript: HTMLScriptElement;
-    let timeoutId: number | undefined;
+    let cancelScheduledTask: (() => void) | undefined;
 
     const injectScripts = () => {
       // Adsense
-      if (googleAdsClientId && !error) {
-        adsScript = document.createElement("script");
+      if (
+        googleAdsClientId &&
+        !error &&
+        !document.getElementById(GOOGLE_ADSENSE_SCRIPT_ID)
+      ) {
+        const adsScript = document.createElement("script");
+        adsScript.id = GOOGLE_ADSENSE_SCRIPT_ID;
         adsScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsClientId}`;
         adsScript.async = true;
         adsScript.crossOrigin = "anonymous";
@@ -60,9 +67,10 @@ export function Document({
         document.head.appendChild(adsScript);
       }
 
-      // Plausible
-      if (DOMAIN) {
-        pScript = document.createElement("script");
+      // Pageview
+      if (DOMAIN && !document.getElementById(PAGEVIEW_SCRIPT_ID)) {
+        const pScript = document.createElement("script");
+        pScript.id = PAGEVIEW_SCRIPT_ID;
         pScript.src = "https://app.pageview.app/js/script.js";
         pScript.dataset.domain = new URL(DOMAIN).hostname;
         pScript.defer = true;
@@ -72,7 +80,9 @@ export function Document({
     };
 
     const scheduleInjection = () => {
-      timeoutId = window.setTimeout(injectScripts, 1500);
+      cancelScheduledTask = scheduleNonCriticalTask(injectScripts, {
+        timeoutMs: 4000,
+      });
     };
 
     if (document.readyState === "complete") {
@@ -82,12 +92,8 @@ export function Document({
     }
 
     return () => {
-      if (timeoutId !== undefined) {
-        window.clearTimeout(timeoutId);
-      }
       window.removeEventListener("load", scheduleInjection);
-      if (adsScript) adsScript.remove();
-      if (pScript) pScript.remove();
+      cancelScheduledTask?.();
     };
   }, [googleAdsClientId, DOMAIN, error]);
 
@@ -101,11 +107,11 @@ export function Document({
         )}
         <Meta />
         <Links />
-        <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
-        <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
       </head>
       <body>
         {children}
+        <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
+        <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
         <RouteAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
         <ScrollRestoration />
         <Scripts />

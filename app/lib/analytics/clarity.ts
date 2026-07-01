@@ -1,4 +1,6 @@
 export const MICROSOFT_CLARITY_PROJECT_ID = "wpx83zcz3r";
+export const MICROSOFT_CLARITY_BOOTSTRAP_SCRIPT_ID =
+  "microsoft-clarity-bootstrap";
 
 export const getMicrosoftClarityBootstrapScript = (projectId: string) => {
   const serializedProjectId = JSON.stringify(projectId);

@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  GOOGLE_ANALYTICS_BOOTSTRAP_SCRIPT_ID,
+  GOOGLE_ANALYTICS_SCRIPT_ID,
   getGoogleAnalyticsScriptUrl,
   getGoogleAnalyticsBootstrapScript,
   pageview,
@@ -9,6 +11,15 @@ import {
 } from "../../app/lib/analytics/gtag.js";
 
 const MEASUREMENT_ID = "G-WXB3YC322J";
+
+test("Google Analytics: 延迟加载脚本使用稳定且不同的 DOM 标识", () => {
+  assert.equal(GOOGLE_ANALYTICS_SCRIPT_ID, "google-analytics-script");
+  assert.equal(
+    GOOGLE_ANALYTICS_BOOTSTRAP_SCRIPT_ID,
+    "google-analytics-bootstrap"
+  );
+  assert.notEqual(GOOGLE_ANALYTICS_SCRIPT_ID, GOOGLE_ANALYTICS_BOOTSTRAP_SCRIPT_ID);
+});
 
 test("Google Analytics: gtag script URL targets the configured measurement id", () => {
   assert.equal(

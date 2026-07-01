@@ -1,4 +1,3 @@
-﻿import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import { CoverMarquee } from "./components/cover-marquee";
@@ -102,39 +101,27 @@ export default function FairyFinderLandingPage() {
     <FairySiteLayout>
       <section className="bg-surface px-5 pb-20 pt-10 md:px-6 md:pb-28 md:pt-24">
         <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+          <div
             className="mb-4 hidden rounded-full bg-secondary-fixed px-4 py-1.5 text-xs font-bold tracking-widest text-primary md:inline-flex"
           >
             {copy.hero.eyebrow}
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.05 }}
+          <h1
             className="mb-4 text-3xl font-extrabold leading-tight text-on-surface md:mb-6 md:text-6xl"
           >
             {copy.hero.title}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.1 }}
+          <p
             className="mx-auto mb-8 hidden max-w-2xl text-lg text-on-surface-variant md:block"
           >
             {copy.hero.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.div
+          <div
             ref={inputZoneRef}
             id="fairy-input-zone"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.15 }}
           >
             <InputSection
               key={inputRenderKey}
@@ -176,16 +163,11 @@ export default function FairyFinderLandingPage() {
               Browse All {FAIRY_LIST.length} Fairy Names
             </Link>
 
-            <AnimatePresence initial={false} mode="popLayout">
-              {hasSubmitted ? (
-                <motion.div
+            {hasSubmitted ? (
+                <div
                   key={`lookup-${lookupSequence}`}
                   ref={resultPanelRef}
                   id="result"
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
                   role="region"
                   aria-live="polite"
                   aria-label="Fairy lookup result"
@@ -214,10 +196,7 @@ export default function FairyFinderLandingPage() {
                       }
                     />
                   ) : (
-                    <motion.section
-                      initial={{ opacity: 0, scale: 0.96, y: 16 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    <section
                       className="relative mx-auto w-full max-w-xl overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/85 via-secondary-fixed/40 to-white/70 p-6 text-center shadow-[0_30px_80px_rgba(92,57,173,0.25)] backdrop-blur-xl md:p-8"
                     >
                       <div
@@ -252,7 +231,7 @@ export default function FairyFinderLandingPage() {
                           </Link>
                         </div>
                       </div>
-                    </motion.section>
+                    </section>
                   )}
 
                   <p className="mt-6 text-center text-sm text-on-surface-variant/80">
@@ -267,19 +246,15 @@ export default function FairyFinderLandingPage() {
                       Searched name: {submittedName}
                     </p>
                   ) : null}
-                </motion.div>
+                </div>
               ) : null}
-            </AnimatePresence>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: 0.2 }}
+          <div
             className="mx-auto mt-12 max-w-5xl md:mt-10"
           >
             <CoverMarquee />
-          </motion.div>
+          </div>
         </div>
       </section>
 

@@ -8,14 +8,8 @@ import {
   useRouteLoaderData,
 } from "react-router";
 
-import { useEffect } from "react";
-import { useUser } from "~/store";
-
 import { getSiteOrigin } from "~/config/site";
 import { Document } from "~/features/document";
-
-import "@fontsource/libre-baskerville/400.css";
-import "@fontsource/libre-baskerville/700.css";
 
 type RootLoaderData = {
   DOMAIN: string;

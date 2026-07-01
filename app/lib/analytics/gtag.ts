@@ -1,5 +1,9 @@
 export type GtagCommand = (...args: unknown[]) => void;
 
+export const GOOGLE_ANALYTICS_SCRIPT_ID = "google-analytics-script";
+export const GOOGLE_ANALYTICS_BOOTSTRAP_SCRIPT_ID =
+  "google-analytics-bootstrap";
+
 interface PageviewOptions {
   measurementId: string;
   pageLocation: string;
