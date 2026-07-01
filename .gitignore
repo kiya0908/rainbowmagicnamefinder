@@ -10,6 +10,7 @@
 .mf
 .wrangler
 .dev.vars*
+.dev*.vars*
 worker-configuration.d.ts
 
 # Env
@@ -19,6 +20,7 @@ worker-configuration.d.ts
 .dev.vars
 
 # Dev
+/.pnpm-store/
 .yarn/
 !.yarn/releases
 .vscode/*
