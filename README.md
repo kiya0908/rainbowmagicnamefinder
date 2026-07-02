@@ -40,7 +40,7 @@ pnpm install
 
 ### Environment
 
-Configure required variables in Cloudflare Dashboard (or local `.dev.vars`), for example:
+Configure required variables in Cloudflare Dashboard (local `.dev.vars`), for example:
 
 - `SESSION_SECRET`
 - `DOMAIN` (recommended: `https://rainbowmagicfairyname.online`)
