@@ -33,7 +33,11 @@ interface PublicSiteCopy {
     logoAlt: string;
     signIn: string;
     credits: string;
-    navLinks: Array<{ href: string; label: string }>;
+    navLinks: Array<{
+      href: string;
+      label: string;
+      variant?: "link" | "cta";
+    }>;
   };
   footer: {
     directoryBadgeTitle: string;
@@ -65,7 +69,11 @@ const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
       credits: "Credits",
       navLinks: [
         { href: "/fairy-names", label: "Fairy Names" },
-        { href: "/#how-it-works", label: "How It Works" },
+        {
+          href: "/#fairy-input-zone",
+          label: "Find My Fairy",
+          variant: "cta",
+        },
         { href: "/#what-is", label: "What Is" },
         { href: "/#faq", label: "FAQ" },
       ],
@@ -100,7 +108,11 @@ const PUBLIC_SITE_COPY: Record<PublicSiteLocale, PublicSiteCopy> = {
       credits: "Credits",
       navLinks: [
         { href: "/fairy-names", label: "Fairy Names" },
-        { href: "/#how-it-works", label: "How It Works" },
+        {
+          href: "/#fairy-input-zone",
+          label: "Find My Fairy",
+          variant: "cta",
+        },
         { href: "/#what-is", label: "What Is" },
         { href: "/#faq", label: "FAQ" },
       ],
@@ -143,6 +155,7 @@ export const PublicSiteLayout = ({
       return {
         to,
         label: item.label,
+        variant: item.variant,
         className:
           activePrimaryNav === "fairy-names" && to === "/fairy-names"
             ? "text-primary font-semibold"

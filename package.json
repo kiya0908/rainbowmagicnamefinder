@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "audit:books-seo": "node scripts/audit-books-seo.mjs",
     "build": "react-router build",
     "cf-typegen": "wrangler types --include-runtime false",
     "creem:heartbeat": "node scripts/creem-heartbeat.mjs",

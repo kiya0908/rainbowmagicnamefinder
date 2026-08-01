@@ -12,9 +12,9 @@ import {
 } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
-  const title = "Rainbow Magic Fairies - Complete Guide";
+  const title = "Rainbow Magic Fairy Guide: Names, Books & Series";
   const description =
-    "Explore all 39 current Rainbow Magic catalog sections, the 324-record cover archive, fairy-name finder, A-Z index, checklist, and reader FAQ.";
+    "Explore every Rainbow Magic fairy by name and series. Compare 39 catalog sections, 324 archive records, book checklists, and simple, practical reading paths.";
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -47,7 +47,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
           description,
           type: "Article",
           publishedAt: "2026-07-28",
-          updatedAt: "2026-07-28",
+          updatedAt: "2026-08-01",
         }),
         faqJsonLd
       ),

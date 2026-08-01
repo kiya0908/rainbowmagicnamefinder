@@ -5,6 +5,7 @@ export type FairyFinderLocale = "en";
 interface FairyFinderNavLink {
   label: string;
   href: string;
+  variant?: "link" | "cta";
 }
 
 interface FairyFinderFooterLink {
@@ -100,7 +101,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       { label: "Fairy Guide", href: "/rainbow-magic-fairy" },
       { label: "Fairy Names", href: "/fairy-names" },
       { label: "Books", href: "/books" },
-      { label: "How It Works", href: "#how-it-works" },
+      { label: "Find My Fairy", href: "#fairy-input-zone", variant: "cta" },
     ],
   },
   footer: {

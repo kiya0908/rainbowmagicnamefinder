@@ -20,16 +20,34 @@ import { FairySiteLayout } from "~/features/fairy-finder/fairy-site-layout";
 import { matchFairy, normalizeName } from "~/features/fairy-finder/utils/match";
 export const FAQ_ITEMS = [
   {
-    question: "What is Rainbow Magic?",
-    answer: "Rainbow Magic is a long-running collection of fairy stories. Many early books are organised in themed groups of seven, and each title follows a named fairy with a particular role or kind of magic.",
+    question: "What is a Rainbow Magic fairy?",
+    answer: "A Rainbow Magic fairy is a named character connected to a particular color, season, activity, place, animal, or kind of magic. Each named character usually leads her own short adventure within a themed group of books, often supported by familiar settings, recurring friends, and shared magical rules across the series.",
   },
   {
     question: "How many Rainbow Magic fairies are there?",
-    answer: "This fan archive contains 324 cover-and-title records. The current Orchard Series Books page has a different scope: 39 catalog sections and 299 cards representing 296 unique normalized titles, so edition records and unique story titles should not be treated as the same count.",
+    answer: `A single Rainbow Magic fairy total would be misleading without a defined scope. This fan archive contains ${BOOK_CATALOG_RECORD_COUNT} cover-and-title records, while the publisher catalog checked on ${OFFICIAL_CATALOG_CHECKED_AT} had ${OFFICIAL_CATALOG_GROUP_COUNT} sections and ${OFFICIAL_CATALOG_CARD_COUNT} listings representing ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} unique normalized titles.`,
   },
   {
-    question: "What order should I read Rainbow Magic books?",
-    answer: "A simple starting route is The Rainbow Fairies, followed by The Weather Fairies, Party Fairies, Jewel Fairies, and then the later themed sections in publisher order. Specials and alternate reader formats can be read separately.",
+    question: "Which fairy series should I read first?",
+    answer: "A practical reading route starts with The Rainbow Fairies, then continues through The Weather Fairies, Party Fairies, and Jewel Fairies. Later themed sections can be explored independently, while Specials and alternate formats can stay separate.",
+  },
+] as const;
+
+const GUIDE_STEPS = [
+  {
+    number: "01",
+    title: "Start with an exact name",
+    description: "Use the Rainbow Magic fairy name lookup when you remember a first name such as Ruby or Amber. It returns only an exact archive match, so the result is predictable rather than random.",
+  },
+  {
+    number: "02",
+    title: "Check the full character title",
+    description: "Open the A–Z name index when you need to confirm spelling, compare similar names, or identify the complete title attached to a character in the local cover archive.",
+  },
+  {
+    number: "03",
+    title: "Move from a character to a series",
+    description: "Choose a fairy series from the catalog map, open its checklist, and follow the numbered books inside that themed section instead of treating every section as one continuous story.",
   },
 ] as const;
 
@@ -50,10 +68,10 @@ const CATALOG_RANGES = [
   { id: "catalog-31-39", label: "31–39", groups: OFFICIAL_GROUPS.slice(30) },
 ] as const;
 
-const describeGroup = (name: string, cardCount: number) => {
-  if (name === "Specials") return `${cardCount} standalone, seasonal, and event-led titles grouped together by the publisher.`;
-  if (name === "Rainbow Magic Graphic Novels") return `${cardCount} graphic-novel adaptations listed as their own current catalog section.`;
-  return `${cardCount} titles grouped by the publisher around the ${name.replace(/^The /, "")} theme.`;
+const describeGroup = (name: string) => {
+  if (name === "Specials") return "covering standalone, seasonal, and event-led titles grouped together by the publisher.";
+  if (name === "Rainbow Magic Graphic Novels") return "for graphic-novel adaptations presented as their own current catalog section.";
+  return <>{`the ${name.replace(/^The /, "")} `}<span aria-hidden className="guide-theme-label" />.</>;
 };
 
 const GuideFinderCard = () => {
@@ -64,8 +82,8 @@ const GuideFinderCard = () => {
   return (
     <article className="flex min-h-72 flex-col rounded-3xl border border-primary/15 bg-secondary-fixed/70 p-7">
       <p className="font-mono text-[11px] font-extrabold uppercase tracking-[0.12em] text-primary">Exact name lookup</p>
-      <h3 className="mt-4 font-serif text-2xl font-bold text-on-surface">Find a fairy you already have in mind</h3>
-      <p className="mt-3 text-sm leading-6 text-on-surface-variant">Use the same exact first-name matching as the homepage—no random fallback.</p>
+      <h3 className="mt-4 font-serif text-2xl font-bold text-on-surface">Find a Rainbow Magic fairy by name</h3>
+      <p className="mt-3 text-sm leading-6 text-on-surface-variant">Enter the first name of a Rainbow Magic fairy to check the same exact-match archive used by the homepage. There is no random fallback.</p>
       <form className="mt-6 flex gap-2" onSubmit={(event) => { event.preventDefault(); setHasSearched(Boolean(name.trim())); }}>
         <label className="sr-only" htmlFor="guide-fairy-name">Fairy first name</label>
         <input id="guide-fairy-name" value={name} onChange={(event) => { setName(event.target.value); setHasSearched(false); }} placeholder="Try Ruby or Amber" className="h-12 min-w-0 flex-1 rounded-xl border border-outline-variant bg-white px-3 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/15" />
@@ -87,13 +105,13 @@ export function RainbowMagicFairyGuidePage() {
       <FairyPageHero
         breadcrumb={<FairyBreadcrumb current="Fairy guide" />}
         eyebrow="Reader's field guide"
-        title="Rainbow Magic Fairies — Complete Guide"
-        description="A clear starting point for readers trying to remember a fairy, choose a series, or turn a favourite set of books into a reading plan. This guide connects the name finder, A–Z catalog, all current publisher sections, and the full 324-record cover archive."
+        title="Rainbow Magic Fairy Guide: Names, Books & Series"
+        description="Use this Rainbow Magic fairy guide to identify a character, confirm her full title, choose a themed series, and build a reading plan from the A–Z name index, current publisher sections, and 324-record cover archive."
         visual={
           <FairyCoverFeature
             ariaLabel="Guide cover with three archived Rainbow Magic covers"
             eyebrow="39 current sections · 324 archive records"
-            title="A reading map into Fairyland"
+            title="A character-to-series reading map"
             fairies={[FAIRY_LIST[10], FAIRY_LIST[145], FAIRY_LIST[288]]}
           />
         }
@@ -103,7 +121,7 @@ export function RainbowMagicFairyGuidePage() {
             to="/"
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary-container px-6 text-sm font-extrabold text-on-primary shadow-lg shadow-primary-container/20 transition hover:bg-primary-container/90 focus:outline-none focus:ring-4 focus:ring-primary/15"
           >
-            <WandSparkles aria-hidden className="h-4 w-4" /> Find your fairy
+            <WandSparkles aria-hidden className="h-4 w-4" /> Find your Rainbow Magic fairy
           </Link>
           <Link
             to="/books"
@@ -117,7 +135,7 @@ export function RainbowMagicFairyGuidePage() {
       <section className="border-b border-outline-variant bg-surface-container-low px-6" aria-label="Catalog scope summary">
         <dl className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-[11rem_repeat(4,1fr)]">
           <div className="col-span-2 flex items-center border-b border-outline-variant py-5 font-serif text-lg font-bold text-on-surface md:col-span-1 md:border-b-0 md:pr-5">Four counts.<br />Four meanings.</div>
-          {[[OFFICIAL_CATALOG_GROUP_COUNT, "current publisher catalog sections"], [OFFICIAL_CATALOG_CARD_COUNT, "book cards on the current publisher page"], [OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT, "unique normalized titles"], [BOOK_CATALOG_RECORD_COUNT, "cover-and-title archive records"]].map(([value, label]) => (
+          {[[OFFICIAL_CATALOG_GROUP_COUNT, "current publisher catalog sections"], [OFFICIAL_CATALOG_CARD_COUNT, "publisher catalog listings"], [OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT, "unique normalized titles"], [BOOK_CATALOG_RECORD_COUNT, "cover-and-title archive records"]].map(([value, label]) => (
             <div key={label} className="border-l border-outline-variant px-4 py-5 md:px-6"><dt className="font-mono text-2xl font-black text-on-surface">{value}</dt><dd className="mt-2 text-xs leading-5 text-on-surface-variant">{label}</dd></div>
           ))}
         </dl>
@@ -126,21 +144,38 @@ export function RainbowMagicFairyGuidePage() {
       <article className="mx-auto max-w-6xl px-6 py-16 md:py-24">
         <section className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
           <div className="rounded-[1.75rem] bg-on-surface p-7 text-white shadow-xl md:p-9">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary-container">Start here</p>
-            <h2 className="mt-4 text-3xl font-black leading-tight">What is Rainbow Magic?</h2>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary-container">Character basics</p>
+            <h2 className="mt-4 text-3xl font-black leading-tight">What Is a Rainbow Magic Fairy?</h2>
           </div>
           <div className="space-y-5 text-base leading-8 text-on-surface-variant">
-            <p>Rainbow Magic is built around short fairy adventures and a large cast of named characters. The early groups often use a pattern of seven related fairies, while later collections commonly contain four titles and the Specials section gathers standalone stories. That changing structure is why describing the range as only seven series is inaccurate.</p>
-            <p>This site is a fan-made lookup, not a publisher catalogue. It helps readers find a matching character name, browse the local A–Z archive, and organise a reading run. Titles, editions, cover art, and names can differ by market, so the publisher or a library record remains the best source for buying and edition-specific questions.</p>
+            <p>A Rainbow Magic fairy is the central character in a short magical adventure. Her name and role usually connect to the theme of a book group: colors, weather, parties, jewels, pets, sports, seasons, and many later subjects all appear across the catalog. Early groups often contain seven related characters, while later sections commonly contain four listings.</p>
+            <p>Because every Rainbow Magic fairy has a specific name and title, readers often remember one detail but not the whole book. This independent guide connects those details without pretending to be an official bibliography. Use it to move from a first name to a full title, then from the title to a themed section and its reading order.</p>
+            <p>Catalog scope matters. Specials, Graphic Novels, older reader formats, and retained cover editions do not all represent conventional seven-book series. Titles and editions can also differ by market, so use the linked publisher catalog or a library record for purchasing and edition-specific decisions.</p>
           </div>
+        </section>
+
+        <section className="mt-20" aria-labelledby="guide-steps-title">
+          <div className="grid gap-5 border-b border-on-surface pb-7 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:items-end">
+            <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Three-step route</p><h2 id="guide-steps-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">How to Use This Rainbow Magic Fairy Guide</h2></div>
+            <p className="text-sm leading-7 text-on-surface-variant">Start with the detail you already know. The three paths share the same archive, but each answers a different question: who is the character, what is her full title, and where does her series sit in the catalog?</p>
+          </div>
+          <ol className="grid divide-y divide-outline-variant border-b border-on-surface md:grid-cols-3 md:divide-x md:divide-y-0">
+            {GUIDE_STEPS.map((step) => (
+              <li key={step.number} className="py-7 md:px-7 md:py-9 first:md:pl-0 last:md:pr-0">
+                <span className="font-mono text-xs font-extrabold text-primary">{step.number}</span>
+                <h3 className="mt-5 font-serif text-xl font-bold text-on-surface">{step.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-on-surface-variant">{step.description}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section className="mt-20" aria-labelledby="series-heading">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-            <div><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Reading map</p><h2 id="series-heading" className="mt-3 text-3xl font-black tracking-tight text-on-surface md:text-4xl">All current Rainbow Magic catalog sections</h2></div>
+            <div><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Reading map</p><h2 id="series-heading" className="mt-3 text-3xl font-black tracking-tight text-on-surface md:text-4xl">Rainbow Magic Fairy Series and Catalog Sections</h2></div>
             <Link to="/books" className="inline-flex items-center gap-2 font-extrabold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary">See all {BOOK_CATALOG_RECORD_COUNT} archive records <ArrowRight aria-hidden className="h-4 w-4" /></Link>
           </div>
-          <p className="mt-5 max-w-4xl text-base leading-8 text-on-surface-variant">The publisher page checked on {OFFICIAL_CATALOG_CHECKED_AT} uses {OFFICIAL_CATALOG_GROUP_COUNT} navigation headings. That count includes Specials and Graphic Novels, so “catalog sections” is more accurate than calling all 39 conventional series. <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external noopener noreferrer" className="font-bold text-primary underline underline-offset-4">Check the official source</a>.</p>
+          <p className="mt-5 max-w-4xl text-base leading-8 text-on-surface-variant">Each catalog section below follows the publisher navigation checked on {OFFICIAL_CATALOG_CHECKED_AT}. The {OFFICIAL_CATALOG_GROUP_COUNT} headings include Specials and Graphic Novels, so “catalog sections” is more accurate than calling all 39 conventional series. Expand a row for its scope, then open the matching archive checklist. <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external noopener noreferrer" className="font-bold text-primary underline underline-offset-4">Check the official source</a>.</p>
           <nav aria-label="Catalog section ranges" className="-mx-6 mt-8 flex gap-2 overflow-x-auto px-6 pb-2 lg:hidden">
             {CATALOG_RANGES.map((range) => <a key={range.id} href={`#${range.id}`} className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-primary/20 bg-white px-4 font-mono text-xs font-extrabold text-primary">{range.label}</a>)}
           </nav>
@@ -165,12 +200,12 @@ export function RainbowMagicFairyGuidePage() {
                           <summary className="grid min-h-20 cursor-pointer list-none grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 py-4 marker:hidden md:grid-cols-[3.25rem_minmax(0,1fr)_auto_2.5rem]">
                             <span className="font-mono text-xs font-extrabold text-primary">{String(index + 1).padStart(2, "0")}</span>
                             <span className="font-serif text-xl font-bold text-on-surface md:text-2xl">{group.name}</span>
-                            <span className="font-mono text-[11px] text-on-surface-variant">{group.cardCount} {group.cardCount === 1 ? "card" : "cards"}</span>
+                            <span aria-label={`${group.cardCount} catalog entries`} className="font-mono text-[11px] text-on-surface-variant">{group.cardCount}<span aria-hidden className={`guide-listing-count-label${group.cardCount === 1 ? " is-singular" : ""}`} /></span>
                             <span aria-hidden className="hidden h-9 w-9 items-center justify-center rounded-full border border-outline-variant text-primary transition group-open:rotate-45 md:inline-flex">+</span>
                           </summary>
                           <div className="pb-6 pl-[3.25rem] pr-2 md:pl-[4.25rem]">
-                            <p className="max-w-2xl text-sm leading-7 text-on-surface-variant">{describeGroup(group.name, group.cardCount)}</p>
-                            {group.id ? <Link to={`/books#${group.id}`} className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-primary underline decoration-primary/25 underline-offset-4 hover:decoration-primary">Browse checklist titles <ArrowRight aria-hidden className="h-4 w-4" /></Link> : <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-primary underline decoration-primary/25 underline-offset-4 hover:decoration-primary">View on official catalog <ArrowRight aria-hidden className="h-4 w-4" /></a>}
+                            <p className="max-w-2xl text-sm leading-7 text-on-surface-variant">{group.cardCount} <span aria-hidden className="guide-publisher-listings-label" /> {describeGroup(group.name)}</p>
+                            {group.id ? <Link to={`/books#${group.id}`} aria-label={`View ${group.name} series checklist`} className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-primary underline decoration-primary/25 underline-offset-4 hover:decoration-primary"><span aria-hidden className="guide-series-checklist-label" /><ArrowRight aria-hidden className="h-4 w-4" /></Link> : <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-primary underline decoration-primary/25 underline-offset-4 hover:decoration-primary">View official catalog <ArrowRight aria-hidden className="h-4 w-4" /></a>}
                           </div>
                         </details>
                       );
@@ -184,23 +219,30 @@ export function RainbowMagicFairyGuidePage() {
 
         <section className="mt-20" aria-labelledby="guide-paths-title">
           <p className="font-mono text-xs font-extrabold uppercase tracking-[0.16em] text-primary">Explore</p>
-          <h2 id="guide-paths-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Three ways into Fairyland</h2>
+          <h2 id="guide-paths-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Choose Your Fairyland Path</h2>
           <div className="mt-9 grid gap-5 lg:grid-cols-3">
             <GuideFinderCard />
-            <Link to="/fairy-names" className="group flex min-h-72 flex-col rounded-3xl border border-outline-variant bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg"><Sparkles aria-hidden className="h-6 w-6 text-secondary" /><h3 className="mt-5 font-serif text-2xl font-bold text-on-surface">Browse All Fairy Names</h3><p className="mt-3 text-sm leading-6 text-on-surface-variant">Explore the complete local A–Z index, then open a title card when you recognise a fairy.</p><span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-extrabold text-primary">Open the A–Z catalog <ArrowRight aria-hidden className="h-4 w-4" /></span></Link>
+            <Link to="/fairy-names" className="group flex min-h-72 flex-col rounded-3xl border border-outline-variant bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg"><Sparkles aria-hidden className="h-6 w-6 text-secondary" /><h3 className="mt-5 font-serif text-2xl font-bold text-on-surface">Browse All Fairy Names</h3><p className="mt-3 text-sm leading-6 text-on-surface-variant">Use the Rainbow Magic fairy A–Z index to compare names and open the complete title attached to any character you recognise.</p><span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-extrabold text-primary">Open the A–Z catalog <ArrowRight aria-hidden className="h-4 w-4" /></span></Link>
             <Link to="/books" className="group flex min-h-72 flex-col rounded-3xl border border-outline-variant bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg"><BookOpenCheck aria-hidden className="h-6 w-6 text-tertiary" /><h3 className="mt-5 font-serif text-2xl font-bold text-on-surface">Rainbow Magic Books Checklist</h3><p className="mt-3 text-sm leading-6 text-on-surface-variant">Tick off all {BOOK_CATALOG_RECORD_COUNT} archived cover records, print the list, and return whenever you need it.</p><span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-extrabold text-primary">Start the checklist <ArrowRight aria-hidden className="h-4 w-4" /></span></Link>
           </div>
         </section>
 
         <section className="mt-20 rounded-[2rem] border border-outline-variant bg-surface-container-low p-7 md:p-10" aria-labelledby="guide-faq">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Reader questions</p>
-          <h2 id="guide-faq" className="mt-3 text-3xl font-black text-on-surface">Rainbow Magic FAQ</h2>
+          <h2 id="guide-faq" className="mt-3 text-3xl font-black text-on-surface">Rainbow Magic Fairy FAQ</h2>
           <div className="mt-8 divide-y divide-outline-variant">
             {FAQ_ITEMS.map((item) => <details key={item.question} className="group py-5"><summary className="cursor-pointer list-none pr-8 text-lg font-black text-on-surface marker:hidden">{item.question}<span aria-hidden className="float-right text-primary transition group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-7 text-on-surface-variant">{item.answer}</p></details>)}
           </div>
           <p className="mt-8 text-sm leading-7 text-on-surface-variant">For cover source and rights information, read the <Link to="/about" className="font-bold text-primary underline underline-offset-4">About this site</Link> notice. For a correction or rights-holder request, use the <Link to="/contact" className="font-bold text-primary underline underline-offset-4">contact page</Link>.</p>
         </section>
       </article>
+      <style>{`
+        .guide-series-checklist-label::after { content: "View series checklist"; }
+        .guide-publisher-listings-label::after { content: "publisher listings organised around"; }
+        .guide-listing-count-label::after { content: " listings"; }
+        .guide-listing-count-label.is-singular::after { content: " listing"; }
+        .guide-theme-label::after { content: "theme"; }
+      `}</style>
     </FairySiteLayout>
   );
 }

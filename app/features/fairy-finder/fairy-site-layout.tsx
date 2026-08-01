@@ -32,6 +32,7 @@ export const FairySiteLayout = ({
     (item) => ({
       to: normalizeFairySitePath(item.href),
       label: item.label,
+      variant: item.variant,
     })
   );
 

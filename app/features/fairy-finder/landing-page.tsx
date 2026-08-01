@@ -109,6 +109,7 @@ export default function FairyFinderLandingPage() {
           <div
             ref={inputZoneRef}
             id="fairy-input-zone"
+            className="scroll-mt-[calc(50vh-12.5rem)] md:scroll-mt-[calc(50vh-10rem)]"
           >
             <InputSection
               key={inputRenderKey}
@@ -465,7 +466,7 @@ export default function FairyFinderLandingPage() {
           </h2>
           <button
             type="button"
-            className="btn btn-primary mt-6 h-11 rounded-xl px-8"
+            className="mt-6 inline-flex min-h-10 items-center justify-center rounded-xl border border-primary-container bg-primary px-5 text-sm font-extrabold text-on-primary shadow-sm transition hover:border-primary hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
             onClick={scrollToInput}
           >
             {copy.cta.buttonLabel}

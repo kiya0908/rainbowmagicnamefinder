@@ -13,7 +13,8 @@ export const loader = ({ context }: Route.LoaderArgs) => {
   return new Response(file.replace(/{DOMAIN}/g, domain), {
     status: 200,
     headers: {
-      "Content-Type": "text/plain",
+      "Cache-Control": "public, max-age=3600",
+      "Content-Type": "text/plain; charset=utf-8",
     },
   });
 };

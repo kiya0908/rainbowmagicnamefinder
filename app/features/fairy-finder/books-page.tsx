@@ -1,4 +1,11 @@
-import { CheckCircle2, Printer } from "lucide-react";
+import {
+  ArrowRight,
+  Compass,
+  Library,
+  Printer,
+  Search,
+  ShieldCheck,
+} from "lucide-react";
 
 import { Link } from "~/components/common";
 import { BookChecklist } from "~/features/fairy-finder/components/book-checklist";
@@ -17,66 +24,202 @@ import {
   OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT,
 } from "~/features/fairy-finder/data/book-catalog";
 import { FairySiteLayout } from "~/features/fairy-finder/fairy-site-layout";
+
+const AT_A_GLANCE = [
+  {
+    question: "How many Rainbow Magic books are included in this guide?",
+    answer: `This Rainbow Magic books list covers ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} normalized unique titles in the current catalog and keeps ${BOOK_CATALOG_RECORD_COUNT} cover-and-edition archive records for identification. Those totals answer different questions, so the guide never presents ${BOOK_CATALOG_RECORD_COUNT} as the number of current unique books.`,
+  },
+  {
+    question: "Where should a new reader start?",
+    answer: "A new reader exploring Rainbow Magic books can start with The Rainbow Fairies. It is the first current catalog section, its seven titles are displayed from Book 1 to Book 7, and the shelf opens automatically when this page first loads.",
+  },
+  {
+    question: "Do the different fairy series need to be read in one continuous order?",
+    answer: "No. To compare Rainbow Magic books in order, follow Book 1, Book 2, and the remaining numbered positions inside one themed shelf. The separate themes are catalog sections, not one compulsory story that every reader must follow from the first book to the last.",
+  },
+  {
+    question: "Why do some UK and US editions have different titles?",
+    answer: "Regional editions can use different titles or covers. A dependable Rainbow Magic books list should not guess those mappings, so this guide only displays an alternate title after the specific UK or US edition has been verified. No unverified regional title is shown today.",
+  },
+  {
+    question: "What is the difference between current titles and archive records?",
+    answer: "Current titles belong to the checked publisher catalog. The Rainbow Magic books checklist also retains older Beginner Reader, Early Reader, reference, and cover-edition records so readers can identify books that no longer appear as their own current catalog sections.",
+  },
+] as const;
+
+export const FAQ_ITEMS = [
+  {
+    question: "How many Rainbow Magic books are there?",
+    answer: `There is no single honest answer without defining the scope. On ${OFFICIAL_CATALOG_CHECKED_AT}, the Rainbow Magic books list on the publisher site had ${OFFICIAL_CATALOG_GROUP_COUNT} sections, ${OFFICIAL_CATALOG_CARD_COUNT} cards, and ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} normalized unique titles. This independent guide separately preserves ${BOOK_CATALOG_RECORD_COUNT} archive records, including older formats and cover editions.`,
+  },
+  {
+    question: "What is the first Rainbow Magic book?",
+    answer: "Ruby the Red Fairy is Book 1 of The Rainbow Fairies, the first current shelf in this guide. Readers starting with Rainbow Magic books can open that seven-book shelf and continue through Amber, Saffron, Fern, Sky, Izzy, and Heather in the order displayed.",
+  },
+  {
+    question: "Do Rainbow Magic books need to be read in order?",
+    answer: "To read Rainbow Magic books in order, follow the numbered position inside an individual themed series. A Rainbow Magic book series such as The Rainbow Fairies or The Weather Fairies has its own shelf order; the different themes do not need to become one uninterrupted reading run.",
+  },
+  {
+    question: "Why are some Rainbow Magic book titles different in the US and UK?",
+    answer: "Regional editions may use different titles or covers. Because this Rainbow Magic books list does not yet contain a verified title-by-title UK/US mapping, it does not guess alternate names or manufacture regional buying links.",
+  },
+  {
+    question: "Can I print this Rainbow Magic books checklist?",
+    answer: "Yes. The printable Rainbow Magic books checklist expands every series, removes navigation, filters, covers, and actions, and places a black-and-white box beside every archive record. Saved browser progress is not required to print it.",
+  },
+  {
+    question: "Does this page include older editions?",
+    answer: `Yes. The Rainbow Magic books list retains older Beginner Reader, Early Reader, and reference records under an Archive label. They remain searchable but are kept separate from the ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} current unique titles.`,
+  },
+] as const;
+
+const TASKS = [
+  { href: "#book-catalog", label: "Browse Rainbow Magic books", hint: "Open the complete series directory", icon: Library },
+  { href: "#catalog-tools", label: "Search the Rainbow Magic books list", hint: "Find a title or fairy and filter the catalog", icon: Search },
+  { href: "#reading-order", label: "Read Rainbow Magic books in order", hint: "See how series and formats fit", icon: Compass },
+  { href: "#printable-checklist", label: "Print the Rainbow Magic books checklist", hint: "Make a clean paper reading log", icon: Printer },
+] as const;
+
+const HERO_FAIRIES = [275, 11, 279].map((id) => {
+  const fairy = FAIRY_LIST.find((item) => item.id === id);
+  if (!fairy) throw new Error(`Missing verified hero cover record ${id}`);
+  return fairy;
+});
+
+function ReadingOrderGuide() {
+  return (
+    <section id="reading-order" className="scroll-mt-28 border-y border-on-surface py-14 md:py-20" aria-labelledby="reading-order-title">
+      <div className="grid gap-9 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+        <div>
+          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Reading map</p>
+          <h2 id="reading-order-title" className="mt-3 font-serif text-3xl font-bold leading-tight text-on-surface md:text-5xl">How to read Rainbow Magic books in order</h2>
+          <a href="#the-rainbow-fairies" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary-container px-5 text-sm font-extrabold text-on-primary transition hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/20">
+            Browse The Rainbow Fairies <ArrowRight aria-hidden className="h-4 w-4" />
+          </a>
+        </div>
+        <ol className="divide-y divide-outline-variant border-y border-outline-variant">
+          {[
+            ["01", "Start with the first shelf", "New readers can begin their Rainbow Magic books list with The Rainbow Fairies. It appears first in the current publisher catalog used by this guide and provides a clear seven-book starting sequence."],
+            ["02", "Follow the order inside a series", "To read Rainbow Magic books in order, use Book 1, Book 2, and the remaining numbered positions inside the selected shelf. Search and filters preserve that position information."],
+            ["03", "Treat themes as separate shelves", "Each Rainbow Magic book series is organized as its own shelf. Weather, party, jewel, pet, and later themes support discovery without implying one compulsory story from the first series to the last."],
+            ["04", "Keep other formats distinct", "The Rainbow Magic books list treats Specials and Graphic Novels as current sections. Beginner Readers, Early Readers, and Reference Books remain archive formats rather than being inserted into a numbered main-series order."],
+          ].map(([number, title, text]) => (
+            <li key={number} className="grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4 py-5 md:grid-cols-[3.5rem_minmax(0,1fr)] md:py-6">
+              <span className="font-mono text-xs font-extrabold text-primary">{number}</span>
+              <div><h3 className="font-serif text-xl font-bold text-on-surface">{title}</h3><p className="mt-2 text-sm leading-7 text-on-surface-variant">{text}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 export function BooksPage() {
   return (
     <FairySiteLayout mainClassName="bg-surface">
       <FairyPageHero
-        breadcrumb={
-          <FairyBreadcrumb current="Books checklist" />
-        }
-        eyebrow="Reader's checklist"
-        title="Rainbow Magic Books — Complete List & Reading Checklist"
-        description={<>A printable, tick-as-you-go checklist for all {BOOK_CATALOG_RECORD_COUNT} official-source cover records preserved in this fan archive. The list follows the current publisher sections first, then keeps older Beginner Reader, Early Reader, and reference editions visible.</>}
+        breadcrumb={<FairyBreadcrumb current="Books" />}
+        eyebrow="Book guide · Series order · Printable checklist"
+        title="Rainbow Magic Books: Complete List in Series Order"
+        description="Use this Rainbow Magic books list to browse every recorded title by series, follow Rainbow Magic books in order within each shelf, and keep a printable reading checklist. This independent guide separates the current publisher catalog from older archive editions."
         visual={
           <FairyCoverFeature
-            ariaLabel="Three archived Rainbow Magic covers"
-            eyebrow="Made to print"
-            title="A 324-title reading checklist"
-            fairies={[FAIRY_LIST[0], FAIRY_LIST[110], FAIRY_LIST[220]]}
+            ariaLabel="Three Rainbow Magic book covers arranged as a reading-journal collage"
+            eyebrow="A library, not a product grid"
+            title="Find your next series, mark your place"
+            fairies={HERO_FAIRIES}
           />
         }
       />
 
-      <article className="mx-auto max-w-6xl px-6 py-14 md:py-20">
-        <section className="mb-16 border-y border-on-surface py-12" aria-labelledby="books-paths-title">
-          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Choose a route</p>
-          <h2 id="books-paths-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Start with the question you already have</h2>
-          <div className="mt-9 border-t border-on-surface">
-            {[
-              ["01", "/rainbow-magic-fairy", "Need the context?", "Start with the Rainbow Magic fairy guide and its map of the current official catalog sections."],
-              ["02", "/fairy-names", "Recognise a title?", "Open the A–Z fairy catalog to see the matching local record and cover reference."],
-              ["03", "/", "Looking for a name?", "Try the exact-match fairy name finder from the homepage."],
-            ].map(([index, to, title, description]) => (
-              <Link key={to} to={to} className="group grid min-h-24 grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-3 border-b border-outline-variant py-5 transition hover:bg-surface-container-low md:grid-cols-[3.5rem_minmax(0,1fr)_auto] md:gap-5 md:px-3">
-                <span className="font-mono text-xs text-on-surface-variant">{index}</span>
-                <span><strong className="block font-serif text-xl text-on-surface md:text-2xl">{title}</strong><span className="mt-1 block text-sm leading-6 text-on-surface-variant">{description}</span></span>
-                <span className="col-start-2 text-sm font-extrabold text-primary md:col-start-auto">Explore <span aria-hidden>→</span></span>
-              </Link>
+      <section className="books-screen-only border-b border-outline-variant bg-surface-container-low px-6" aria-label="Catalog facts">
+        <dl className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
+          {[
+            [OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT, "current unique titles"],
+            [OFFICIAL_CATALOG_GROUP_COUNT, "catalog sections"],
+            [BOOK_CATALOG_RECORD_COUNT, "archive records"],
+            ["July 28, 2026", "Last catalog check"],
+          ].map(([value, label], index) => (
+            <div key={label} className={`px-4 py-5 md:px-6 ${index % 2 ? "" : "border-r border-outline-variant"} ${index < 2 ? "border-b border-outline-variant md:border-b-0" : ""} ${index > 0 ? "md:border-l md:border-outline-variant" : ""}`}>
+              <dt className="font-serif text-2xl font-bold text-on-surface md:text-3xl">{value}</dt>
+              <dd className="mt-1 text-xs leading-5 text-on-surface-variant">{label}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <article className="mx-auto max-w-6xl px-5 py-14 sm:px-6 md:py-20">
+        <section className="books-screen-only" aria-labelledby="at-a-glance-title">
+          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Quick answers</p>
+          <h2 id="at-a-glance-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Rainbow Magic books at a glance</h2>
+          <dl className="mt-9 divide-y divide-outline-variant border-y border-on-surface">
+            {AT_A_GLANCE.map((item, index) => (
+              <div key={item.question} className="grid gap-2 py-5 md:grid-cols-[2.75rem_minmax(16rem,0.85fr)_minmax(0,1.15fr)] md:gap-6 md:py-6">
+                <span className="hidden font-mono text-xs font-extrabold text-primary md:block">{String(index + 1).padStart(2, "0")}</span>
+                <dt className="font-serif text-lg font-bold leading-6 text-on-surface">{item.question}</dt>
+                <dd className="text-sm leading-7 text-on-surface-variant">{item.answer}</dd>
+              </div>
             ))}
+          </dl>
+        </section>
+
+        <nav className="books-screen-only mt-16" aria-labelledby="page-tasks-title">
+          <div className="flex items-end justify-between gap-5">
+            <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Use this guide</p><h2 id="page-tasks-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-4xl">Choose what you want to do</h2></div>
+            <span className="hidden text-sm text-on-surface-variant md:block">All four paths stay on this page</span>
+          </div>
+          <div className="mt-7 grid border-y border-on-surface sm:grid-cols-2 lg:grid-cols-4">
+            {TASKS.map(({ href, label, hint, icon: Icon }, index) => (
+              <a key={href} href={href} className={`group min-h-36 p-5 transition hover:bg-surface-container-low focus:outline-none focus:ring-4 focus:ring-inset focus:ring-primary/15 ${index < 3 ? "lg:border-r lg:border-outline-variant" : ""} ${index % 2 === 0 ? "max-lg:border-r max-lg:border-outline-variant" : ""} ${index < 2 ? "max-lg:border-b max-lg:border-outline-variant" : ""}`}>
+                <Icon aria-hidden className="h-5 w-5 text-primary" />
+                <strong className="mt-5 block font-serif text-lg text-on-surface">{label}</strong>
+                <span className="mt-2 block text-xs leading-5 text-on-surface-variant">{hint}</span>
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <BookChecklist groups={BOOK_CATALOG_GROUPS} betweenControlsAndCatalog={<ReadingOrderGuide />} />
+
+        <section id="printable-checklist" className="books-screen-only mt-16 scroll-mt-28 grid gap-8 border-t border-on-surface pt-12 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
+          <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Printable checklist</p><h2 className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Rainbow Magic books checklist for print</h2><p className="mt-5 max-w-2xl text-sm leading-7 text-on-surface-variant">The printable Rainbow Magic books checklist expands every series and removes navigation, filters, covers, ads, detail actions, and future purchase areas. It keeps the series heading, title, reading position, and a fillable black-and-white box for every archive record. Your on-screen expanded sections return after printing.</p></div>
+          <button type="button" onClick={() => window.print()} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary-container px-5 text-sm font-extrabold text-on-primary transition hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/20"><Printer aria-hidden className="h-4 w-4" /> Open print preview</button>
+        </section>
+
+        <section className="books-screen-only mt-16" aria-labelledby="books-faq-title">
+          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Reader questions</p>
+          <h2 id="books-faq-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Rainbow Magic books FAQ</h2>
+          <div className="mt-8 divide-y divide-outline-variant border-y border-on-surface">
+            {FAQ_ITEMS.map((item) => <details key={item.question} className="group py-5"><summary className="grid min-h-11 cursor-pointer list-none grid-cols-[minmax(0,1fr)_2rem] items-center gap-4 font-serif text-lg font-bold text-on-surface marker:hidden"><span>{item.question}</span><span aria-hidden className="text-center text-primary transition group-open:rotate-45">+</span></summary><p className="max-w-4xl pb-2 pr-10 text-sm leading-7 text-on-surface-variant">{item.answer}</p></details>)}
           </div>
         </section>
 
-        <section id="catalog-source" className="mb-16" aria-labelledby="catalog-counts-title">
-          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Catalog scope</p>
-          <h2 id="catalog-counts-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Four numbers, four different meanings</h2>
-          <dl className="mt-9 grid grid-cols-2 border-y border-on-surface md:grid-cols-4">
-            {[[OFFICIAL_CATALOG_GROUP_COUNT, "current catalog sections"], [OFFICIAL_CATALOG_CARD_COUNT, "current publisher cards"], [OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT, "unique normalized titles"], [BOOK_CATALOG_RECORD_COUNT, "archive cover records"]].map(([value, label], index) => (
-              <div key={label} className={`p-5 md:p-7 ${index < 3 ? "md:border-r md:border-outline-variant" : ""} ${index % 2 === 0 ? "max-md:border-r max-md:border-outline-variant" : ""}`}><dt className="font-serif text-4xl font-bold text-on-surface md:text-6xl">{value}</dt><dd className="mt-3 text-xs leading-5 text-on-surface-variant">{label}</dd></div>
-            ))}
-          </dl>
-          <p className="mt-7 max-w-4xl border-l-2 border-outline-variant pl-5 text-sm leading-7 text-on-surface-variant">Checked on {OFFICIAL_CATALOG_CHECKED_AT}, the <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external noopener noreferrer" className="font-bold text-primary underline underline-offset-4">current Orchard Series Books page</a> has a different scope from this older cover archive. The archive also preserves Beginner Reader, Early Reader, and reference editions; Graphic Novels reuse two existing fairy names with new-format covers.</p>
+        <section className="books-screen-only mt-16 grid gap-8 border border-outline-variant bg-surface-container-low p-6 md:grid-cols-[2.25rem_minmax(0,1fr)] md:p-9" aria-labelledby="sources-title">
+          <ShieldCheck aria-hidden className="h-7 w-7 text-primary" />
+          <div>
+            <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Sources &amp; update rules</p>
+            <h2 id="sources-title" className="mt-3 font-serif text-2xl font-bold text-on-surface md:text-3xl">Independent fan-made project &amp; cover sources</h2>
+            <div className="mt-5 grid gap-4 text-sm leading-7 text-on-surface-variant md:grid-cols-2 md:gap-8">
+              <p>This independent Rainbow Magic books list is not an official publisher bibliography and is not affiliated with or endorsed by Rainbow Magic rights holders. Catalog groupings were checked against the <a href={OFFICIAL_CATALOG_SOURCE_URL} target="_blank" rel="external nofollow noopener noreferrer" className="font-bold text-primary underline underline-offset-4">Orchard Series Books catalog</a> on July 28, 2026. The date is not updated automatically.</p>
+              <p>Current records follow that checked catalog; archive records preserve older cover and format references for the Rainbow Magic books checklist. Counts, editions, and regional titles may change. Covers are shown only to help readers identify records and do not imply ownership. To report a correction, use the <Link to="/contact" className="font-bold text-primary underline underline-offset-4">contact page</Link>.</p>
+            </div>
+            <div className="mt-5 border-t border-outline-variant pt-4"><CoverSourceNote /></div>
+          </div>
         </section>
 
-        <BookChecklist groups={BOOK_CATALOG_GROUPS} />
-
-        <section className="mt-16 grid gap-8 border-t border-on-surface pt-12 md:grid-cols-[minmax(0,1fr)_18rem] md:items-start">
-          <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Print version</p><h2 className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">The print version is designed, not captured</h2><p className="mt-5 max-w-2xl text-sm leading-7 text-on-surface-variant">Printing opens a clean checklist: navigation, ads, controls, and cover links are removed while every catalog section is expanded for paper.</p></div>
-          <div className="rounded-3xl border border-outline-variant bg-white p-6 shadow-[0_18px_46px_rgba(49,30,84,0.08)]"><Printer aria-hidden className="h-6 w-6 text-primary" /><p className="mt-4 font-serif text-xl font-bold text-on-surface">324-title checklist</p><button type="button" onClick={() => window.print()} className="btn btn-primary mt-6 min-h-11 w-full">Open print preview</button></div>
-        </section>
-
-        <section className="mt-12 rounded-[1.75rem] border border-outline-variant bg-white p-6 md:p-8">
-          <div className="flex gap-3"><CheckCircle2 aria-hidden className="mt-1 h-5 w-5 shrink-0 text-primary" /><div><h2 className="text-xl font-black text-on-surface">A transparent fan-made checklist</h2><p className="mt-3 max-w-4xl text-sm leading-7 text-on-surface-variant">This is an independent fan-made reading aid, not an official bibliography. It does not invent publication dates: the current publisher catalog does not expose a consistent date for every card. Regional names, dates, formats, and covers can vary. No Amazon links are shown because this site does not currently have a verified Associate tag and per-title ASIN data.</p></div></div>
-          <div className="mt-5 rounded-xl bg-surface-container-low p-4"><CoverSourceNote /></div>
+        <section className="books-screen-only mt-16" aria-labelledby="related-tools-title">
+          <p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Keep exploring</p>
+          <h2 id="related-tools-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-4xl">Related tools</h2>
+          <div className="mt-7 divide-y divide-outline-variant border-y border-on-surface">
+            {[
+              ["/rainbow-magic-fairy", "Fairy Guide", "Understand the current catalog map and its themed sections."],
+              ["/fairy-names", "Fairy Names", "Browse the complete A–Z fairy title index."],
+              ["/", "Name Finder", "Look up an exact first-name match from the homepage."],
+            ].map(([to, label, description]) => <Link key={to} to={to} className="group grid min-h-20 grid-cols-[minmax(0,1fr)_auto] items-center gap-5 py-4"><span><strong className="font-serif text-xl text-on-surface">{label}</strong><span className="mt-1 block text-sm leading-6 text-on-surface-variant">{description}</span></span><ArrowRight aria-hidden className="h-5 w-5 text-primary transition group-hover:translate-x-1" /></Link>)}
+          </div>
         </section>
       </article>
     </FairySiteLayout>

@@ -5,6 +5,7 @@ import "./adsense-remediation.test.js";
 import "./fairy-cover-assets.test.js";
 import "./google-analytics.test.js";
 import "./microsoft-clarity.test.js";
+import "./meta-files.test.js";
 import "./open-design-pages.test.js";
 import "./performance-source-guards.test.js";
 import "./schedule-non-critical-task.test.js";

@@ -1,7 +1,10 @@
 import type { Route } from "./+types/books";
 
-import { BOOK_CATALOG_RECORD_COUNT } from "~/features/fairy-finder/data/book-catalog";
-import { BooksPage } from "~/features/fairy-finder/books-page";
+import {
+  BOOK_CATALOG_RECORD_COUNT,
+  OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT,
+} from "~/features/fairy-finder/data/book-catalog";
+import { BooksPage, FAQ_ITEMS } from "~/features/fairy-finder/books-page";
 import {
   createJsonLdGraph,
   createSeoDescriptors,
@@ -10,15 +13,24 @@ import {
 } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
-  const title = "Rainbow Magic Books: 324-Title List & Checklist";
+  const title = "Rainbow Magic Books List & Printable Checklist";
   const description =
-    "Browse a printable Rainbow Magic checklist for all 324 official-source cover records in this fan archive, organised with the current publisher catalog.";
+    `Browse Rainbow Magic books in series order, search ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} current titles and ${BOOK_CATALOG_RECORD_COUNT} archive records, track what you have read, and print the complete checklist.`;
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Rainbow Magic 324-title archive checklist",
+    name: "Rainbow Magic books list and archive checklist",
     numberOfItems: BOOK_CATALOG_RECORD_COUNT,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
+  };
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
   };
 
   return [
@@ -27,7 +39,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
     {
       name: "keywords",
       content:
-        "rainbow magic books list, rainbow magic books checklist, rainbow magic reading order",
+        "rainbow magic books, rainbow magic books list, rainbow magic books checklist, rainbow magic books in order, Rainbow Magic book series",
     },
     ...createSeoDescriptors({
       pathname: "/books",
@@ -43,9 +55,10 @@ export const meta: Route.MetaFunction = ({ matches }) => {
           description,
           type: "CollectionPage",
           publishedAt: "2026-07-28",
-          updatedAt: "2026-07-28",
+          updatedAt: "2026-08-01",
         }),
-        itemListJsonLd
+        itemListJsonLd,
+        faqJsonLd
       ),
     }),
   ];

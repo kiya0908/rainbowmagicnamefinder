@@ -13,6 +13,7 @@ export interface MarketingHeaderNavLink {
   target?: React.HTMLAttributeAnchorTarget;
   rel?: string;
   className?: string;
+  variant?: "link" | "cta";
 }
 
 interface MarketingHeaderProps {
@@ -126,7 +127,9 @@ export function MarketingHeader({
               }
               aria-current={isNavItemActive(item.to) ? "page" : undefined}
               className={clsx(
-                "text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8",
+                item.variant === "cta"
+                  ? "inline-flex min-h-10 items-center justify-center rounded-xl border border-primary-container bg-primary px-5 text-sm font-extrabold text-on-primary shadow-sm transition hover:border-primary hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
+                  : "text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8",
                 item.className
               )}
             >
@@ -196,7 +199,12 @@ export function MarketingHeader({
                     : item.rel
                 }
                 aria-current={isNavItemActive(item.to) ? "page" : undefined}
-                className="rounded-xl px-3 py-3 text-sm font-semibold text-on-surface-variant transition hover:bg-secondary-fixed/35 hover:text-primary aria-[current=page]:bg-secondary-fixed/45 aria-[current=page]:text-primary"
+                className={clsx(
+                  item.variant === "cta"
+                    ? "mt-1 inline-flex min-h-11 items-center justify-center rounded-xl border border-primary-container bg-primary px-4 py-3 text-sm font-extrabold text-on-primary shadow-sm transition hover:border-primary hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/25"
+                    : "rounded-xl px-3 py-3 text-sm font-semibold text-on-surface-variant transition hover:bg-secondary-fixed/35 hover:text-primary aria-[current=page]:bg-secondary-fixed/45 aria-[current=page]:text-primary",
+                  item.className
+                )}
                 onClick={closeMobileMenu}
               >
                 {item.label}
