@@ -1,36 +1,9 @@
 # Refund Policy
 
-Last updated: March 23, 2026
+Last updated: July 17, 2026
 
-## 1. Overview
+Rainbow Magic Fairy Name Finder currently offers its public name lookup and catalog free of charge. It does not currently sell credits, subscriptions, or other digital products, so there are no site purchases to refund.
 
-Thank you for using **Rainbow Magic Fairy Name Finder**. This policy explains when refunds may be considered for paid credits and other digital purchases on our Service.
+If you see an unfamiliar charge using this site's name, contact your payment provider promptly and email [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online) with non-sensitive details. Do not send full card numbers or authentication codes.
 
-## 2. General Rule
-
-Rainbow Magic Fairy Name Finder delivers digital services and credits instantly. Because value is provisioned immediately and compute resources are consumed at use time, completed purchases are generally non-refundable.
-
-## 3. Possible Refund Cases
-
-We may review refund requests in situations such as:
-
-1. Duplicate billing caused by our system
-2. Verified payment or technical failures where no usable service or credits were delivered
-3. Extended service outage that materially prevented normal use after purchase
-
-## 4. Request Window
-
-Please contact us within **7 days** of the original charge and include:
-
-- Account email
-- Order or transaction ID
-- Description of the issue
-
-## 5. Processing
-
-If approved, refunds are issued to the original payment method. Final settlement timing depends on your payment provider.
-
-## 6. Contact
-
-- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
-
+If paid functionality is introduced later, applicable price, cancellation, and refund terms will be shown before purchase and this policy will be updated.

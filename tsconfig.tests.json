@@ -20,6 +20,10 @@
     "app/.server/constants/product.ts",
     "app/.server/libs/base-auth.ts",
     "app/.server/services/order-errors.ts",
+    "app/features/fairy-finder/data/book-catalog.ts",
+    "app/features/fairy-finder/data/fairies.ts",
+    "app/features/fairy-finder/data/types.ts",
+    "app/features/fairy-finder/utils/cover-assets.ts",
     "tests/unit/**/*.ts"
   ]
 }

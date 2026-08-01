@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { CoverMarquee } from "./components/cover-marquee";
+import { FairyPageHero } from "./components/fairy-page-hero";
 import { GenerateAgainButton } from "./components/generate-again-button";
 import { InputSection, type InputSectionHandle } from "./components/input-section";
 import { ResultCard } from "./components/result-card";
@@ -99,26 +100,12 @@ export default function FairyFinderLandingPage() {
 
   return (
     <FairySiteLayout>
-      <section className="bg-surface px-5 pb-20 pt-10 md:px-6 md:pb-28 md:pt-24">
-        <div className="mx-auto max-w-4xl text-center">
-          <div
-            className="mb-4 hidden rounded-full bg-secondary-fixed px-4 py-1.5 text-xs font-bold tracking-widest text-primary md:inline-flex"
-          >
-            {copy.hero.eyebrow}
-          </div>
-
-          <h1
-            className="mb-4 text-3xl font-extrabold leading-tight text-on-surface md:mb-6 md:text-6xl"
-          >
-            {copy.hero.title}
-          </h1>
-
-          <p
-            className="mx-auto mb-8 hidden max-w-2xl text-lg text-on-surface-variant md:block"
-          >
-            {copy.hero.subtitle}
-          </p>
-
+      <FairyPageHero
+        eyebrow={copy.hero.eyebrow}
+        title={copy.hero.title}
+        description={copy.hero.subtitle}
+        visual={<CoverMarquee />}
+      >
           <div
             ref={inputZoneRef}
             id="fairy-input-zone"
@@ -158,10 +145,18 @@ export default function FairyFinderLandingPage() {
 
             <Link
               to="/fairy-names"
-              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl border border-primary/20 bg-white px-5 text-sm font-extrabold text-primary shadow-sm transition hover:border-primary/40 hover:bg-secondary-fixed/30 focus:outline-none focus:ring-4 focus:ring-primary/15"
+              className="mx-auto mt-5 flex min-h-11 w-fit items-center justify-center rounded-xl border border-primary/20 bg-white px-5 text-sm font-extrabold text-primary shadow-sm transition hover:border-primary/40 hover:bg-secondary-fixed/30 focus:outline-none focus:ring-4 focus:ring-primary/15"
             >
               Browse All {FAIRY_LIST.length} Fairy Names
             </Link>
+
+            <p className="mx-auto mt-4 max-w-2xl text-xs leading-5 text-on-surface-variant">
+              Independent fan-made lookup tool. Not affiliated with or endorsed by
+              the Rainbow Magic publishers, authors, illustrators, or rights holders. {" "}
+              <Link to="/about" className="font-bold text-primary underline underline-offset-4">
+                How this site works
+              </Link>
+            </p>
 
             {hasSubmitted ? (
                 <div
@@ -234,9 +229,6 @@ export default function FairyFinderLandingPage() {
                     </section>
                   )}
 
-                  <p className="mt-6 text-center text-sm text-on-surface-variant/80">
-                    Want to create your own fairy? Coming soon!
-                  </p>
                   {submittedName && result ? (
                     <p className="mt-2 text-center text-xs text-on-surface-variant/70">
                       Matched from name: {submittedName}
@@ -249,14 +241,7 @@ export default function FairyFinderLandingPage() {
                 </div>
               ) : null}
           </div>
-
-          <div
-            className="mx-auto mt-12 max-w-5xl md:mt-10"
-          >
-            <CoverMarquee />
-          </div>
-        </div>
-      </section>
+      </FairyPageHero>
 
       <section id="how-it-works" className="bg-surface px-6 py-20">
         <div className="mx-auto max-w-6xl">

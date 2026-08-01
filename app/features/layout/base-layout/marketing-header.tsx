@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useLocation } from "react-router";
 
 import { Link } from "~/components/common";
 import { GoogleOAuth } from "~/features/oauth/google";
@@ -83,8 +84,17 @@ export function MarketingHeader({
   const user = useUser((state) => state.user);
   const credits = useUser((state) => state.credits);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { pathname, hash } = useLocation();
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const isNavItemActive = (to: string) => {
+    const [targetPath, targetHash] = to.split("#");
+
+    return (
+      pathname === (targetPath || "/") &&
+      (!targetHash || hash === `#${targetHash}`)
+    );
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-transparent bg-white shadow-sm">
@@ -114,8 +124,9 @@ export function MarketingHeader({
                   ? item.rel ?? "noopener noreferrer"
                   : item.rel
               }
+              aria-current={isNavItemActive(item.to) ? "page" : undefined}
               className={clsx(
-                "text-sm font-medium text-on-surface-variant hover:text-primary transition-colors",
+                "text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8",
                 item.className
               )}
             >
@@ -184,7 +195,8 @@ export function MarketingHeader({
                     ? item.rel ?? "noopener noreferrer"
                     : item.rel
                 }
-                className="rounded-xl px-3 py-3 text-sm font-semibold text-on-surface-variant transition hover:bg-secondary-fixed/35 hover:text-primary"
+                aria-current={isNavItemActive(item.to) ? "page" : undefined}
+                className="rounded-xl px-3 py-3 text-sm font-semibold text-on-surface-variant transition hover:bg-secondary-fixed/35 hover:text-primary aria-[current=page]:bg-secondary-fixed/45 aria-[current=page]:text-primary"
                 onClick={closeMobileMenu}
               >
                 {item.label}

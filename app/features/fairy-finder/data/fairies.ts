@@ -1,5 +1,5 @@
 //图片url地址
-import type { FairyData } from "./types";
+import type { FairyData } from "./types.js";
 
 export const FAIRY_LIST: FairyData[] = [
   {

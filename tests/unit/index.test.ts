@@ -1,11 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import "./fairy-image.test.js";
+import "./adsense-remediation.test.js";
+import "./fairy-cover-assets.test.js";
 import "./google-analytics.test.js";
 import "./microsoft-clarity.test.js";
+import "./open-design-pages.test.js";
 import "./performance-source-guards.test.js";
 import "./schedule-non-critical-task.test.js";
+import "./seo-pages.test.js";
 import { SITE_ORIGIN, getSiteOrigin, toSiteUrl } from "../../app/config/site.js";
 import { CREDITS_PRODUCT } from "../../app/.server/constants/product.js";
 import { shouldRequireBaseAuthFromEnv } from "../../app/.server/libs/base-auth.js";

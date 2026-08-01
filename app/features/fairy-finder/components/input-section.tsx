@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 
 interface InputSectionProps {
   label: string;
@@ -21,17 +21,7 @@ export const InputSection = forwardRef<InputSectionHandle, InputSectionProps>(({
 }, ref) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const submittingTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (submittingTimerRef.current !== null) {
-        window.clearTimeout(submittingTimerRef.current);
-      }
-    };
-  }, []);
 
   const submitValue = (rawValue: string) => {
     const value = rawValue.trim();
@@ -41,17 +31,7 @@ export const InputSection = forwardRef<InputSectionHandle, InputSectionProps>(({
     }
 
     setError("");
-    setIsSubmitting(true);
     onSubmit(value);
-
-    if (submittingTimerRef.current !== null) {
-      window.clearTimeout(submittingTimerRef.current);
-    }
-
-    submittingTimerRef.current = window.setTimeout(() => {
-      setIsSubmitting(false);
-      submittingTimerRef.current = null;
-    }, 360);
   };
 
   useImperativeHandle(ref, () => ({
@@ -96,16 +76,12 @@ export const InputSection = forwardRef<InputSectionHandle, InputSectionProps>(({
         />
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="inline-flex h-12 min-w-40 items-center justify-center rounded-xl bg-primary px-6 text-sm font-extrabold text-on-primary shadow-[0_14px_30px_rgba(139,92,246,0.35)] transition hover:bg-primary-container hover:shadow-[0_18px_34px_rgba(124,58,237,0.38)] focus:outline-none focus:ring-4 focus:ring-primary/25 active:translate-y-px disabled:cursor-wait disabled:opacity-80 max-md:w-full"
+          className="inline-flex h-12 min-w-40 items-center justify-center rounded-xl bg-primary px-6 text-sm font-extrabold text-on-primary shadow-[0_14px_30px_rgba(139,92,246,0.28)] transition hover:bg-primary-container hover:shadow-[0_18px_34px_rgba(124,58,237,0.32)] focus:outline-none focus:ring-4 focus:ring-primary/25 active:translate-y-px max-md:w-full"
         >
-          {isSubmitting ? "Finding..." : submitLabel}
+          {submitLabel}
         </button>
       </div>
       <p className="mt-2 min-h-5 text-left text-xs text-red-600">{error}</p>
-      <p className="sr-only" aria-live="polite">
-        {isSubmitting ? "Finding your fairy result." : ""}
-      </p>
     </form>
   );
 });

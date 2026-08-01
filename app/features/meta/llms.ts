@@ -28,10 +28,32 @@ const CORE_PAGES: PublicPage[] = [
       "Primary canonical page for the fairy-name matcher and the main user experience.",
   },
   {
+    path: "/rainbow-magic-fairy",
+    title: "Rainbow Magic fairy guide",
+    description:
+      "Hub guide for the current 39-section publisher catalog, the name finder, A-Z catalog, and the 324-record archive checklist.",
+  },
+  {
     path: "/fairy-names",
     title: "Fairy names list",
     description:
       "A-Z catalog page for Rainbow Magic fairy names and titles.",
+  },
+  {
+    path: "/books",
+    title: "Books checklist",
+    description:
+      "Printable, browser-local reading checklist for all 324 official-source cover records retained in the fan archive.",
+  },
+  {
+    path: "/about",
+    title: "About",
+    description: "Operator identity, matching method, cover-source notice, and independent fan-project disclaimer.",
+  },
+  {
+    path: "/contact",
+    title: "Contact",
+    description: "Support, privacy, correction, accessibility, and rights-holder contact channel.",
   },
   {
     path: "/sitemap.xml",
@@ -60,9 +82,9 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     path: "/legal/privacy",
     title: "Privacy Policy",
     summary: [
-      "Collects account data, submitted text, usage data, and billing metadata needed to run the service.",
-      "Payment processing is handled by Creem; the site does not store full card details.",
-      "The policy says personal data is not sold and support requests go to the support email address.",
+      "Explains browser-side name matching, ordinary hosting logs, and support correspondence.",
+      "Names Google Analytics, Microsoft Clarity, Pageview, Google AdSense, and Adsterra as integrations that may be enabled after required controls are configured.",
+      "States that non-essential analytics and advertising are disabled by default and explains user choices.",
     ],
   },
   {
@@ -70,15 +92,15 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     title: "Terms of Use",
     summary: [
       "Describes the service as name-based fairy identity matching and related interactive content.",
-      "Some features may require login or paid credits, although Phase 1 fairy matching is free.",
-      "Outputs are provided as-is and users must review them before relying on them.",
+      "States that the public finder requires no account or purchase.",
+      "Explains the independent fan-project status and exact-match limitations.",
     ],
   },
   {
     path: "/legal/cookies",
     title: "Cookie Policy",
     summary: [
-      "Uses essential, functional, and analytics cookies for login, preferences, and product measurement.",
+      "Explains that non-essential integrations are disabled by default and lists providers that may use cookies or similar technologies after required controls are configured.",
     ],
   },
   {
@@ -86,22 +108,17 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     title: "Acceptable Use Policy",
     summary: [
       "Prohibits illegal, abusive, deceptive, infringing, or security-bypass behavior.",
-      "The policy allows blocking requests, rate limiting, account suspension, or reporting when required by law.",
+      "The policy allows blocking abusive traffic, removing material, and reporting unlawful conduct when reasonably necessary.",
     ],
   },
   {
     path: "/legal/refund",
     title: "Refund Policy",
     summary: [
-      "Completed digital purchases are generally non-refundable.",
-      "Possible refund reviews are limited to duplicate billing, failed delivery, or material outages after purchase.",
+      "The site currently sells no credits, subscriptions, or other digital products, so there are no site purchases to refund.",
     ],
   },
 ];
-
-function quoteText(value: string) {
-  return value.replace(/"/g, '\\"');
-}
 
 function getHomepageSummaryLines(domain: string) {
   const copy = getFairyFinderHomeCopy(PRIMARY_LOCALE);
@@ -132,10 +149,7 @@ function getExampleResultLines() {
     ["Ruby", "Sky", "Saffron", "Stella"].includes(fairy.name)
   );
 
-  return examples.map(
-    (fairy) =>
-      `${fairy.name}: ${fairy.fullTitle} (${quoteText(fairy.imageUrl)})`
-  );
+  return examples.map((fairy) => `${fairy.name}: ${fairy.fullTitle}`);
 }
 
 export function buildLlmsText(domain: string) {
@@ -152,7 +166,7 @@ export function buildLlmsText(domain: string) {
     "",
     `## Core behavior`,
     ...getMatchingBehaviorLines().map((line) => `- ${line}`),
-    `- Result payload shown to users: fairy title, cover image, share actions, and a "try again" path.`,
+    `- Result payload shown to users: fairy title, a same-origin cached book cover with a visible source link, share actions, and a "try again" path.`,
     "",
     `## Primary public pages`,
     ...CORE_PAGES.map(
@@ -192,7 +206,7 @@ export function buildLlmsFullText(domain: string) {
     `Primary locale: ${PRIMARY_LOCALE}`,
     "",
     `## Current site identity`,
-    `Rainbow Magic Fairy Name Finder is a Cloudflare-hosted web app for deterministic Rainbow Magic fairy-name matching.`,
+    `Rainbow Magic Fairy Name Finder is an independent, unofficial, Cloudflare-hosted fan web app for deterministic Rainbow Magic fairy-name matching.`,
     `Users type a name, the site normalizes it, and the UI returns either an exact first-name match from the internal fairy dataset or a no-match state.`,
     `The public-facing product is the fairy-name finder shown on the homepage and its related legal and metadata pages.`,
     "",

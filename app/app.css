@@ -48,18 +48,27 @@
   @apply text-on-surface leading-relaxed;
 }
 
-@keyframes fairy-cover-scroll {
-  from {
-    transform: translateX(0);
-  }
+.fairy-site-layout {
+  --color-surface: #fffdf9;
+  --color-surface-container: #f2edf5;
+  --color-surface-container-low: #f8f4fa;
+  --color-surface-container-high: #eee7f3;
+  --color-surface-container-highest: #e6deed;
+  --color-outline-variant: rgba(76, 58, 99, 0.14);
+}
 
-  to {
-    transform: translateX(-50%);
-  }
+.fairy-site-layout h1,
+.fairy-site-layout h2,
+.fairy-site-layout h3,
+.fairy-site-layout h4 {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.fairy-site-layout .btn {
+  border-radius: 0.75rem;
 }
 
 .fairy-cover-marquee {
-  overflow: hidden;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
@@ -77,13 +86,26 @@
 }
 
 .fairy-cover-track {
-  display: flex;
-  width: max-content;
-  gap: 0.75rem;
-  animation: fairy-cover-scroll 46s linear infinite;
-  will-change: transform;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-primary) 38%, transparent) transparent;
 }
 
-.fairy-cover-marquee:hover .fairy-cover-track {
-  animation-play-state: paused;
+.fairy-cover-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fairy-cover-track {
+    scroll-behavior: auto;
+  }
+
+  .fairy-site-layout *,
+  .fairy-site-layout *::before,
+  .fairy-site-layout *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

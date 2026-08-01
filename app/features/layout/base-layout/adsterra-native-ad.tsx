@@ -1,16 +1,18 @@
 import { useEffect, useRef } from "react";
 
 import { scheduleNonCriticalTask } from "~/lib/performance/schedule-non-critical-task";
+import { useThirdPartyServices } from "~/features/document/third-party-services";
 
 const ADSTERRA_CONTAINER_ID = "container-e0a2c2d5cd021d061225f250ddbee435";
 const ADSTERRA_SCRIPT_SRC =
   "https://pl29392357.profitablecpmratenetwork.com/e0a2c2d5cd021d061225f250ddbee435/invoke.js";
 
 export const AdsterraNativeAd = () => {
+  const { advertisingEnabled } = useThirdPartyServices();
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!import.meta.env.PROD) return;
+    if (!import.meta.env.PROD || !advertisingEnabled) return;
 
     const section = sectionRef.current;
     if (!section) return;
@@ -58,9 +60,9 @@ export const AdsterraNativeAd = () => {
       cancelScheduledTask?.();
       injectedScript?.remove();
     };
-  }, []);
+  }, [advertisingEnabled]);
 
-  if (!import.meta.env.PROD) return null;
+  if (!import.meta.env.PROD || !advertisingEnabled) return null;
 
   return (
     <section

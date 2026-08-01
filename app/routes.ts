@@ -9,7 +9,6 @@ import { flatRoutes } from "@react-router/fs-routes";
 
 const apiRoutes: RouteConfig = [
   route("auth", "./routes/_api/auth/route.ts"),
-  route("fairy-image", "./routes/_api/fairy-image/route.ts"),
   // Stage 3: keep isolated legacy files but stop mounting runtime entries:
   // - ./routes/_api/credits/route.ts
   // - ./routes/_api/logout/route.ts
@@ -23,7 +22,11 @@ const legalRoutes = await flatRoutes({ rootDirectory: "./routes/_legal" });
 
 export default [
   index("./routes/home.tsx"),
+  route("rainbow-magic-fairy", "./routes/rainbow-magic-fairy.tsx"),
   route("fairy-names", "./routes/fairy-names.tsx"),
+  route("books", "./routes/books.tsx"),
+  route("about", "./routes/about.tsx"),
+  route("contact", "./routes/contact.tsx"),
   route("zh", "./routes/zh.tsx"),
   route("tools/*", "./routes/legacy-tools-redirect.tsx"),
   route("templates/*", "./routes/legacy-templates-redirect.tsx"),

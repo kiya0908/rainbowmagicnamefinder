@@ -9,6 +9,7 @@ import {
 } from "react-router";
 
 import { getSiteOrigin } from "~/config/site";
+import { isExplicitlyEnabled } from "~/config/third-party-services";
 import { Document } from "~/features/document";
 
 type RootLoaderData = {
@@ -17,6 +18,8 @@ type RootLoaderData = {
   GOOGLE_ANALYTICS_ID: string;
   GOOGLE_ADS_ID: string;
   GOOGLE_CLIENT_ID: string;
+  ANALYTICS_ENABLED: boolean;
+  ADVERTISING_ENABLED: boolean;
 };
 
 export const links: Route.LinksFunction = () => [
@@ -38,6 +41,8 @@ export const loader = async ({
     GOOGLE_ANALYTICS_ID: env.GOOGLE_ANALYTICS_ID ?? "",
     GOOGLE_ADS_ID: env.GOOGLE_ADS_ID ?? "",
     GOOGLE_CLIENT_ID: env.GOOGLE_CLIENT_ID ?? "",
+    ANALYTICS_ENABLED: isExplicitlyEnabled(env.ANALYTICS_ENABLED),
+    ADVERTISING_ENABLED: isExplicitlyEnabled(env.ADVERTISING_ENABLED),
   };
 };
 
@@ -53,6 +58,8 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
       DOMAIN={rootData?.DOMAIN}
       GOOGLE_ADS_ID={rootData?.GOOGLE_ADS_ID}
       GOOGLE_ANALYTICS_ID={rootData?.GOOGLE_ANALYTICS_ID}
+      analyticsEnabled={rootData?.ANALYTICS_ENABLED ?? false}
+      advertisingEnabled={rootData?.ADVERTISING_ENABLED ?? false}
     >
       {children}
     </Document>

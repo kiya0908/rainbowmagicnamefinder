@@ -12,6 +12,7 @@
     "dev:cf": "set CLOUDFLARE_DEV=1&& react-router dev",
     "postinstall": "npm run cf-typegen",
     "preview": "pnpm run build && wrangler dev --local",
+    "sync:book-catalog": "node scripts/sync-book-catalog.mjs",
     "test:unit": "tsc -p tsconfig.tests.json && node .temp/tests/tests/unit/index.test.js",
     "typecheck": "npm run cf-typegen && react-router typegen && tsc -b",
     "db:generate": "drizzle-kit generate --config app/.server/drizzle/config.ts",

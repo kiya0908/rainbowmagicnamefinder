@@ -14,6 +14,7 @@ import {
 } from "~/components/analytics";
 import { MICROSOFT_CLARITY_PROJECT_ID } from "~/lib/analytics/clarity";
 import { scheduleNonCriticalTask } from "~/lib/performance/schedule-non-critical-task";
+import { ThirdPartyServicesProvider } from "./third-party-services";
 
 const GOOGLE_ADSENSE_SCRIPT_ID = "google-adsense-script";
 const PAGEVIEW_SCRIPT_ID = "pageview-analytics-script";
@@ -24,6 +25,8 @@ interface DocumentProps {
   GOOGLE_ANALYTICS_ID?: string;
   lang?: string;
   theme?: string;
+  analyticsEnabled?: boolean;
+  advertisingEnabled?: boolean;
 }
 export function Document({
   lang = "en",
@@ -32,6 +35,8 @@ export function Document({
   DOMAIN,
   GOOGLE_ADS_ID,
   GOOGLE_ANALYTICS_ID,
+  analyticsEnabled = false,
+  advertisingEnabled = false,
 }: React.PropsWithChildren<DocumentProps>) {
   const rootRef = useRef<HTMLHtmlElement>(null);
   const error = useRouteError();
@@ -47,13 +52,14 @@ export function Document({
   }, [lang]);
 
   useEffect(() => {
-    if (!import.meta.env.PROD) return;
+    if (!import.meta.env.PROD || (!advertisingEnabled && !analyticsEnabled)) return;
 
     let cancelScheduledTask: (() => void) | undefined;
 
     const injectScripts = () => {
       // Adsense
       if (
+        advertisingEnabled &&
         googleAdsClientId &&
         !error &&
         !document.getElementById(GOOGLE_ADSENSE_SCRIPT_ID)
@@ -68,7 +74,7 @@ export function Document({
       }
 
       // Pageview
-      if (DOMAIN && !document.getElementById(PAGEVIEW_SCRIPT_ID)) {
+      if (analyticsEnabled && DOMAIN && !document.getElementById(PAGEVIEW_SCRIPT_ID)) {
         const pScript = document.createElement("script");
         pScript.id = PAGEVIEW_SCRIPT_ID;
         pScript.src = "https://app.pageview.app/js/script.js";
@@ -95,7 +101,7 @@ export function Document({
       window.removeEventListener("load", scheduleInjection);
       cancelScheduledTask?.();
     };
-  }, [googleAdsClientId, DOMAIN, error]);
+  }, [advertisingEnabled, analyticsEnabled, googleAdsClientId, DOMAIN, error]);
 
   return (
     <html ref={rootRef} lang={lang} data-theme={theme}>
@@ -109,12 +115,18 @@ export function Document({
         <Links />
       </head>
       <body>
-        {children}
-        <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
-        <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
-        <RouteAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
-        <ScrollRestoration />
-        <Scripts />
+        <ThirdPartyServicesProvider value={{ advertisingEnabled, analyticsEnabled }}>
+          {children}
+          {analyticsEnabled ? (
+            <>
+              <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
+              <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
+              <RouteAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
+            </>
+          ) : null}
+          <ScrollRestoration />
+          <Scripts />
+        </ThirdPartyServicesProvider>
       </body>
     </html>
   );

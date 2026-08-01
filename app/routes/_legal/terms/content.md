@@ -1,58 +1,37 @@
 # Terms of Use
 
-Last updated: March 23, 2026
+Last updated: July 17, 2026
 
-## 1. Introduction
+## 1. Service and Independence
 
-Welcome to **Rainbow Magic Fairy Name Finder**. These Terms of Use ("Terms") govern your access to and use of our name-based fairy identity lookup, catalog browsing, and related fan discovery experiences (the "Service").
+Rainbow Magic Fairy Name Finder provides a free public first-name lookup and a fan-curated catalog of character titles. It is independently operated and is not affiliated with, sponsored by, approved by, or endorsed by the Rainbow Magic publishers, authors, illustrators, or other rights holders.
 
-Rainbow Magic Fairy Name Finder is an independent fan discovery tool and is not affiliated with or endorsed by the Rainbow Magic publishers, authors, illustrators, or any third-party rights holder.
+Rainbow Magic names, book covers, and related properties belong to their respective owners. Cover images are cached as versioned same-origin static assets for title identification, and each displayed cover retains an Orchard Series Books source link. Caching and attribution do not claim a licence, affiliation, or endorsement. The site's original software, layout, explanatory copy, and fallback identity-card artwork belong to their respective creators.
 
-By using the Service, you agree to these Terms.
+## 2. Who May Use the Site
 
-## 2. Eligibility
+You may use the site if local law permits you to do so. If you are below the age at which you can consent to online services in your location, use the site with a parent or guardian. Do not send us sensitive personal information.
 
-You must be at least 18 years old, or the legal age of majority in your jurisdiction, to use the Service.
+## 3. How the Lookup Works
 
-## 3. Service Description
+The finder normalizes a submitted first name and checks for an exact match in the site's catalog. It does not use fuzzy matching or invent a random substitute. Catalog information may contain mistakes or become outdated, so verify important reading or purchase decisions with a library, bookseller, publisher, or another authoritative source.
 
-Rainbow Magic Fairy Name Finder provides name-based fairy identity lookup, catalog browsing, and related fan discovery experiences.
+## 4. No Account or Purchase Required
 
-## 4. Accounts and Billing
-
-The core fairy name lookup and catalog browsing experience is currently provided as a lightweight public tool. If optional account or paid features are introduced later, prices and product details will be shown on the website and may change over time.
+The public finder and catalog currently require no account and offer no paid product. A separate Refund Policy explains this current status. If paid functionality is ever introduced, new purchase terms will be presented before a transaction.
 
 ## 5. Acceptable Use
 
-You may not use the Service for illegal, abusive, deceptive, infringing, or harmful activity. Additional restrictions are listed in our [Acceptable Use Policy](/legal/acceptable-use).
+Do not interfere with the site, bypass security or rate limits, scrape it in a way that harms availability, submit unlawful material, impersonate others, or use the service to infringe privacy or intellectual-property rights. See the [Acceptable Use Policy](/legal/acceptable-use).
 
-## 6. User Content and Output
+## 6. Availability and Disclaimer
 
-You retain rights to the names or text you submit. You grant us a limited license to process your input solely to operate, secure, and improve the Service. You are responsible for checking any catalog result before relying on it for a reading list, classroom activity, or purchase decision.
+The site is provided "as is" and "as available." We do not promise uninterrupted service, complete catalog coverage, or error-free results. Nothing on the site is professional, legal, educational, or purchasing advice.
 
-## 7. Intellectual Property
+## 7. Limitation of Liability
 
-Rainbow Magic Fairy Name Finder, including its software, UI, and related materials, is protected by applicable intellectual property laws.
+To the maximum extent allowed by applicable law, the operator is not liable for indirect, incidental, special, consequential, or loss-of-data damages arising from use of or inability to use the site. Nothing in these Terms excludes rights or liabilities that cannot legally be excluded.
 
-## 8. Privacy
+## 8. Changes and Contact
 
-Your data is handled according to our [Privacy Policy](/legal/privacy).
-
-## 9. Disclaimer
-
-The Service is provided "as is" and "as available." We do not guarantee uninterrupted availability or that outputs will meet every specific requirement.
-
-## 10. Limitation of Liability
-
-To the maximum extent permitted by law, Rainbow Magic Fairy Name Finder is not liable for indirect, incidental, special, or consequential damages arising from use of the Service.
-
-## 11. Changes to Terms
-
-We may update these Terms from time to time. Continued use of the Service after updates means you accept the revised Terms.
-
-## 12. Contact
-
-For support or legal questions:
-
-- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
-
+We may update these Terms as the service changes. For support, corrections, legal notices, or rights-holder concerns, contact [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online).

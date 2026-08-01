@@ -45,7 +45,7 @@ export const FairySiteLayout = ({
   }));
 
   return (
-    <div className={clsx("fairy-site-layout min-h-screen bg-surface flex flex-col", className)}>
+    <div className={clsx("fairy-site-layout flex min-h-screen flex-col bg-surface", className)}>
       <style>
         {`
           .fairy-site-layout .fairy-header-no-auth .btn.btn-primary {

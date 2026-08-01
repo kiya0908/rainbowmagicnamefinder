@@ -97,10 +97,10 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
     signIn: "Sign in",
     credits: "Credits",
     navLinks: [
+      { label: "Fairy Guide", href: "/rainbow-magic-fairy" },
       { label: "Fairy Names", href: "/fairy-names" },
+      { label: "Books", href: "/books" },
       { label: "How It Works", href: "#how-it-works" },
-      { label: "What Is", href: "#what-is" },
-      { label: "FAQ", href: "#faq" },
     ],
   },
   footer: {
@@ -111,10 +111,17 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         label: "Explore",
         list: [
+          { to: "/rainbow-magic-fairy", label: "Fairy Guide" },
           { to: "/fairy-names", label: "Fairy Names" },
+          { to: "/books", label: "Books Checklist" },
           { to: "#how-it-works", label: "How It Works" },
-          { to: "#what-is", label: "What Is" },
-          { to: "#faq", label: "FAQ" },
+        ],
+      },
+      {
+        label: "Trust",
+        list: [
+          { to: "/about", label: "About" },
+          { to: "/contact", label: "Contact" },
         ],
       },
       {
@@ -146,7 +153,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       label: "Core Flow",
       title: "Type -> Match -> Share",
       description:
-        "The engine is intentionally narrow: normalize input, check name index, render one stable card state. This keeps the rainbow magic fairy name finder predictable for readers and maintainers. If the input is a valid rainbow magic fairy name, the result card shows the exact fairy title and cover image taken from the curated list.",
+        "The engine is intentionally narrow: normalize input, check the name index, and render one stable card state. If the input matches a catalog first name, the result shows the stored title with a versioned same-origin copy of the book cover and a visible Orchard Series Books source link.",
       examples: [
         "Enter a first name",
         "Get exact match",
@@ -159,7 +166,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
         label: "Tip 1",
         title: "Use exact first names",
         description:
-          "Start with the exact first name printed in official lists. One correct entry gives you a clean baseline before trying variants, nicknames, or uncertain spellings.",
+          "Start with an exact first name from the catalog. One correct entry gives you a clean baseline before trying variants, nicknames, or uncertain spellings.",
         example:
           "Try Lily, Ruby, Sky, Saffron, or Amber and compare how each rainbow magic fairy name maps to a specific card title.",
       },
@@ -183,7 +190,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
     profile: {
       title: "What appears in each result",
       paragraphs: [
-        "Each successful match card includes a concrete fairy title and a book cover image. That pairing matters because many users remember names but not exact titles, and others remember titles but not character spelling.",
+        "Each successful match card includes a concrete fairy title and a book cover reference. The interface identifies Orchard Series Books as the image source and makes clear that artwork and publishing rights remain with their respective owners.",
         "If there is no hit, the interface states that directly and offers Try Another Name. In practice, this keeps repeated rainbow magic fairy name checks fast for fans, teachers, and collectors who are validating long lists.",
       ],
     },
@@ -231,7 +238,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         question: "Where does the rainbow magic fairy name finder get its data?",
         answer:
-          "The dataset is curated from official Rainbow Magic / Orchard Series references and verified A-Z style listings. The rainbow magic fairy name finder maps first names to full titles and cover records, so each card points to a real series character.",
+          "The dataset is a manually curated fan reference assembled from publicly available title information. Cover images are cached and delivered as versioned same-origin static assets for fast identification, while their Orchard Series Books source URLs remain visible for attribution. This does not imply publisher endorsement.",
       },
       {
         question: "How many characters are in the rainbow magic fairy name finder?",
@@ -241,7 +248,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         question: "Is there a Rainbow Magic fairy with my name?",
         answer:
-          "You can find out right here! Just type your real name into our search box above. We will instantly check the official Rainbow Magic fairy list to see if a fairy shares your exact name. Give it a try!",
+          "Type a first name into the search box. The site checks its independent fan-made catalog for an exact first-name match and tells you clearly when no match exists.",
       },
       {
         question: "Why do I get a no-match result after entering a name?",

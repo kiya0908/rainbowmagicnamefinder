@@ -112,6 +112,8 @@ interface ExportedHandler<TEnv = unknown> {
 }
 
 interface Env {
+  ADVERTISING_ENABLED?: string;
+  ANALYTICS_ENABLED?: string;
   ACCOUNT_ID?: string;
   ACCOUNT_TOKEN?: string;
   CDN_URL?: string;

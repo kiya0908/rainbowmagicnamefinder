@@ -1,47 +1,28 @@
 # Acceptable Use Policy
 
-Last updated: March 23, 2026
+Last updated: July 17, 2026
 
 ## 1. Scope
 
-This Acceptable Use Policy ("AUP") applies to all users of **Rainbow Magic Fairy Name Finder** and to all text submitted to or generated through our Service.
+This policy applies to the public name lookup, catalog, and other pages on Rainbow Magic Fairy Name Finder.
 
-## 2. Prohibited Content and Behavior
+## 2. Prohibited Behavior
 
-You may not use Rainbow Magic Fairy Name Finder to create, request, or distribute:
+You may not:
 
-- Illegal, fraudulent, deceptive, or impersonating content
-- Harassment, hate speech, threats, or extremist content
-- Defamatory or knowingly false claims presented as factual professional statements
-- Spam, phishing, malware, or abusive automation
-- Content that infringes third-party intellectual property, privacy, or confidentiality rights
-- Attempts to bypass security controls, abuse rate limits, or interfere with platform operations
+- use the site for illegal, fraudulent, deceptive, harassing, or infringing activity;
+- attempt to disrupt availability, bypass security controls or rate limits, or introduce malicious code;
+- use automated access at a volume that degrades the service or ignores published crawler controls;
+- impersonate the operator, a publisher, an author, an illustrator, or a rights holder;
+- submit personal or confidential information that you are not authorized to disclose; or
+- misrepresent this fan-made site, its results, or its use of sourced cover images as publisher-issued or publisher-endorsed material.
 
-## 3. User Responsibilities
+## 3. Enforcement
 
-By using Rainbow Magic Fairy Name Finder, you agree to:
+We may block requests, restrict abusive traffic, remove material, preserve relevant security records, or report unlawful conduct when reasonably necessary.
 
-- Comply with applicable laws and regulations
-- Submit only content you are authorized to use and process
-- Review AI-generated output before publishing or sharing
-- Take responsibility for how generated content is used in professional contexts
+## 4. Reporting
 
-## 4. Enforcement
+Report abuse, security issues, or rights concerns to [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online). Include the relevant URL and enough detail for us to investigate.
 
-If we detect violations, we may take one or more actions:
-
-- Block specific requests or outputs
-- Restrict or rate-limit access
-- Suspend or terminate accounts
-- Report severe or unlawful activity to relevant authorities when legally required
-
-## 5. Reporting Violations
-
-If you believe this policy is being violated, contact:
-
-- **Email:** [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online)
-
-## 6. Relationship to Other Policies
-
-This AUP supplements our [Terms of Use](/legal/terms), [Privacy Policy](/legal/privacy), and [Refund Policy](/legal/refund).
-
+This policy supplements the [Terms of Use](/legal/terms) and [Privacy Policy](/legal/privacy).

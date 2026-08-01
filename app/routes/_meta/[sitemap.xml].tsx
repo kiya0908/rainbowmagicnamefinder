@@ -9,30 +9,44 @@ interface Sitemaps {
 }
 
 const defaultSitemaps: Sitemaps[] = [
+  { path: "/", priority: "1.0", lastmod: new Date("2026-04-12") },
   {
-    path: "/",
-    priority: "1.0",
-    lastmod: new Date("2026-04-12"),
+    path: "/rainbow-magic-fairy",
+    priority: "0.9",
+    lastmod: new Date("2026-07-28"),
   },
   {
     path: "/fairy-names",
     priority: "0.8",
     lastmod: new Date("2026-05-14"),
   },
+  { path: "/books", priority: "0.8", lastmod: new Date("2026-07-28") },
+  { path: "/about", priority: "0.7", lastmod: new Date("2026-07-17") },
+  { path: "/contact", priority: "0.7", lastmod: new Date("2026-07-17") },
   {
     path: "/legal/privacy",
     priority: "0.6",
-    lastmod: new Date("2026-03-24"),
+    lastmod: new Date("2026-07-17"),
   },
   {
     path: "/legal/terms",
     priority: "0.6",
-    lastmod: new Date("2026-03-24"),
+    lastmod: new Date("2026-07-17"),
   },
   {
     path: "/legal/cookies",
     priority: "0.6",
-    lastmod: new Date("2026-03-24"),
+    lastmod: new Date("2026-07-17"),
+  },
+  {
+    path: "/legal/acceptable-use",
+    priority: "0.5",
+    lastmod: new Date("2026-07-17"),
+  },
+  {
+    path: "/legal/refund",
+    priority: "0.4",
+    lastmod: new Date("2026-07-17"),
   },
 ];
 

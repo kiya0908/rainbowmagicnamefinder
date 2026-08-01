@@ -90,7 +90,7 @@ export const DIRECTORY_BADGE_ITEMS: DirectoryBadgeItem[] = [
   href: "https://www.producthunt.com/products/rainbow-magic-fairy-name-finder?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-rainbow-magic-fairy-name-finder",
   mode: "badge+link",
   badgeSrc: "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1129454&theme=light&t=1776825807737",
-  badgeAlt: "Rainbow Magic Fairy Name Finder - Find your official Rainbow Magic fairy name instantly | Product Hunt",
+  badgeAlt: "Rainbow Magic Fairy Name Finder - Independent fan-made name lookup | Product Hunt",
   badgeWidth: 250,
   badgeHeight: 54,
   active: true,
