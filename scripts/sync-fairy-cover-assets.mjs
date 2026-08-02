@@ -3,7 +3,7 @@ import path from "node:path";
 
 const SOURCE_FILE = "app/features/fairy-finder/data/fairies.ts";
 const OUTPUT_DIRECTORY = "public/assets/fairy-covers/v1";
-const EXPECTED_COVER_COUNT = 324;
+const EXPECTED_COVER_COUNT = 299;
 const CONCURRENCY = 6;
 const MAX_ATTEMPTS = 3;
 const SOURCE_URL_PATTERN = /imageUrl:\s*"(https:\/\/orchardseriesbooks\.co\.uk\/wp-content\/uploads\/[^"]+\.jpe?g)"/gi;

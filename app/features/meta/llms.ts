@@ -31,7 +31,7 @@ const CORE_PAGES: PublicPage[] = [
     path: "/rainbow-magic-fairy",
     title: "Rainbow Magic fairy guide",
     description:
-      "Hub guide for the current 39-section publisher catalog, the name finder, A-Z catalog, and the 324-record archive checklist.",
+      "Hub guide for the checked 39-section, 299-title publisher catalog, the name finder, A-Z catalog, and the matching reading checklist.",
   },
   {
     path: "/fairy-names",
@@ -43,7 +43,7 @@ const CORE_PAGES: PublicPage[] = [
     path: "/books",
     title: "Books checklist",
     description:
-      "Printable, browser-local reading checklist for all 324 official-source cover records retained in the fan archive.",
+      "Printable, browser-local reading checklist for all 299 titles in the checked publisher catalog.",
   },
   {
     path: "/about",

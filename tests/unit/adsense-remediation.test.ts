@@ -42,8 +42,8 @@ test("AdSense remediation: locally cached covers render immediately with source 
   assert.match(marquee, /CoverSourceNote/);
   assert.match(resultCard, /CoverSourceNote/);
   assert.match(listPage, /CoverSourceNote/);
-  assert.equal((catalog.match(/imageUrl:/g) ?? []).length, 324);
-  assert.equal((catalog.match(/orchardseriesbooks\.co\.uk/g) ?? []).length, 324);
+  assert.equal((catalog.match(/imageUrl:/g) ?? []).length, 299);
+  assert.equal((catalog.match(/orchardseriesbooks\.co\.uk/g) ?? []).length, 299);
   assert.match(privacy, /orchardseriesbooks\.co\.uk/);
   assert.match(privacy, /same-origin static assets/);
   assert.match(about, /Orchard Series Books/);

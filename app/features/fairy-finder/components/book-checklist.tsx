@@ -2,10 +2,12 @@ import clsx from "clsx";
 import {
   Check,
   ChevronDown,
+  ExternalLink,
   Filter,
   Printer,
   RotateCcw,
   Search,
+  ShoppingBag,
   X,
 } from "lucide-react";
 import {
@@ -17,6 +19,10 @@ import {
 } from "react";
 
 import { FairyCover } from "./fairy-image";
+import {
+  getAmazonUkPurchase,
+  type AmazonUkPurchase,
+} from "../data/amazon-purchases";
 import { FAIRY_LIST } from "../data/fairies";
 import {
   OFFICIAL_CATALOG_CHECKED_AT,
@@ -25,16 +31,8 @@ import {
 } from "../data/book-catalog";
 
 const CHECKLIST_STORAGE_KEY = "rainbow-magic-book-catalog-checklist-v2";
-export const AFFILIATE_ENABLED = false;
 
-type CatalogStatus = "all" | "current" | "archive";
 type ReadingStatus = "all" | "read" | "unread";
-
-interface VerifiedPurchase {
-  marketplace: string;
-  url: string;
-  isbnOrAsin: string;
-}
 
 interface BookChecklistProps {
   groups: readonly BookCatalogGroup[];
@@ -53,30 +51,25 @@ const HighlightedText = ({ text, query }: { text: string; query: string }) => {
   return <>{parts.map((part, index) => part.toLocaleLowerCase() === normalizedQuery.toLocaleLowerCase() ? <mark key={`${part}-${index}`} className="rounded-sm bg-amber-200 px-0.5 text-inherit">{part}</mark> : part)}</>;
 };
 
-const PurchaseAction = ({ purchase }: { purchase?: VerifiedPurchase }) => {
-  if (
-    !AFFILIATE_ENABLED ||
-    !purchase?.marketplace ||
-    !purchase.isbnOrAsin ||
-    !purchase.url.startsWith("https://")
-  ) return null;
-
-  return (
-    <div className="book-purchase-slot">
-      <a href={purchase.url} target="_blank" rel="sponsored nofollow noopener">Check price on Amazon</a>
+const PurchasePanel = ({ purchase, panelId, bookTitle }: { purchase: AmazonUkPurchase; panelId: string; bookTitle: string }) => (
+  <div id={panelId} role="region" aria-label={`Buying option for ${bookTitle}: ${purchase.marketplace}. Paid affiliate link. Price and availability may change.`} className="book-purchase-panel col-span-full mt-2 grid gap-4 border-l-2 border-secondary-fixed bg-surface-container-low p-4 sm:col-start-3 sm:col-end-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+    <div>
+      <p aria-hidden className="flex items-center gap-2 font-mono text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary"><ShoppingBag aria-hidden className="h-4 w-4" /><span className="book-purchase-heading" /></p>
+      <p aria-hidden className="book-purchase-marketplace mt-2 text-sm font-bold text-on-surface" />
+      <p aria-hidden className="book-purchase-note mt-1 text-xs leading-5 text-on-surface-variant" />
     </div>
-  );
-};
+    <a href={purchase.url} target="_blank" rel="nofollow sponsored noopener" className="book-purchase-link inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-extrabold text-white transition hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-primary/20" aria-label={`Check the price of ${bookTitle} on Amazon.co.uk`}>
+      <ExternalLink aria-hidden className="h-4 w-4" />
+    </a>
+  </div>
+);
 
 const describeGroup = (group: BookCatalogGroup, groupIndex: number) => {
-  if (group.sourceKind === "official-archive") {
-    return `This archive shelf extends the Rainbow Magic books list with ${group.books.length} older-format ${group.books.length === 1 ? "record" : "records"}. It supports edition identification but is not presented as a current publisher section.`;
-  }
   if (group.name === "Specials") {
     return `The Rainbow Magic books list places these ${group.books.length} standalone, seasonal, and event-led titles in the publisher's Specials order rather than inside a numbered seven-book theme.`;
   }
   if (group.name === "Rainbow Magic Graphic Novels") {
-    return `This Rainbow Magic book series section keeps ${group.books.length} verified graphic-novel records separate from the standard themed shelves and archive reader formats.`;
+    return `This Rainbow Magic book series section keeps ${group.books.length} verified graphic-novel adaptations separate from the standard themed shelves.`;
   }
   const descriptions = [
     `This catalog shelf contains ${group.books.length} titles in publisher order. Open it to follow the numbered sequence and record your reading progress.`,
@@ -91,7 +84,6 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
   const [completed, setCompleted] = useState<ReadonlySet<string>>(new Set());
   const [query, setQuery] = useState("");
   const [series, setSeries] = useState("all");
-  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>("all");
   const [readingStatus, setReadingStatus] = useState<ReadingStatus>("all");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<ReadonlySet<string>>(
@@ -99,6 +91,7 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
   );
   const [isPrinting, setIsPrinting] = useState(false);
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+  const [openPurchaseKey, setOpenPurchaseKey] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const resetButtonRef = useRef<HTMLButtonElement>(null);
   const printButtonRef = useRef<HTMLButtonElement>(null);
@@ -234,25 +227,23 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
   };
 
   const normalizedQuery = query.trim().toLocaleLowerCase();
-  const hasActiveFilters = Boolean(normalizedQuery || series !== "all" || catalogStatus !== "all" || readingStatus !== "all");
+  const hasActiveFilters = Boolean(normalizedQuery || series !== "all" || readingStatus !== "all");
   const visibleBooksByGroup = useMemo(() => new Map(groups.map((group) => {
     const groupMatchesSeries = series === "all" || group.id === series;
-    const groupMatchesCatalog = catalogStatus === "all" || (catalogStatus === "current" ? group.sourceKind === "official-current" : group.sourceKind === "official-archive");
     const queryMatchesGroup = normalizedQuery && group.name.toLocaleLowerCase().includes(normalizedQuery);
     const bookIds = new Set(group.books.filter((book) => {
       const key = getBookKey(group.id, book.id);
       const matchesQuery = !normalizedQuery || queryMatchesGroup || book.title.toLocaleLowerCase().includes(normalizedQuery);
       const matchesReading = readingStatus === "all" || (readingStatus === "read" ? completed.has(key) : !completed.has(key));
-      return groupMatchesSeries && groupMatchesCatalog && matchesQuery && matchesReading;
+      return groupMatchesSeries && matchesQuery && matchesReading;
     }).map((book) => book.id));
     return [group.id, bookIds] as const;
-  })), [catalogStatus, completed, groups, normalizedQuery, readingStatus, series]);
+  })), [completed, groups, normalizedQuery, readingStatus, series]);
   const visibleCount = [...visibleBooksByGroup.values()].reduce((count, ids) => count + ids.size, 0);
 
   const clearFilters = () => {
     setQuery("");
     setSeries("all");
-    setCatalogStatus("all");
     setReadingStatus("all");
   };
 
@@ -284,12 +275,9 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
             <button type="button" onClick={() => setIsFiltersOpen((open) => !open)} aria-expanded={isFiltersOpen} aria-controls="book-filter-panel" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-outline-variant bg-white px-5 text-sm font-extrabold text-on-surface focus:outline-none focus:ring-4 focus:ring-primary/15 md:hidden"><Filter aria-hidden className="h-4 w-4" /> Filters {hasActiveFilters ? <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] text-white">On</span> : null}</button>
           </div>
 
-          <div id="book-filter-panel" className={clsx("gap-3", isFiltersOpen ? "grid" : "hidden", "md:grid md:grid-cols-4")}>
+          <div id="book-filter-panel" className={clsx("gap-3", isFiltersOpen ? "grid" : "hidden", "md:grid md:grid-cols-3")}>
             <label className="grid gap-1.5 text-xs font-extrabold text-on-surface-variant">Series
               <select value={series} onChange={(event) => setSeries(event.target.value)} className="h-11 min-w-0 rounded-lg border border-outline-variant bg-white px-3 text-sm font-semibold text-on-surface outline-none focus:border-primary focus:ring-4 focus:ring-primary/15"><option value="all">All series</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}</select>
-            </label>
-            <label className="grid gap-1.5 text-xs font-extrabold text-on-surface-variant">Catalog status
-              <select value={catalogStatus} onChange={(event) => setCatalogStatus(event.target.value as CatalogStatus)} className="h-11 rounded-lg border border-outline-variant bg-white px-3 text-sm font-semibold text-on-surface outline-none focus:border-primary focus:ring-4 focus:ring-primary/15"><option value="all">All</option><option value="current">Current</option><option value="archive">Archive</option></select>
             </label>
             <label className="grid gap-1.5 text-xs font-extrabold text-on-surface-variant">Reading status
               <select value={readingStatus} onChange={(event) => setReadingStatus(event.target.value as ReadingStatus)} className="h-11 rounded-lg border border-outline-variant bg-white px-3 text-sm font-semibold text-on-surface outline-none focus:border-primary focus:ring-4 focus:ring-primary/15"><option value="all">All</option><option value="unread">Unread</option><option value="read">Read</option></select>
@@ -297,12 +285,12 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
             <label className="grid gap-1.5 text-xs font-extrabold text-on-surface-variant">Region / title
               <select disabled aria-describedby="region-filter-note" className="h-11 cursor-not-allowed rounded-lg border border-outline-variant bg-surface-container px-3 text-sm text-on-surface-variant"><option>All · no verified mapping</option></select>
             </label>
-            <p id="region-filter-note" className="text-xs leading-5 text-on-surface-variant md:col-span-3">UK/US title filtering will only be enabled after title-by-title regional data is verified.</p>
+            <p id="region-filter-note" className="text-xs leading-5 text-on-surface-variant md:col-span-2">UK/US title filtering will only be enabled after title-by-title regional data is verified.</p>
             <button type="button" onClick={clearFilters} disabled={!hasActiveFilters} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-outline-variant bg-white px-4 text-sm font-extrabold text-primary disabled:cursor-not-allowed disabled:opacity-45"><X aria-hidden className="h-4 w-4" /> Clear filters</button>
           </div>
 
           <div className="grid gap-4 border-t border-outline-variant pt-5 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center">
-            <div><p className="font-serif text-3xl font-bold tabular-nums text-on-surface">{completed.size}<span aria-hidden> / </span>{total}</p><p className="text-xs text-on-surface-variant">archive records checked</p></div>
+            <div><p className="font-serif text-3xl font-bold tabular-nums text-on-surface">{completed.size}<span aria-hidden> / </span>{total}</p><p className="text-xs text-on-surface-variant">official books checked</p></div>
             <div><div className="flex justify-between gap-4 text-xs font-extrabold text-on-surface"><span>My reading progress</span><span>{progressPercent}%</span></div><div className="mt-2 h-2.5 overflow-hidden rounded-full border border-outline-variant bg-white" role="progressbar" aria-label="Book checklist progress" aria-valuemin={0} aria-valuemax={total} aria-valuenow={completed.size}><div className="h-full bg-primary transition-[width] duration-300" style={{ width: `${progressPercent}%` }} /></div><p className="mt-2 text-xs leading-5 text-on-surface-variant">Saved only in this browser with localStorage.</p></div>
             <div className="flex flex-wrap gap-2 md:justify-end"><button ref={resetButtonRef} type="button" onClick={() => setIsResetDialogOpen(true)} disabled={completed.size === 0} className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-extrabold text-on-surface-variant disabled:opacity-45"><RotateCcw aria-hidden className="h-4 w-4" /> Clear progress</button><button ref={printButtonRef} type="button" onClick={() => window.print()} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary-container px-4 text-sm font-extrabold text-on-primary"><Printer aria-hidden className="h-4 w-4" /> Print checklist</button></div>
           </div>
@@ -313,8 +301,8 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
 
       <section id="book-catalog" className="scroll-mt-28 pt-14 md:pt-20" aria-labelledby="book-catalog-title">
         <div className="grid gap-4 border-b border-on-surface pb-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
-          <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Complete directory</p><h2 id="book-catalog-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Rainbow Magic books list: series and archive</h2></div>
-          <p className="max-w-md text-sm leading-6 text-on-surface-variant">This Rainbow Magic books list follows the checked publisher order and then preserves older archive formats. Only The Rainbow Fairies opens on first visit; filters open matching sections automatically.</p>
+          <div><p className="font-mono text-xs font-extrabold uppercase tracking-[0.18em] text-primary">Complete directory</p><h2 id="book-catalog-title" className="mt-3 font-serif text-3xl font-bold text-on-surface md:text-5xl">Rainbow Magic books list: official catalog order</h2></div>
+          <div className="max-w-md text-sm leading-6 text-on-surface-variant"><p>This Rainbow Magic books list contains the 299 titles in the checked publisher catalog order. Only The Rainbow Fairies opens on first visit; filters open matching sections automatically.</p><p className="mt-2 font-semibold text-on-surface">As an Amazon Associate I earn from qualifying purchases.</p></div>
         </div>
 
         {visibleCount === 0 ? <div className="books-empty-state border-b border-on-surface py-16 text-center"><Search aria-hidden className="mx-auto h-7 w-7 text-primary" /><h3 className="mt-4 font-serif text-2xl font-bold text-on-surface">No books match these filters</h3><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-on-surface-variant">Try a shorter title or fairy name, choose another series, or clear the current filters.</p><button type="button" onClick={clearFilters} className="mt-5 min-h-11 rounded-lg border border-primary/25 bg-white px-5 text-sm font-extrabold text-primary">Clear filters</button></div> : null}
@@ -324,13 +312,12 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
             const visibleBookIds = visibleBooksByGroup.get(group.id) ?? new Set<string>();
             const groupCompleted = group.books.reduce((count, book) => count + Number(completed.has(getBookKey(group.id, book.id))), 0);
             const isOpen = isPrinting || (hasActiveFilters && visibleBookIds.size > 0) || expandedGroups.has(group.id);
-            const isCurrentGroup = group.sourceKind === "official-current";
-            const groupCatalogLabel = isCurrentGroup ? "Current catalog" : "Archive";
+            const groupCatalogLabel = "Official catalog";
             return (
               <details key={group.id} id={group.id} data-series-details hidden={visibleBookIds.size === 0} open={isOpen} onToggle={(event) => toggleGroup(group.id, event.currentTarget.open)} className="group scroll-mt-28">
                 <summary aria-label={`${group.name}, ${groupCatalogLabel}, ${group.books.length} ${group.books.length === 1 ? "record" : "records"}, ${groupCompleted} of ${group.books.length} read`} className="grid min-h-24 cursor-pointer list-none grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 py-5 marker:hidden md:grid-cols-[3.5rem_minmax(0,1fr)_auto_2rem] md:gap-5">
                   <span className="font-mono text-[11px] font-extrabold tracking-[0.1em] text-primary">{String(groupIndex + 1).padStart(2, "0")}</span>
-                  <span className="min-w-0"><span className="flex flex-wrap items-center gap-2"><span className="font-serif text-xl font-bold leading-tight text-on-surface md:text-2xl"><HighlightedText text={group.name} query={query} /></span><span aria-hidden className={clsx("catalog-group-status rounded-full border px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em]", isCurrentGroup ? "is-current border-primary/20 bg-secondary-fixed/55 text-primary" : "is-archive border-outline-variant bg-surface-container text-on-surface-variant")} /></span><span className="mt-1 block text-xs leading-5 text-on-surface-variant">{group.books.length} {group.books.length === 1 ? "record" : "records"} · {groupCompleted} of {group.books.length} read</span></span>
+                  <span className="min-w-0"><span className="flex flex-wrap items-center gap-2"><span className="font-serif text-xl font-bold leading-tight text-on-surface md:text-2xl"><HighlightedText text={group.name} query={query} /></span><span aria-hidden className="catalog-group-status rounded-full border border-primary/20 bg-secondary-fixed/55 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-primary" /></span><span className="mt-1 block text-xs leading-5 text-on-surface-variant">{group.books.length} {group.books.length === 1 ? "record" : "records"} · {groupCompleted} of {group.books.length} read</span></span>
                   <span className="font-mono text-xs text-on-surface-variant">{Math.round((groupCompleted / group.books.length) * 100)}%</span>
                   <ChevronDown aria-hidden className="hidden h-5 w-5 text-primary transition group-open:rotate-180 md:block" />
                 </summary>
@@ -342,10 +329,13 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
                       const key = getBookKey(group.id, book.id);
                       const isComplete = completed.has(key);
                       const fairy = catalogByTitle.get(book.catalogTitle);
+                      const purchase = getAmazonUkPurchase(book.id);
+                      const isPurchaseOpen = openPurchaseKey === key;
+                      const purchasePanelId = `purchase-${group.id}-${book.id}`;
                       return (
                         <li key={key} hidden={!visibleBookIds.has(book.id)} className={clsx("book-record grid grid-cols-[2.75rem_3.25rem_minmax(0,1fr)] gap-x-3 px-1 py-4 sm:grid-cols-[2.75rem_4rem_minmax(0,1fr)_auto] sm:gap-x-5 sm:px-4", isComplete && "bg-emerald-50/60")}>
                           <label className="relative flex h-11 w-11 cursor-pointer items-center justify-center self-start">
-                            <input type="checkbox" checked={isComplete} onChange={() => toggleBook(key, book.title)} className="peer sr-only" aria-label={`${book.title}. ${isCurrentGroup ? "Current catalog" : "Archive edition"}. Currently ${isComplete ? "read" : "unread"}. Mark as ${isComplete ? "unread" : "read"}.`} />
+                            <input type="checkbox" checked={isComplete} onChange={() => toggleBook(key, book.title)} className="peer sr-only" aria-label={`${book.title}. Official catalog. Currently ${isComplete ? "read" : "unread"}. Mark as ${isComplete ? "unread" : "read"}.`} />
                             <span aria-hidden className="flex h-7 w-7 items-center justify-center border-2 border-primary/35 bg-white text-transparent transition peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white"><Check className="h-4 w-4 stroke-[3]" /></span>
                             <span className="print-box" aria-hidden>{isComplete ? "✓" : ""}</span>
                           </label>
@@ -355,7 +345,7 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
                           <div className="min-w-0 self-center">
                             <h3 className={clsx("text-sm font-bold leading-5 text-on-surface sm:text-base", isComplete && "text-on-surface-variant line-through")}><HighlightedText text={book.title} query={query} /></h3>
                             <p className="mt-1 text-xs leading-5 text-on-surface-variant"><span className="font-semibold text-on-surface">{group.name}</span> · Book {index + 1} of {group.books.length}</p>
-                            <p aria-hidden className={clsx("catalog-record-status mt-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-on-surface-variant", isCurrentGroup ? "is-current" : "is-archive", isComplete ? "is-read" : "is-unread")} />
+                            <p aria-hidden className={clsx("catalog-record-status mt-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-on-surface-variant", isComplete ? "is-read" : "is-unread")} />
 
                             <details open={groupIndex === 0 && index === 0 ? true : undefined} className="book-details mt-3">
                               <summary aria-label={`View details for ${book.title}`} className="catalog-details-trigger inline-flex min-h-11 cursor-pointer list-none items-center text-sm font-extrabold text-primary underline decoration-primary/25 underline-offset-4 marker:hidden"><span aria-hidden className="ml-2 text-base">+</span></summary>
@@ -375,7 +365,11 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
                             </details>
                           </div>
 
-                          <div className="book-actions col-start-3 mt-1 self-center sm:col-start-auto sm:mt-0"><span role="status" aria-label={isComplete ? "Read" : "To read"} className={clsx("catalog-reading-status text-xs font-semibold text-on-surface-variant", isComplete && "is-read")} /><PurchaseAction /></div>
+                          <div className="book-actions col-start-3 mt-1 flex flex-wrap items-center gap-2 self-center sm:col-start-auto sm:mt-0 sm:flex-col sm:items-end">
+                            <span role="status" aria-label={isComplete ? "Read" : "To read"} className={clsx("catalog-reading-status text-xs font-semibold text-on-surface-variant", isComplete && "is-read")} />
+                            {purchase ? <button type="button" aria-expanded={isPurchaseOpen} aria-controls={purchasePanelId} aria-label={`${isPurchaseOpen ? "Hide" : "Show"} where to buy ${book.title}`} onClick={() => setOpenPurchaseKey((openKey) => openKey === key ? null : key)} className="book-purchase-toggle inline-flex min-h-11 items-center gap-2 rounded-lg border border-primary/20 bg-white px-3 text-sm font-extrabold text-primary transition hover:bg-primary-container focus:outline-none focus:ring-4 focus:ring-primary/15"><ChevronDown aria-hidden className={clsx("h-4 w-4 transition", isPurchaseOpen && "rotate-180")} /></button> : null}
+                          </div>
+                          {purchase && isPurchaseOpen ? <PurchasePanel purchase={purchase} panelId={purchasePanelId} bookTitle={book.title} /> : null}
                         </li>
                       );
                     })}
@@ -401,17 +395,18 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
 
       <style>{`
         .print-box { display: none; }
-        .book-purchase-slot { min-width: 9rem; }
         .catalog-details-trigger::after { content: "View details"; }
         .catalog-reading-status::after { content: "To read"; }
         .catalog-reading-status.is-read::after { content: "Read"; }
         .catalog-source-link::after { content: "Source record"; }
-        .catalog-group-status.is-current::after { content: "Current catalog"; }
-        .catalog-group-status.is-archive::after { content: "Archive"; }
-        .catalog-record-status.is-current.is-unread::after { content: "Current catalog · Unread"; }
-        .catalog-record-status.is-current.is-read::after { content: "Current catalog · Read"; }
-        .catalog-record-status.is-archive.is-unread::after { content: "Archive edition · Unread"; }
-        .catalog-record-status.is-archive.is-read::after { content: "Archive edition · Read"; }
+        .catalog-group-status::after { content: "Official catalog"; }
+        .catalog-record-status.is-unread::after { content: "Official catalog · Unread"; }
+        .catalog-record-status.is-read::after { content: "Official catalog · Read"; }
+        .book-purchase-heading::after { content: "Buying option"; }
+        .book-purchase-marketplace::after { content: "Amazon.co.uk"; }
+        .book-purchase-note::after { content: "Paid affiliate link · Price and availability may change."; }
+        .book-purchase-link::before { content: "Check price"; }
+        .book-purchase-toggle::before { content: "Where to buy"; }
         @media (max-width: 389px) {
           .book-record { grid-template-columns: 2.5rem 2.75rem minmax(0, 1fr); }
         }
@@ -420,7 +415,7 @@ export const BookChecklist = ({ groups, betweenControlsAndCatalog }: BookCheckli
           main > section, .books-controls, .books-screen-only, .fairy-header-no-auth, footer, .adsterra-native-ad,
           .book-cover, .book-actions, .book-details, .books-empty-state,
           #reading-order,
-          .book-purchase-slot { display: none !important; }
+          .book-purchase-toggle, .book-purchase-panel { display: none !important; }
           body, main, article { background: white !important; color: black !important; }
           article { max-width: none !important; padding: 0 !important; }
           #root { min-width: 0 !important; }

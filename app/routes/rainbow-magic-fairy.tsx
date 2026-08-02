@@ -14,7 +14,7 @@ import {
 export const meta: Route.MetaFunction = ({ matches }) => {
   const title = "Rainbow Magic Fairy Guide: Names, Books & Series";
   const description =
-    "Explore every Rainbow Magic fairy by name and series. Compare 39 catalog sections, 324 archive records, book checklists, and simple, practical reading paths.";
+    "Explore all 299 titles in the checked Rainbow Magic publisher catalog by fairy name and series, with 39 catalog sections, book checklists, and practical reading paths.";
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -47,7 +47,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
           description,
           type: "Article",
           publishedAt: "2026-07-28",
-          updatedAt: "2026-08-01",
+          updatedAt: "2026-08-02",
         }),
         faqJsonLd
       ),

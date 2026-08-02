@@ -15,11 +15,11 @@ import {
 export const meta: Route.MetaFunction = ({ matches }) => {
   const title = "Rainbow Magic Books List & Printable Checklist";
   const description =
-    `Browse Rainbow Magic books in series order, search ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} current titles and ${BOOK_CATALOG_RECORD_COUNT} archive records, track what you have read, and print the complete checklist.`;
+    `Browse all ${OFFICIAL_CATALOG_UNIQUE_TITLE_COUNT} titles in the checked Rainbow Magic publisher catalog, follow each section in order, track what you have read, and print the complete checklist.`;
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Rainbow Magic books list and archive checklist",
+    name: "Rainbow Magic official-catalog books list and checklist",
     numberOfItems: BOOK_CATALOG_RECORD_COUNT,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
   };
@@ -55,7 +55,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
           description,
           type: "CollectionPage",
           publishedAt: "2026-07-28",
-          updatedAt: "2026-08-01",
+          updatedAt: "2026-08-02",
         }),
         itemListJsonLd,
         faqJsonLd

@@ -264,7 +264,7 @@ const EN_HOME_COPY: FairyFinderHomeCopy = {
       {
         question: "Is my result tied to a specific group or series line?",
         answer:
-          "Usually yes. The card title reflects series context, so users can tell whether a match belongs to a classic line, an Early Reader line, or another themed collection.",
+          "Usually yes. The card title reflects catalog context, so users can tell whether a match belongs to a classic themed line, Specials, or the Graphic Novels section.",
       },
       {
         question: "Does the dataset include newer fairies too?",

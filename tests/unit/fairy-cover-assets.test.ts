@@ -27,7 +27,7 @@ test("Fairy cover assets: all catalog entries have one valid local JPEG", async 
     getFairyCoverAssetPath(fairy.imageUrl)
   );
 
-  assert.equal(FAIRY_LIST.length, 324);
+  assert.equal(FAIRY_LIST.length, 299);
   assert.equal(files.length, FAIRY_LIST.length);
   assert.equal(new Set(expectedPaths).size, FAIRY_LIST.length);
 

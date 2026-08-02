@@ -26,8 +26,8 @@
     "enabled": true
   },
   "vars": {
-    "ADVERTISING_ENABLED": "false",
-    "ANALYTICS_ENABLED": "false",
+    "ADVERTISING_ENABLED": "true",  //adsense开启状态设置
+    "ANALYTICS_ENABLED": "true",   //GA4开启状态设置
     "GOOGLE_ANALYTICS_ID": "G-WXB3YC322J",
     "GOOGLE_ADS_ID": "ca-pub-7718142048250196"
   },

@@ -20,6 +20,13 @@ const FAIRIES_BY_LETTER = FAIRY_LIST.reduce<Record<string, FairyData[]>>(
   {}
 );
 
+for (const fairies of Object.values(FAIRIES_BY_LETTER)) {
+  fairies.sort((left, right) =>
+    left.name.localeCompare(right.name, "en-GB") ||
+    left.fullTitle.localeCompare(right.fullTitle, "en-GB")
+  );
+}
+
 const LETTER_GROUPS = Object.entries(FAIRIES_BY_LETTER).sort(([a], [b]) =>
   a.localeCompare(b)
 );

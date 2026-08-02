@@ -13,10 +13,10 @@ const sitemapEntries: SitemapEntry[] = [
   {
     path: "/rainbow-magic-fairy",
     priority: "0.9",
-    lastmod: "2026-08-01",
+    lastmod: "2026-08-02",
   },
   { path: "/fairy-names", priority: "0.8", lastmod: "2026-08-01" },
-  { path: "/books", priority: "0.8", lastmod: "2026-08-01" },
+  { path: "/books", priority: "0.8", lastmod: "2026-08-02" },
   { path: "/about", priority: "0.7", lastmod: "2026-08-01" },
   { path: "/contact", priority: "0.7", lastmod: "2026-08-01" },
   { path: "/legal/privacy", priority: "0.6", lastmod: "2026-08-01" },
