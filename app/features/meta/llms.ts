@@ -100,7 +100,7 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     path: "/legal/cookies",
     title: "Cookie Policy",
     summary: [
-      "Explains that non-essential integrations are disabled by default and lists providers that may use cookies or similar technologies after required controls are configured.",
+      "Explains first-party session and reading-checklist storage, advertising and analytics providers, the site's primary adult audience and protections for younger fans, and browser controls.",
     ],
   },
   {
@@ -116,6 +116,8 @@ const LEGAL_PAGES: LegalPageSummary[] = [
     title: "Refund Policy",
     summary: [
       "The site currently sells no credits, subscriptions, or other digital products, so there are no site purchases to refund.",
+      "Purchases reached through an affiliate link or advertisement are transactions with the third-party merchant, which controls cancellation, returns, and refunds.",
+      "An unrecognized charge should be reported promptly to the relevant bank, card issuer, or payment provider without sending sensitive payment credentials to the site.",
     ],
   },
 ];

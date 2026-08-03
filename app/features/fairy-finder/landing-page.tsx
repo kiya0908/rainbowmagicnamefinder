@@ -111,6 +111,10 @@ export default function FairyFinderLandingPage() {
             id="fairy-input-zone"
             className="scroll-mt-[calc(50vh-12.5rem)] md:scroll-mt-[calc(50vh-10rem)]"
           >
+            <p className="mx-auto mb-4 max-w-xl text-center text-sm font-semibold leading-6 text-on-surface-variant">
+              A parent's tool for finding magical fairy names inspired by the Rainbow Magic book series.
+            </p>
+
             <InputSection
               key={inputRenderKey}
               ref={inputRef}

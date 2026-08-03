@@ -6,7 +6,7 @@ import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 
 export const meta: Route.MetaFunction = ({ matches }) => {
   const title = "About - Rainbow Magic Fairy Name Finder";
-  const description = "Learn who operates this independent fan-made fairy name lookup, how matching works, and what the site is not affiliated with.";
+  const description = "Built by a parent and Rainbow Magic collector, this independent reference tool helps fellow fans and families explore fairy names.";
   return [
     { title },
     { name: "description", content: description },
@@ -27,6 +27,7 @@ export default function AboutPage() {
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">About this site</p>
         <h1 className="mt-4 text-4xl font-black text-on-surface md:text-5xl">An independent fan-made lookup</h1>
         <div className="mt-8 space-y-6 text-base leading-8 text-on-surface-variant">
+          <p><strong>Built by a parent and Rainbow Magic collector for fellow fans and families.</strong></p>
           <p>Rainbow Magic Fairy Name Finder is a small, independently operated reference tool. It helps visitors compare a first name with a manually curated list of Rainbow Magic character titles.</p>
           <p>The matching rule is intentionally simple and verifiable: the site normalizes the submitted first name and returns an exact catalog match, or says that no match was found. It does not invent a random character when the name is absent.</p>
           <p>Book cover images are cached and served as versioned same-origin static assets so readers can see them immediately and identify the matching title. Each cover keeps a visible source link to <a href="https://orchardseriesbooks.co.uk/" target="_blank" rel="external nofollow noopener noreferrer" className="font-bold text-primary underline underline-offset-4">Orchard Series Books</a>. Artwork, character, book, and publishing rights remain with their respective owners.</p>

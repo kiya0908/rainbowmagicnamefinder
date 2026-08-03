@@ -4,6 +4,18 @@ import test from "node:test";
 
 const readSource = (path: string) => readFile(path, "utf8");
 
+test("root document: does not declare the all-ages site as child-only", async () => {
+  const [document, llms] = await Promise.all([
+    readSource("app/features/document/index.tsx"),
+    readSource("app/features/meta/llms.ts"),
+  ]);
+
+  assert.doesNotMatch(document, /<meta name="audience" content="children" \/>/);
+  assert.doesNotMatch(llms, /child-directed privacy/i);
+  assert.match(llms, /primary adult audience/i);
+  assert.match(llms, /protections for younger fans/i);
+});
+
 test("robots.txt: public pages and assets stay crawlable while private route families are blocked", async () => {
   const robots = await readSource("app/routes/_meta/[robots.txt]/file.txt");
 

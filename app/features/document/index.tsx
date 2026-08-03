@@ -5,7 +5,7 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   GoogleAnalytics,
@@ -14,10 +14,19 @@ import {
 } from "~/components/analytics";
 import { MICROSOFT_CLARITY_PROJECT_ID } from "~/lib/analytics/clarity";
 import { scheduleNonCriticalTask } from "~/lib/performance/schedule-non-critical-task";
+import { CookieConsentBanner } from "./cookie-consent-banner";
+import {
+  type CookieConsent,
+  readCookieConsent,
+} from "./cookie-consent";
 import { ThirdPartyServicesProvider } from "./third-party-services";
 
 const GOOGLE_ADSENSE_SCRIPT_ID = "google-adsense-script";
 const PAGEVIEW_SCRIPT_ID = "pageview-analytics-script";
+
+type AdSenseCommandQueue = Array<Record<string, unknown>> & {
+  requestNonPersonalizedAds?: number;
+};
 
 interface DocumentProps {
   DOMAIN?: string;
@@ -39,12 +48,22 @@ export function Document({
   advertisingEnabled = false,
 }: React.PropsWithChildren<DocumentProps>) {
   const rootRef = useRef<HTMLHtmlElement>(null);
+  const [consentStatus, setConsentStatus] = useState<CookieConsent | null>(null);
+  const [isConsentReady, setIsConsentReady] = useState(false);
   const error = useRouteError();
   const googleAdsClientId = GOOGLE_ADS_ID
     ? GOOGLE_ADS_ID.startsWith("ca-")
       ? GOOGLE_ADS_ID
       : `ca-${GOOGLE_ADS_ID}`
     : "";
+  const hasConsent = consentStatus === "accepted";
+  const advertisingAllowed = advertisingEnabled && hasConsent;
+  const analyticsAllowed = analyticsEnabled && hasConsent;
+
+  useEffect(() => {
+    setConsentStatus(readCookieConsent());
+    setIsConsentReady(true);
+  }, []);
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -52,18 +71,25 @@ export function Document({
   }, [lang]);
 
   useEffect(() => {
-    if (!import.meta.env.PROD || (!advertisingEnabled && !analyticsEnabled)) return;
+    if (!import.meta.env.PROD || (!advertisingAllowed && !analyticsAllowed)) return;
 
     let cancelScheduledTask: (() => void) | undefined;
 
     const injectScripts = () => {
       // Adsense
       if (
-        advertisingEnabled &&
+        advertisingAllowed &&
         googleAdsClientId &&
         !error &&
         !document.getElementById(GOOGLE_ADSENSE_SCRIPT_ID)
       ) {
+        const adsWindow = window as Window & { adsbygoogle?: AdSenseCommandQueue };
+        const adsbygoogle = adsWindow.adsbygoogle ?? [];
+
+        // Keep advertising non-personalized because younger fans may use the public site.
+        adsbygoogle.requestNonPersonalizedAds = 1;
+        adsWindow.adsbygoogle = adsbygoogle;
+
         const adsScript = document.createElement("script");
         adsScript.id = GOOGLE_ADSENSE_SCRIPT_ID;
         adsScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsClientId}`;
@@ -74,7 +100,7 @@ export function Document({
       }
 
       // Pageview
-      if (analyticsEnabled && DOMAIN && !document.getElementById(PAGEVIEW_SCRIPT_ID)) {
+      if (analyticsAllowed && DOMAIN && !document.getElementById(PAGEVIEW_SCRIPT_ID)) {
         const pScript = document.createElement("script");
         pScript.id = PAGEVIEW_SCRIPT_ID;
         pScript.src = "https://app.pageview.app/js/script.js";
@@ -101,7 +127,7 @@ export function Document({
       window.removeEventListener("load", scheduleInjection);
       cancelScheduledTask?.();
     };
-  }, [advertisingEnabled, analyticsEnabled, googleAdsClientId, DOMAIN, error]);
+  }, [advertisingAllowed, analyticsAllowed, googleAdsClientId, DOMAIN, error]);
 
   return (
     <html ref={rootRef} lang={lang} data-theme={theme}>
@@ -115,9 +141,14 @@ export function Document({
         <Links />
       </head>
       <body>
-        <ThirdPartyServicesProvider value={{ advertisingEnabled, analyticsEnabled }}>
+        <ThirdPartyServicesProvider
+          value={{
+            advertisingEnabled: advertisingAllowed,
+            analyticsEnabled: analyticsAllowed,
+          }}
+        >
           {children}
-          {analyticsEnabled ? (
+          {analyticsAllowed ? (
             <>
               <MicrosoftClarity projectId={MICROSOFT_CLARITY_PROJECT_ID} />
               <GoogleAnalytics measurementId={GOOGLE_ANALYTICS_ID} />
@@ -127,6 +158,11 @@ export function Document({
           <ScrollRestoration />
           <Scripts />
         </ThirdPartyServicesProvider>
+        <CookieConsentBanner
+          consentStatus={consentStatus}
+          isReady={isConsentReady}
+          onConsentChange={setConsentStatus}
+        />
       </body>
     </html>
   );

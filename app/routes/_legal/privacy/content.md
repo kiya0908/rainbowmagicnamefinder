@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: July 17, 2026
+Last updated: August 3, 2026
 
 ## 1. Who We Are
 
@@ -20,7 +20,7 @@ Book cover files are cached and served as **same-origin static assets** from thi
 
 ## 3. Analytics and Advertising Providers
 
-Non-essential analytics and advertising scripts are disabled by default in the website configuration. If they are enabled after the required consent and account controls are in place, the site may use:
+Non-essential analytics and advertising scripts are disabled by default in the website configuration. If they are enabled after the required account controls are in place, they still do not load in a visitor's browser unless that visitor selects **Accept** in the cookie banner. The site may then use:
 
 - **Google Analytics**, for audience and page-use measurement
 - **Microsoft Clarity**, for aggregated interaction and usability measurement
@@ -30,11 +30,11 @@ Non-essential analytics and advertising scripts are disabled by default in the w
 
 These providers may use cookies, local storage, pixels, web beacons, IP address information, device or browser identifiers, viewed pages, ad interactions, and approximate location. They may receive data directly when your browser contacts their services. Their processing is governed by their own policies and by the consent choices available to you.
 
-Google and its advertising partners may use advertising cookies to serve, personalize, limit, and measure ads. Where personalized advertising is permitted, ads may be based on prior visits to this or other websites. You can manage Google ad personalization through [Google Ads Settings](https://adssettings.google.com/) and learn how Google uses information from partner sites at [Google's partner-sites notice](https://policies.google.com/technologies/partner-sites).
+Google and its advertising partners may use advertising cookies and similar technologies to serve, limit, and measure ads. On this site, Google AdSense is requested in non-personalized ads mode, so ads are not selected using a visitor's past browsing behavior. You can manage Google advertising choices through [Google Ads Settings](https://adssettings.google.com/) and learn how Google uses information from partner sites at [Google's partner-sites notice](https://policies.google.com/technologies/partner-sites).
 
 ## 4. Legal Bases and Consent
 
-Depending on your location, we process necessary hosting and security data to provide the site, protect it, and pursue legitimate operational interests. We rely on consent before enabling non-essential analytics or personalized advertising where consent is legally required.
+Depending on your location, we process necessary hosting and security data to provide the site, protect it, and pursue legitimate operational interests. We rely on consent before enabling non-essential analytics or advertising. Selecting **Reject non-essential** keeps those scripts disabled; the **Cookie settings** control lets you review or change the stored choice.
 
 For visitors in the European Economic Area, the United Kingdom, and Switzerland, Google advertising will remain disabled until an appropriate Google-certified consent management platform and required consent signals are configured. You may withdraw consent through the consent interface when it is available, or by clearing cookies and changing browser or provider settings.
 
@@ -52,11 +52,19 @@ Depending on where you live, you may have rights to access, correct, delete, res
 
 Browser controls can block or delete cookies. Google advertising choices are available in [Ads Settings](https://adssettings.google.com/). Blocking non-essential technologies should not prevent use of the core public name lookup.
 
-## 8. Children
+## 8. Children's Privacy
 
-The site is a general-audience fan reference and does not knowingly request dates of birth, school details, contact details, or account registration from children. A fairy theme alone does not establish the legal audience classification. We are reviewing the appropriate child-directed and age-restricted advertising treatment; advertising remains disabled by default while that decision and the required platform settings are incomplete.
+Rainbow Magic Fairy Name Finder is a fan-created reference resource intended primarily for parents, educators, collectors, and other fans of the Rainbow Magic book series. Fans of all ages, including children under 13, may also use the public fairy-name finder.
 
-If you believe a child sent personal information by email or another channel, contact us so we can review and delete it where appropriate.
+We do not knowingly ask children under 13 to submit personal information through the public finder. Specifically:
+
+- The public finder does not require an account or personal information.
+- The finder processes names and lookup queries entirely in the browser. Names and search queries entered into the finder are not intentionally sent to our servers.
+- The public finder does not request dates of birth, schools, precise locations, email addresses, or other contact details.
+
+As described elsewhere in this policy, hosting, security, analytics, and advertising providers may still process ordinary request data or limited identifiers when their services are enabled. Google AdSense is requested in **non-personalized ads** mode, although Google may still use limited identifiers for purposes such as frequency capping, aggregated reporting, security, and fraud prevention. We do not use a name entered in the finder or its fairy result to personalize advertisements or build advertising interest profiles.
+
+If you are a parent or guardian and believe your child has sent personal information to us (for example, via the contact email), contact [support@rainbowmagicfairyname.online](mailto:support@rainbowmagicfairyname.online) and we will promptly delete it from our records.
 
 ## 9. Updates
 

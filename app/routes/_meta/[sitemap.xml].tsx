@@ -21,13 +21,13 @@ const sitemapEntries: SitemapEntry[] = [
   { path: "/contact", priority: "0.7", lastmod: "2026-08-01" },
   { path: "/legal/privacy", priority: "0.6", lastmod: "2026-08-01" },
   { path: "/legal/terms", priority: "0.6", lastmod: "2026-08-01" },
-  { path: "/legal/cookies", priority: "0.6", lastmod: "2026-08-01" },
+  { path: "/legal/cookies", priority: "0.6", lastmod: "2026-08-03" },
   {
     path: "/legal/acceptable-use",
     priority: "0.5",
     lastmod: "2026-08-01",
   },
-  { path: "/legal/refund", priority: "0.4", lastmod: "2026-08-01" },
+  { path: "/legal/refund", priority: "0.4", lastmod: "2026-08-03" },
 ];
 
 export const loader = async ({ context }: Route.LoaderArgs) => {

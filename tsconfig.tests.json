@@ -24,6 +24,7 @@
     "app/features/fairy-finder/data/fairies.ts",
     "app/features/fairy-finder/data/types.ts",
     "app/features/fairy-finder/utils/cover-assets.ts",
+    "app/features/document/cookie-consent.ts",
     "tests/unit/**/*.ts"
   ]
 }

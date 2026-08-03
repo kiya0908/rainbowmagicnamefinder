@@ -9,7 +9,7 @@ import { createSeoDescriptors, createWebPageJsonLd } from "~/utils/meta";
 export const meta: Route.MetaFunction = ({ matches }) => {
   const title = "Refund Policy - Rainbow Magic Fairy Name Finder";
   const description =
-    "Review the Rainbow Magic Fairy Name Finder Refund Policy, including eligibility criteria, request timelines, and refund processing details.";
+    "Learn why the free Rainbow Magic Fairy Name Finder has no site purchases to refund and what to do about unrecognized charges or third-party purchases.";
 
   return [
     { title },

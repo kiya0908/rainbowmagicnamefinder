@@ -2,12 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import "./adsense-remediation.test.js";
+import "./cookie-consent.test.js";
 import "./fairy-cover-assets.test.js";
 import "./google-analytics.test.js";
 import "./microsoft-clarity.test.js";
 import "./meta-files.test.js";
 import "./open-design-pages.test.js";
 import "./performance-source-guards.test.js";
+import "./refund-policy.test.js";
 import "./schedule-non-critical-task.test.js";
 import "./seo-pages.test.js";
 import { SITE_ORIGIN, getSiteOrigin, toSiteUrl } from "../../app/config/site.js";
